@@ -7,23 +7,28 @@
   <link rel="stylesheet" href="Styles.css" />
 </head>
 <body>
-  <!-- Header with Logo, Title, and Dark Mode Toggle -->
   <header>
-    <img src="logo_light.jpg" alt="Logo" id="logoImg" />
-    <div class="title-section">
-      <h1>Turnaround Day Calculator</h1>
-      <p>Calculate the total trip days, weekend days, and turnaround days.</p>
-    </div>
+    <h1>Travel Calculator</h1>
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="memory.html">Memory Game</a></li>
+            <li><a href="dino.html">Dino Game</a></li>
+            <li><a href="distance.html">Distance Calculator</a></li>
+        </ul>
+    </nav>
     <div class="dark-mode-toggle">
-      <label class="switch">
-        <input type="checkbox" id="darkModeToggle">
-        <span class="slider round"></span>
-      </label>
-      <span class="toggle-text">Dark Mode</span>
-    </div>
+        <label class="switch">
+          <input type="checkbox" id="darkModeToggle" aria-label="Toggle Dark Mode">
+          <span class="slider round"></span>
+        </label>
+        <span class="toggle-text">Dark Mode</span>
+      </div>
   </header>
 
   <!-- Form Section with Fieldset and Inline Error Message -->
+  <h2>Turnaround Day Calculator</h2>
+  <p>Calculate the total trip days, weekend days, and turnaround days.</p>
   <div class="form-section">
     <fieldset>
       <legend>Enter Trip Dates & Destination</legend>

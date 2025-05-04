@@ -30,6 +30,7 @@ window.addEventListener("DOMContentLoaded", () => {
   });
 });
 
+
 /**
  * Parse "YYYY-MM-DD" into a Date object (local time)
  */
