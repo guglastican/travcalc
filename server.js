@@ -6,7 +6,12 @@ const cors = require('cors');
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-app.use(cors());
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
+}));
 app.use(express.json());
 
 // Distance Matrix API endpoint
@@ -36,8 +41,7 @@ app.post('/api/calculate-distance', async (req, res) => {
     res.json({
       origin: response.data.origin_addresses[0],
       destination: response.data.destination_addresses[0],
-      distance: result.distance.text,
-      duration: result.duration.text,
+      distance: `${result.distance.text} (${result.duration.text})`,
       status: response.data.status
     });
   } catch (error) {
