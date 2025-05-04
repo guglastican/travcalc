@@ -1,553 +1,361 @@
-  :root {
-    /* Enhanced color palette */
-    --primary: #4f46e5;
-    --primary-light: #6366f1;
-    --primary-dark: #4338ca;
-    --secondary: #7c3aed;
-    --dark: #111827;
-    --light: #f9fafb;
-    --success: #10b981;
-    --warning: #ef4444;
-    --gray-100: #f3f4f6;
-    --gray-200: #e5e7eb;
-    --gray-300: #d1d5db;
-    --gray-500: #6b7280;
-    --gray-700: #374151;
-    
-    /* Modern UI properties */
-    --radius: 12px;
-    --radius-sm: 6px;
-    --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
-    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  }
-  
-  /* Global Reset & Base Styles */
-  *, *::before, *::after {
-    box-sizing: border-box;
+/* Overall Page Style */
+body {
     margin: 0;
     padding: 0;
-  }
-
-  html {
-    font-size: 16px; /* Base font size */
-    scroll-behavior: smooth;
-  }
-
-  body {
-    font-family: var(--font-sans);
-    line-height: 1.6;
-    background-color: var(--gray-100); /* Slightly off-white background */
-    color: var(--dark);
-    min-height: 100vh;
-    -webkit-font-smoothing: antialiased;
-    display: flex;
-    flex-direction: column;
+    font-family: Arial, sans-serif;
+    background-color: #F3ECE4;
+    line-height: 1.5;
   }
   
-  .container {
-    width: 100%;
-    max-width: 1100px; /* Slightly narrower for better readability */
-    margin: 2rem auto; /* Add margin top/bottom */
-    padding: 2rem;
-    background-color: white;
-    border-radius: var(--radius);
-    box-shadow: var(--shadow); /* Use the slightly larger shadow */
-    flex-grow: 1; /* Allow container to grow */
+  /* Dark Mode Overrides */
+  body.dark-mode {
+    background-color: #222;
+    color: #eee;
+  }
+  body.dark-mode header {
+    background-color: #333;
+    border-bottom: 3px solid #444;
+  }
+  body.dark-mode .title-section h1 {
+    color: #eee;
+  }
+  body.dark-mode .title-section p {
+    color: #ccc;
+  }
+  body.dark-mode .form-section fieldset {
+    border-color: #555;
+  }
+  body.dark-mode .form-section input[type="date"] {
+    background-color: #333;
+    color: #eee;
+    border-color: #555;
+  }
+  body.dark-mode #resultsSummary {
+    background-color: #555;
+    border: 3px solid #eee;
+  }
+  body.dark-mode #currentDateModel {
+    background-color: #555;
+    border-color: #777;
+  }
+  body.dark-mode .toggle-text {
+    color: #eee;
+  }
+  /* For the schedule table in dark mode, force text to black */
+  body.dark-mode #scheduleTable,
+  body.dark-mode #scheduleTable th,
+  body.dark-mode #scheduleTable td {
+    color: black;
+  }
+  /* In dark mode, set header background for schedule table */
+  body.dark-mode #scheduleTable th {
+    background-color: #555555;
+  }
+  /* For data cells that do NOT have T, S, or O classes, use #dddddd in dark mode */
+  body.dark-mode #scheduleTable td:not(.T):not(.S):not(.O) {
+    background-color: #dddddd;
   }
   
-  /* Modern Header */
+  /* Header with Logo, Title, and Dark Mode Toggle */
   header {
-    background: var(--dark); /* Dark background */
-    color: var(--light);
-    padding: 1rem 0; /* Vertical padding only */
-    box-shadow: var(--shadow);
-    position: sticky;
-    top: 0;
-    z-index: 1000; /* Ensure header is on top */
-    width: 100%;
-  }
-
-  /* Navigation within a constrained container */
-  nav {
-    max-width: 1100px; /* Match container width */
-    margin: 0 auto;
-    padding: 0 1rem; /* Padding inside the nav container */
     display: flex;
-    justify-content: space-between;
+    flex-wrap: wrap;
     align-items: center;
+    padding: 10px 20px;
+    background-color: #F3ECE4;
+    border-bottom: 3px solid black;
   }
-
-  .logo { /* Added a class for the main title/logo */
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: var(--light);
-      text-decoration: none;
+  header img {
+    width: 400px;
+    max-width: 100%;
+    height: auto;
+    margin-right: 20px;
   }
-
-  nav ul {
-    list-style: none;
-    display: flex;
-    gap: 1.5rem;
-  }
-
-  nav a {
-    color: var(--gray-300); /* Lighter gray for dark background */
-    text-decoration: none;
-    font-weight: 500;
-    font-size: 1rem;
-    transition: var(--transition);
-    padding: 0.5rem 0;
-    position: relative;
-  }
-
-  nav a:after {
-    content: '';
-    position: absolute;
-    bottom: -2px; /* Position slightly below */
-    left: 0;
-    width: 0;
-    height: 2px;
-    background-color: var(--primary-light); /* Use light primary for contrast */
-    transition: var(--transition);
-  }
-
-  nav a:hover,
-  nav a.active { /* Style for active link */
-    color: var(--light); /* White on hover/active */
-  }
-
-  nav a:hover:after,
-  nav a.active:after {
-    width: 100%;
-  }
-  
-  /* Modern Form Elements */
-  .form-group {
-    margin-bottom: 1.25rem; /* Slightly reduced margin */
-  }
-
-  label {
-    display: block;
-    margin-bottom: 0.35rem; /* Reduced margin */
-    font-weight: 500;
-    color: var(--gray-700);
-    font-size: 0.9rem;
-  }
-
-  input, select {
-    width: 100%;
-    padding: 0.75rem 1rem; /* Adjusted padding */
-    margin: 0; /* Remove default margin */
-    border: 1px solid var(--gray-300); /* Thinner border */
-    border-radius: var(--radius-sm); /* Smaller radius */
-    font-family: var(--font-sans);
-    font-size: 1rem;
-    line-height: 1.5; /* Ensure consistent line height */
-    transition: var(--transition);
-    background-color: white;
-    color: var(--dark);
-    appearance: none; /* Remove default styling */
-  }
-
-  /* Add specific margin if needed after label */
-  label + input, label + select {
-      margin-top: 0.25rem;
-  }
-
-  input:focus, select:focus {
-    outline: none;
-    border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2); /* Adjusted shadow color */
-  }
-
-  /* Style placeholder text */
-  input::placeholder {
-      color: var(--gray-500);
-      opacity: 1;
-  }
-
-  /* Button Styles */
-  button {
-    background: var(--primary);
-    color: white;
-    font-weight: 600;
-    padding: 0.55rem 1.5rem; /* Consistent padding */
-    border: none;
-    border-radius: var(--radius-sm);
-    cursor: pointer;
-    font-size: 1rem; /* Match input font size */
-    line-height: 0.5;
-    transition: var(--transition);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    box-shadow: var(--shadow-sm);
+  .title-section {
+    flex: 1;
     text-align: center;
-    white-space: nowrap;
   }
-
-  /* Secondary button style (e.g., for Reset) */
-  button.secondary {
-      background-color: var(--gray-200);
-      color: var(--gray-700);
-      box-shadow: none;
-  }
-
-  button.secondary:hover {
-      background-color: var(--gray-300);
-      transform: translateY(-1px);
-      box-shadow: var(--shadow-sm);
-  }
-  
-  button:hover {
-    background: var(--secondary);
-    transform: translateY(-1px);
-    box-shadow: var(--shadow);
-  }
-  
-  button:active {
-    transform: translateY(0);
-  }
-  
-  /* Card Style Layout */
-  .card {
-    background: white;
-    padding: 2rem; /* Increased padding */
-    margin-bottom: 2rem; /* Use margin-bottom only for spacing between cards */
-    border-radius: var(--radius);
-    box-shadow: var(--shadow); /* Use larger shadow */
-    border: none; /* Remove border, rely on shadow */
-  }
-
-  .card:last-child {
-      margin-bottom: 0; /* Remove margin from the last card */
-  }
-
-  .card-header {
-    margin-bottom: 1.5rem; /* Increased margin */
-    padding-bottom: 1rem;
-    border-bottom: 1px solid var(--gray-200);
-    /* Removed flex layout, let title flow naturally */
-  }
-
-  .card-title {
-    font-size: 1.5rem; /* Larger title */
-    font-weight: 600;
-    color: var(--dark); /* Darker title */
+  .title-section h1 {
     margin: 0;
-    line-height: 1.3; /* Adjust line height for title */
+    font-size: 2.5rem;
   }
-
-  /* Section specific styling if needed */
-  .form-section { /* Assuming forms are wrapped in this */
-      /* Add specific styles if needed */
+  .title-section p {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #555;
   }
-
-  .results-section { /* Assuming results are wrapped */
-      /* Add specific styles if needed */
+  /* Dark Mode Toggle in Header */
+  .dark-mode-toggle {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
   }
-  
-  /* Modern responsive grid with auto-fit */
-  .responsive-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1.5rem;
-  }
-  
-  /* Modern Table Styles */
-  table {
-    width: 100%;
-    border-collapse: collapse; /* Use collapse for cleaner lines */
-    margin: 1.5rem 0;
-    font-size: 0.95rem; /* Slightly smaller table font */
-    background-color: white;
-    border-radius: var(--radius-sm); /* Rounded corners for table */
-    overflow: hidden; /* Clip content to rounded corners */
-    box-shadow: var(--shadow-sm);
-  }
-
-  th, td {
-    padding: 0.8rem 1rem; /* Adjusted padding */
-    text-align: left;
-    border-bottom: 1px solid var(--gray-200);
-  }
-
-  th {
-    background-color: var(--gray-100);
-    font-weight: 600;
-    color: var(--gray-700);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    font-size: 0.8rem;
-    /* Remove sticky header for simplicity unless specifically needed */
-  }
-
-  tr {
-    transition: background-color var(--transition);
-  }
-
-  tr:last-child td {
-      border-bottom: none; /* Remove border from last row */
-  }
-
-  tr:hover {
-    background-color: var(--gray-100);
-  }
-  
-  /* Modern utility classes */
-  .badge {
+  .switch {
+    position: relative;
     display: inline-block;
-    padding: 0.25rem 0.75rem;
-    font-size: 0.75rem;
-    font-weight: 600;
-    border-radius: 9999px;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+    width: 50px;
+    height: 24px;
+    margin-right: 8px;
+  }
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: #ccc;
+    transition: 0.4s;
+    border-radius: 24px;
+  }
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: 0.4s;
+    border-radius: 50%;
+  }
+  input:checked + .slider {
+    background-color: #2196F3;
+  }
+  input:checked + .slider:before {
+    transform: translateX(26px);
+  }
+  .toggle-text {
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #333;
+  }
+  body.dark-mode .toggle-text {
+    color: #eee;
   }
   
-  .badge-primary {
-    background-color: rgba(99, 102, 241, 0.1);
-    color: var(--primary);
+  /* Form Section */
+  .form-section {
+    margin: 20px;
+    padding: 10px 20px;
   }
-  
-  .badge-success {
-    background-color: rgba(34, 197, 94, 0.1);
-    color: var(--success);
+  .form-section fieldset {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
   }
-  
-  .badge-warning {
-    background-color: rgba(239, 68, 68, 0.1);
-    color: var(--warning);
+  .form-section legend {
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding: 0 5px;
   }
-  
+  .form-section label {
+    margin-right: 5px;
+    font-weight: bold;
+  }
+  .form-section input[type="date"] {
+    border: 1px solid #ccc;
+    padding: 8px 10px;
+    border-radius: 4px;
+    font-size: 1rem;
+    background-color: #fff;
+    color: #333;
+    margin-right: 10px;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
+    transition: box-shadow 0.2s;
+  }
+  .form-section input[type="date"]:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(40, 167, 69, 0.5);
+  }
+  #calculateBtn,
+  #resetBtn {
+    padding: 10px 16px;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-left: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.2s, transform 0.2s;
+  }
+  #calculateBtn {
+    background-color: #28a745;
+  }
+  #calculateBtn:hover {
+    background-color: #218838;
+    transform: translateY(-2px);
+  }
+  #resetBtn {
+    background-color: #5cb85c;
+  }
+  #resetBtn:hover {
+    background-color: #4cae4c;
+    transform: translateY(-2px);
+  }
   .error-message {
-    color: var(--warning);
-    margin: 1.5rem 0; /* Increased margin */
-    padding: 1rem 1.5rem; /* Adjusted padding */
-    background: rgba(239, 68, 68, 0.1); /* Slightly stronger background */
-    border-radius: var(--radius-sm);
-    border: 1px solid rgba(239, 68, 68, 0.2); /* Add a subtle border */
-    border-left: 4px solid var(--warning);
-    font-size: 0.95rem;
-    font-weight: 500;
+    color: red;
+    font-weight: bold;
+    margin-top: 10px;
   }
-
-  /* Modern Loading State */
-  .loading-state {
+  
+  /* Top Section: Left & Right Columns */
+  .top-section {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    margin: 20px;
+    gap: 100px;
+  }
+  .calc-schedule {
+    flex: 0 0 33.33%;
+  }
+  .schedule-title {
+    text-align: left;
+    margin-bottom: 10px;
+  }
+  .results {
+    flex: 1;
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
+  }
+  .results h2 {
+    margin-bottom: 10px;
+    width: 100%;
+    text-align: left;
+  }
+  
+  /* Calculated Schedule Table (Light Mode Default) */
+  #scheduleTable {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    margin-bottom: 10px;
+    table-layout: fixed;
+  }
+  #scheduleTable th {
+    background-color: #ddd;
+    padding: 8px;
+    text-align: center;
+  }
+  #scheduleTable td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: center;
+    font-weight: bold;
+  }
+  /* Narrow the Code column (3rd column) */
+  #scheduleTable th:nth-child(3),
+  #scheduleTable td:nth-child(3) {
+    width: 60px;
+  }
+  
+  /* Results Summary Table (Light Green, Thick Bold Border) */
+  #resultsSummary {
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 3px solid black;
+    background-color: #ecfce6;
+    margin-bottom: 10px;
+    width: 90%;
+    max-width: 400px;
+  }
+  #resultsSummary td,
+  #resultsSummary th {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: center;
+    font-weight: bold;
+  }
+  
+  /* Current Date Model Table (Light Grey) */
+  #currentDateModel {
+    border-collapse: collapse;
+    background-color: #eaeaea;
+    margin-bottom: 10px;
+    width: 90%;
+    max-width: 400px;
+  }
+  #currentDateModel td,
+  #currentDateModel th {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: center;
+    font-weight: bold;
+  }
+  
+  /* Color Key */
+  .color-key {
+    margin-top: 10px;
+    width: 90%;
+    max-width: 400px;
+    text-align: left;
+  }
+  .color-key h3 {
+    margin-bottom: 10px;
+    text-align: left;
+  }
+  .color-key p {
+    margin: 5px 0;
+    display: flex;
     align-items: center;
-    justify-content: center; /* Center vertically too */
-    gap: 1rem;
-    margin: 3rem 0; /* More margin */
-    min-height: 100px; /* Ensure it takes some space */
-    color: var(--gray-500);
   }
-
-  /* Simple Spinner */
-  .loader {
-    width: 2rem; /* Smaller spinner */
-    height: 2rem;
-    border: 3px solid var(--gray-200);
-    border-top-color: var(--primary);
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
+  .legend {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+    border: 1px solid #000;
   }
-
-  /* Remove the complex ::before animation */
-  .loader::before {
-      display: none;
-  }
-
-  @keyframes spin { /* Renamed from rotate to avoid conflicts */
-    to {
-      transform: rotate(360deg);
-    }
-  }
-
-  /* Removed unused prixClipFix keyframes */
-  
-  .distance-result {
-    background-color: var(--gray-100);
-    border-radius: var(--radius);
-    padding: 1.5rem;
-    margin: 1.5rem 0;
-    border: 1px solid var(--gray-200);
+  .key-text {
+    display: inline-block;
   }
   
-  /* Mobile Styling */
+  /* Updated Color-Coded Classes for Table Cells with Lighter Colors and Bold Text */
+  .T {
+    background-color: #F3F339;
+    font-weight: bold;
+  }
+  .S {
+    background-color: tan;
+    font-weight: bold;
+  }
+  .O {
+    background-color: lightgreen;
+    font-weight: bold;
+  }
+  .legend.T {
+    background-color: #F3F339;
+  }
+  .legend.S {
+    background-color: tan;
+  }
+  .legend.O {
+    background-color: lightgreen;
+  }
+  
+  /* Responsive Design for Mobile */
   @media (max-width: 768px) {
-    .container {
-        margin: 1rem auto;
-        padding: 1.5rem; /* Reduce padding on mobile */
-        border-radius: 0; /* Full width on mobile */
-        box-shadow: none;
-    }
-
-    header {
-      padding: 0.75rem 0; /* Reduce header padding */
-    }
-
-    nav {
-      padding: 0 1.5rem; /* Match container padding */
-      flex-wrap: wrap; /* Allow wrapping if needed */
-    }
-
-    /* Basic mobile nav toggle - requires JS or checkbox hack for full functionality */
-    /* For now, just stack the links */
-    nav ul {
-      display: none; /* Hide by default - needs JS/toggle */
+    .top-section {
       flex-direction: column;
-      width: 100%;
-      gap: 0.5rem; /* Reduce gap */
-      margin-top: 1rem;
-      background-color: var(--dark); /* Ensure background */
-      padding: 1rem 0; /* Add padding when shown */
+      gap: 20px;
     }
-
-    /* Example: Show nav if a class 'nav-open' is added to body/header */
-    /* body.nav-open nav ul { display: flex; } */
-
-    nav a {
-      display: block; /* Make links full width */
-      padding: 0.75rem 0; /* Adjust padding */
-      font-size: 1.1rem; /* Slightly larger tap target */
-      color: var(--light); /* Ensure contrast */
+    .calc-schedule,
+    .results {
+      flex: 1 0 100%;
     }
-
-    nav a:after {
-      display: none; /* Hide underline on mobile */
+    header, .form-section, .top-section {
+      margin: 10px;
+      padding: 10px;
     }
-
-    .logo {
-        font-size: 1.3rem; /* Adjust logo size */
+    .title-section h1 {
+      font-size: 2rem;
     }
-
-    /* Add a basic menu button style (needs HTML element) */
-    .menu-toggle {
-        display: block; /* Show toggle button */
-        background: none;
-        border: none;
-        color: var(--light);
-        font-size: 1.5rem;
-        cursor: pointer;
-    }
-
-    .card {
-      padding: 1rem;
-    }
-
-    .responsive-grid {
-      grid-template-columns: 1fr; /* Stack grid items */
-      gap: 1rem;
-    }
-
-    button {
-        padding: 0.8rem 1.2rem; /* Adjust button padding */
-        font-size: 1rem;
-    }
-
-    input, select {
-        padding: 0.8rem; /* Adjust input padding */
-        font-size: 1rem;
-    }
-
-    label {
-        font-size: 0.85rem;
-    }
-
-    /* Responsive Table Handling */
-    table {
-        display: block; /* Allow horizontal scroll */
-        overflow-x: auto;
-        white-space: nowrap; /* Prevent wrapping */
-        box-shadow: none; /* Remove shadow on mobile table */
-        border-radius: 0;
-        border: 1px solid var(--gray-200); /* Add border for clarity */
-    }
-
-    thead {
-        /* Optionally hide thead on mobile if using data attributes */
-        /* display: none; */
-    }
-
-    tbody, tr, td {
-        display: block; /* Stack cells */
-        width: 100%;
-    }
-
-    tr {
-        margin-bottom: 0.5rem;
-        border: 1px solid var(--gray-200);
-        border-radius: var(--radius-sm);
-    }
-
-    td {
-        text-align: right; /* Align text to the right */
-        padding-left: 50%; /* Create space for label */
-        position: relative;
-        border-bottom: none; /* Remove bottom border */
-        padding-top: 0.5rem;
-        padding-bottom: 0.5rem;
-    }
-
-    td:last-child {
-        border-bottom: none;
-    }
-
-    /* Use data-label attribute from HTML for the label */
-    td::before {
-        content: attr(data-label); /* Get label from data attribute */
-        position: absolute;
-        left: 0.5rem; /* Position label on the left */
-        width: 45%; /* Label width */
-        padding-right: 0.5rem;
-        text-align: left;
-        font-weight: bold;
-        color: var(--gray-700);
-        white-space: normal; /* Allow label text to wrap */
-    }
-  }
-  
-  /* Dark mode support - optional */
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --light: #0f172a;
-      --dark: #f8fafc;
-      --gray-100: #1e293b;
-      --gray-200: #334155;
-      --gray-300: #475569;
-      --gray-500: #94a3b8;
-      --gray-700: #cbd5e1;
-    }
-    
-    body {
-      background-color: #0f172a;
-    }
-    
-    .container, .card, header {
-      background-color: #1e293b;
-      border-color: #334155;
-    }
-    
-    input, select {
-      background-color: #1e293b;
-      border-color: #334155;
-      color: #f8fafc;
-    }
-    
-    th {
-      background-color: #334155;
-    }
-    
-    tr:hover {
-      background-color: #0f172a;
-    }
-    
-    td {
-      border-color: #334155;
+    .title-section p {
+      font-size: 1.2rem;
     }
   }
