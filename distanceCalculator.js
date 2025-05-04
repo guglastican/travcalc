@@ -12,9 +12,17 @@ async function handleDistanceCalculation() {
     const resultsDiv = document.getElementById('distanceResults');
 
     if (!origin || !destination) {
-        resultsDiv.innerHTML = '<p class="error">Please enter both origin and destination</p>';
+        resultsDiv.innerHTML = '<p class="error">✋ Please enter both locations</p>';
         return;
     }
+    
+    // Show loading state with animation
+    resultsDiv.innerHTML = `
+        <div class="loading-state">
+            <div class="loader"></div>
+            <p>Calculating route...</p>
+        </div>
+    `;
 
     try {
         const response = await fetch('http://localhost:3001/api/calculate-distance', {
@@ -53,8 +61,9 @@ function displayDistanceResults(data) {
             <h3>Distance Information</h3>
             <p><strong>From:</strong> ${data.origin}</p>
             <p><strong>To:</strong> ${data.destination}</p>
-            <p><strong>Distance:</strong> ${data.distance} ${data.unit}</p>
+            <p><strong>Distance:</strong> ${data.distance}</p>
             <p><strong>Duration:</strong> ${data.duration}</p>
+            ${data.status !== 'OK' ? `<p class="warning">Note: ${data.status}</p>` : ''}
         </div>
     `;
 }

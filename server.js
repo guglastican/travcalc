@@ -37,12 +37,17 @@ app.post('/api/calculate-distance', async (req, res) => {
       throw new Error(response.data.error_message || 'Failed to calculate distance');
     }
 
-    const result = response.data.rows[0].elements[0];
+    const result = response.data?.rows?.[0]?.elements?.[0];
+    if (!result || result.status !== 'OK') {
+      throw new Error('No valid route found between locations');
+    }
+
     res.json({
-      origin: response.data.origin_addresses[0],
-      destination: response.data.destination_addresses[0],
-      distance: `${result.distance.text} (${result.duration.text})`,
-      status: response.data.status
+      origin: response.data?.origin_addresses?.[0] || 'Unknown origin',
+      destination: response.data?.destination_addresses?.[0] || 'Unknown destination',
+      distance: result.distance?.text || 'Unknown distance',
+      duration: result.duration?.text || 'Unknown duration',
+      status: response.data?.status || 'UNKNOWN_ERROR'
     });
   } catch (error) {
     console.error('API Error:', error);
