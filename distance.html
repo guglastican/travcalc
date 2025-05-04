@@ -27,6 +27,26 @@
         <input type="text" id="origin" placeholder="Enter starting location">
         <label for="destination">Destination:</label>
         <input type="text" id="destination" placeholder="Enter destination">
+        
+        <div class="options-row">
+          <div>
+            <label for="travelMode">Travel Mode:</label>
+            <select id="travelMode">
+              <option value="driving">Driving</option>
+              <option value="walking">Walking</option>
+              <option value="bicycling">Bicycling</option>
+              <option value="transit">Public Transit</option>
+            </select>
+          </div>
+          <div>
+            <label for="unitSystem">Units:</label>
+            <select id="unitSystem">
+              <option value="imperial">Imperial (miles)</option>
+              <option value="metric">Metric (kilometers)</option>
+            </select>
+          </div>
+        </div>
+
         <button id="calculateDistance">Calculate</button>
         <div id="distanceResults"></div>
       </fieldset>

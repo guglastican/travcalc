@@ -189,7 +189,7 @@ function fetchWeatherForecast(city, tripStartDate) {
     queryCity += ",US";
   }
 
-  const apiKey = "996b65a5e617bf8f1c3c1e9116aa1ab6"; // Replace with your real API key
+  const apiKey = "AIzaSyBnvEmLlcvBx_Z6NpAVB_08fOKw2C2WSIw"; // Replace with your real API key
   const url = `https://api.openweathermap.org/data/2.5/forecast?q=${queryCity}&appid=${apiKey}&units=imperial`;
 
   fetch(url)
