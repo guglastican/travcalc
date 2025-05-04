@@ -10,8 +10,14 @@ app.use(cors({
   origin: '*',
   methods: ['GET', 'POST', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true
+  credentials: true,
+  preflightContinue: true
 }));
+
+app.options('*', (req, res) => {
+  res.header('Access-Control-Allow-Private-Network', 'true');
+  res.sendStatus(200);
+});
 app.use(express.json());
 
 // Distance Matrix API endpoint
