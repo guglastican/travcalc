@@ -19,15 +19,6 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Easter Egg: Dino Game on yellow T square
-  document.getElementById("dinoGameBtn").addEventListener("click", function() {
-    window.open("dino.html", "_blank");
-  });
-
-  // Easter Egg: Memory Game on green O square
-  document.getElementById("memoryGameBtn").addEventListener("click", function() {
-    window.open("memory.html", "_blank");
-  });
 });
 
 
