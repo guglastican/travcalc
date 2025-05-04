@@ -17,21 +17,21 @@ async function handleDistanceCalculation() {
     }
 
     try {
-        // In production, this would call your backend service
-        // const response = await fetch('/api/calculate-distance', {
-        //     method: 'POST',
-        //     headers: { 'Content-Type': 'application/json' },
-        //     body: JSON.stringify({ 
-        //         origin,
-        //         destination,
-        //         mode: travelMode,
-        //         units: unitSystem
-        //     })
-        // });
-        // const data = await response.json();
+        const response = await fetch('http://localhost:3001/api/calculate-distance', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                origin,
+                destination,
+                mode: travelMode,
+                units: unitSystem
+            })
+        });
+        const data = await response.json();
 
-        // For demo purposes, we'll simulate a response
-        const data = simulateDistanceResponse(origin, destination, travelMode, unitSystem);
+        if (!response.ok) {
+            throw new Error(data.error || 'Failed to calculate distance');
+        }
         
         displayDistanceResults(data);
     } catch (error) {
@@ -60,33 +60,6 @@ function displayDistanceResults(data) {
 }
 
 // Simulates what the backend would return
-function simulateDistanceResponse(origin, destination, mode, units) {
-    // In production, this would be handled by your backend service
-    // which would make the actual Google Maps Distance Matrix API calls
-    
-    // Simulate different responses based on mode and units
-    const baseDistance = mode === 'walking' ? 5 : 
-                        mode === 'bicycling' ? 10 :
-                        mode === 'transit' ? 15 : 20;
-    
-    const distance = units === 'metric' ? 
-                    `${baseDistance * 1.6} km` : 
-                    `${baseDistance} miles`;
-    
-    const duration = mode === 'walking' ? '1 hour 30 mins' :
-                    mode === 'bicycling' ? '45 mins' :
-                    mode === 'transit' ? '30 mins' : '25 mins';
-
-    return {
-        origin: origin,
-        destination: destination,
-        distance: distance,
-        unit: units === 'metric' ? 'kilometers' : 'miles',
-        duration: duration,
-        mode: mode,
-        status: 'OK'
-    };
-}
 
 /* 
 Google Maps Distance Matrix API Implementation Notes:
