@@ -2,26 +2,15 @@ require('dotenv').config();
 const express = require('express');
 const axios = require('axios');
 const cors = require('cors');
+const path = require('path'); // For path.join
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-app.use(cors({
-  origin: '*',
-  methods: ['GET', 'POST', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true,
-  preflightContinue: true
-}));
+// Simplified CORS setup
+app.use(cors()); 
 
-app.options('*', (req, res) => {
-  res.header('Access-Control-Allow-Private-Network', 'true');
-  res.sendStatus(200);
-});
 app.use(express.json());
-
-// Serve static files from the root directory
-app.use(express.static(__dirname));
 
 // Distance Matrix API endpoint
 app.post('/api/calculate-distance', async (req, res) => {
@@ -59,11 +48,40 @@ app.post('/api/calculate-distance', async (req, res) => {
       status: response.data?.status || 'UNKNOWN_ERROR'
     });
   } catch (error) {
-    console.error('API Error:', error);
-    res.status(500).json({ error: error.message });
+    console.error('API Error Details:', JSON.stringify(error, Object.getOwnPropertyNames(error)));
+    let errorMessage = 'An unexpected error occurred while calculating distance.';
+    if (error.response) {
+      console.error('Google API Error Response Data:', error.response.data);
+      console.error('Google API Error Response Status:', error.response.status);
+      errorMessage = error.response.data?.error_message || error.response.data?.message || (error.response.data?.status ? `Google Maps API Error: ${error.response.data.status}` : errorMessage);
+    } else if (error.request) {
+      console.error('Google API No Response:', error.request);
+      errorMessage = 'No response received from Google Maps API. Check server connectivity and API key quotas.';
+    } else {
+      console.error('Google API Request Setup Error:', error.message);
+      errorMessage = error.message || errorMessage;
+    }
+    res.status(500).json({ error: errorMessage });
   }
 });
 
+// Serve HTML pages
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+app.get('/index.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+app.get('/distance.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'distance.html'));
+});
+
+app.get('/calculator.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'calculator.html'));
+});
+
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`Server running on port ${PORT}. Handles API and HTML serving.`);
 });
