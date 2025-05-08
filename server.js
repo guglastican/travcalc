@@ -2,7 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const axios = require('axios');
 const cors = require('cors');
-const path = require('path'); // Import path module
+// const path = require('path'); // No longer needed as express.static and explicit sendFile are removed
 
 const app = express();
 const PORT = process.env.PORT || 3001;
