@@ -66,7 +66,7 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
 });
 
-// Serve static files from the root directory (should be after API routes)
+// Serve static files from the root directory (should be after API routes)_
 app.use(express.static(__dirname));
 
 app.listen(PORT, () => {
