@@ -61,6 +61,11 @@ app.post('/api/calculate-distance', async (req, res) => {
   }
 });
 
+// Serve index.html for the root path
+app.get('/', (req, res) => {
+  res.sendFile(__dirname + '/index.html');
+});
+
 // Serve static files from the root directory (should be after API routes)
 app.use(express.static(__dirname));
 
