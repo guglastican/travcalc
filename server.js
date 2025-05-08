@@ -20,9 +20,6 @@ app.options('*', (req, res) => {
 });
 app.use(express.json());
 
-// Serve static files from the root directory
-app.use(express.static(__dirname));
-
 // Distance Matrix API endpoint
 app.post('/api/calculate-distance', async (req, res) => {
   try {
@@ -63,6 +60,9 @@ app.post('/api/calculate-distance', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+// Serve static files from the root directory (should be after API routes)
+app.use(express.static(__dirname));
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
