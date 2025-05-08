@@ -69,24 +69,11 @@ app.post('/api/calculate-distance', async (req, res) => {
   }
 });
 
-// Serve index.html for the root path
-app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/index.html');
-});
-
-// Explicitly serve other HTML pages
-app.get('/distance.html', (req, res) => {
-  res.sendFile(__dirname + '/distance.html');
-});
-
-app.get('/calculator.html', (req, res) => {
-  res.sendFile(__dirname + '/calculator.html');
-});
-
-// Serve static files from the root directory (js, css, images, etc.)
-// This will also serve the HTML files if not explicitly handled above.
-app.use(express.static(process.cwd())); // Use process.cwd()
+// HTML files and other static assets (CSS, client-side JS)
+// are now expected to be served by Vercel's default static file handling
+// based on the simplified vercel.json.
+// This server.js is now API-only.
 
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`Server running on port ${PORT} (API only)`);
 });
