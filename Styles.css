@@ -6,6 +6,16 @@ body {
     background-color: #F3ECE4;
     line-height: 1.5;
   }
+
+/* Container for main content centering (used on <main class="container">) */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center children horizontally */
+  padding: 20px;      /* Add some padding around the content */
+  width: 100%;        /* Ensure it takes up full width for centering */
+  box-sizing: border-box;
+}
   
   /* Dark Mode Overrides */
   body.dark-mode {
@@ -56,15 +66,15 @@ body {
     background-color: #dddddd;
   }
   
-  /* Header with Logo, Title, and Dark Mode Toggle */
-  header {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    padding: 10px 20px;
-    background-color: #F3ECE4;
-    border-bottom: 3px solid black;
-  }
+/* Header with Logo, Title, and Dark Mode Toggle */
+header {
+  display: flex;
+  flex-direction: column; /* Stack h1 and nav */
+  align-items: center;   /* Center them horizontally */
+  padding: 10px 20px;
+  background-color: #F3ECE4;
+  border-bottom: 3px solid black;
+}
   header img {
     width: 400px;
     max-width: 100%;
@@ -135,48 +145,141 @@ body {
   body.dark-mode .toggle-text {
     color: #eee;
   }
+
+/* Navigation Menu Centering and Styling */
+nav {
+  width: 100%; /* Allow nav to take full width for its content to be centered */
+  display: flex;
+  justify-content: center; /* Center the ul inside nav */
+  margin-top: 10px; /* Add some space below the h1 */
+}
+
+nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex; /* Make li items align in a row */
+  gap: 20px; /* Space between menu items */
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: #333; /* Default link color */
+  font-weight: bold;
+  padding: 8px 15px;
+  border-radius: 4px;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+nav ul li a:hover {
+  background-color: #ddd;
+  color: #000;
+}
+
+/* Dark mode for nav links */
+body.dark-mode nav ul li a {
+  color: #ccc; /* Lighter link color for dark mode */
+}
+
+body.dark-mode nav ul li a:hover {
+  background-color: #444; /* Darker grey background on hover in dark mode */
+  color: #fff;
+}
   
   /* Form Section */
   .form-section {
-    margin: 20px;
-    padding: 10px 20px;
+    padding: 40px; /* Increased padding for card appearance */
+    background-color: #ffffff;
+    border-radius: 12px; /* Slightly larger radius */
+    box-shadow: 0 6px 16px rgba(0,0,0,0.12); /* Enhanced shadow */
+    max-width: 800px; /* Increased max-width */
+    width: 90%;      /* Use a percentage for better responsiveness */
+    margin-top: 20px; /* Space below the h2 title */
+    box-sizing: border-box;
   }
   .form-section fieldset {
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    padding: 10px;
+    border: 1px solid #ddd; /* Lighter border */
+    border-radius: 8px; /* Consistent radius */
+    padding: 20px; /* More padding inside fieldset */
   }
   .form-section legend {
-    font-size: 1.2rem;
+    font-size: 1.5rem; /* Larger legend */
     font-weight: bold;
-    padding: 0 5px;
+    padding: 0 10px;
+    margin-bottom: 15px; /* Space below legend */
   }
   .form-section label {
     margin-right: 5px;
     font-weight: bold;
+    font-size: 1.1rem; /* Larger label text */
+    display: block; /* Make labels block for better spacing */
+    margin-bottom: 8px; /* Space below label */
   }
-  .form-section input[type="date"] {
+  /* General styling for text inputs and selects in this form */
+  .form-section input[type="text"],
+  .form-section select {
     border: 1px solid #ccc;
-    padding: 8px 10px;
-    border-radius: 4px;
-    font-size: 1rem;
+    padding: 12px 15px; /* Increased padding */
+    border-radius: 6px; /* Consistent radius */
+    font-size: 1.1rem; /* Larger font size */
     background-color: #fff;
     color: #333;
-    margin-right: 10px;
-    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
-    transition: box-shadow 0.2s;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    width: 100%; /* Make them take full width of their container */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    margin-bottom: 15px; /* Space below each input/select */
   }
-  .form-section input[type="date"]:focus {
+
+  /* Specific for date input if needed, otherwise it uses the general style above */
+  .form-section input[type="date"] {
+    border: 1px solid #ccc;
+    padding: 12px 15px; /* Increased padding */
+    border-radius: 6px;
+    font-size: 1.1rem;
+    background-color: #fff;
+    color: #333;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 15px;
+  }
+  .form-section input[type="text"]:focus,
+  .form-section input[type="date"]:focus,
+  .form-section select:focus {
     outline: none;
-    box-shadow: 0 0 5px rgba(40, 167, 69, 0.5);
+    border-color: #28a745; /* Highlight with a green border on focus */
+    box-shadow: 0 0 8px rgba(40, 167, 69, 0.3);
   }
-  #calculateBtn,
+
+  /* Styling for the .form-group and .form-row if they exist in distance.html */
+  .form-group {
+    margin-bottom: 20px; /* Consistent spacing for form groups */
+  }
+  .form-group:last-child {
+    margin-bottom: 0; /* No margin for the last group (often the button) */
+  }
+
+  .form-row {
+    display: flex;
+    gap: 20px; /* Space between items in a row */
+    align-items: flex-end; /* Align items to the bottom if they have different heights */
+  }
+  .form-row .form-group {
+    flex: 1; /* Allow form groups in a row to share space */
+    margin-bottom: 0; /* Remove bottom margin as .form-row handles spacing */
+  }
+
+
+  #calculateDistance, /* Targeting the button by ID from distance.html */
+  #calculateBtn, /* Keep existing for other pages if used */
   #resetBtn {
-    padding: 10px 16px;
+    padding: 12px 20px; /* Larger padding */
     border: none;
-    border-radius: 4px;
+    border-radius: 6px; /* Consistent radius */
     color: #fff;
-    font-size: 1rem;
+    font-size: 1.1rem; /* Larger font size */
     cursor: pointer;
     margin-left: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
