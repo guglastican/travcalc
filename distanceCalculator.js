@@ -25,7 +25,8 @@ async function handleDistanceCalculation() {
     `;
 
     try {
-        const response = await fetch('/api/calculate-distance', {
+        const apiUrl = new URL('/api/calculate-distance', window.location.origin);
+        const response = await fetch(apiUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ 
