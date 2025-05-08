@@ -20,6 +20,9 @@ app.options('*', (req, res) => {
 });
 app.use(express.json());
 
+// Serve static files from the root directory
+app.use(express.static(__dirname));
+
 // Distance Matrix API endpoint
 app.post('/api/calculate-distance', async (req, res) => {
   try {
