@@ -66,7 +66,17 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
 });
 
-// Serve static files from the root directory (should be after API routes)_
+// Explicitly serve other HTML pages
+app.get('/distance.html', (req, res) => {
+  res.sendFile(__dirname + '/distance.html');
+});
+
+app.get('/calculator.html', (req, res) => {
+  res.sendFile(__dirname + '/calculator.html');
+});
+
+// Serve static files from the root directory (js, css, images, etc.)
+// This will also serve the HTML files if not explicitly handled above.
 app.use(express.static(__dirname));
 
 app.listen(PORT, () => {
