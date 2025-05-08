@@ -2,22 +2,14 @@ require('dotenv').config();
 const express = require('express');
 const axios = require('axios');
 const cors = require('cors');
+const path = require('path'); // Import path module
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-app.use(cors({
-  origin: '*',
-  methods: ['GET', 'POST', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true,
-  preflightContinue: true
-}));
+// Simplified CORS setup
+app.use(cors()); 
 
-app.options('*', (req, res) => {
-  res.header('Access-Control-Allow-Private-Network', 'true');
-  res.sendStatus(200);
-});
 app.use(express.json());
 
 // Distance Matrix API endpoint
@@ -56,8 +48,24 @@ app.post('/api/calculate-distance', async (req, res) => {
       status: response.data?.status || 'UNKNOWN_ERROR'
     });
   } catch (error) {
-    console.error('API Error:', error);
-    res.status(500).json({ error: error.message });
+    console.error('API Error Details:', JSON.stringify(error, Object.getOwnPropertyNames(error)));
+    let errorMessage = 'An unexpected error occurred while calculating distance.';
+    if (error.response) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx
+      console.error('Google API Error Response Data:', error.response.data);
+      console.error('Google API Error Response Status:', error.response.status);
+      errorMessage = error.response.data?.error_message || error.response.data?.message || (error.response.data?.status ? `Google Maps API Error: ${error.response.data.status}` : errorMessage);
+    } else if (error.request) {
+      // The request was made but no response was received
+      console.error('Google API No Response:', error.request);
+      errorMessage = 'No response received from Google Maps API. Check server connectivity and API key quotas.';
+    } else {
+      // Something happened in setting up the request that triggered an Error
+      console.error('Google API Request Setup Error:', error.message);
+      errorMessage = error.message || errorMessage;
+    }
+    res.status(500).json({ error: errorMessage }); // Keep client response simpler for now
   }
 });
 
@@ -77,7 +85,7 @@ app.get('/calculator.html', (req, res) => {
 
 // Serve static files from the root directory (js, css, images, etc.)
 // This will also serve the HTML files if not explicitly handled above.
-app.use(express.static(__dirname));
+app.use(express.static(process.cwd())); // Use process.cwd()
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
