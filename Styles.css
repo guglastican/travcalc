@@ -193,7 +193,7 @@ body.dark-mode nav ul li a:hover {
     border-radius: 12px; /* Slightly larger radius */
     box-shadow: 0 6px 16px rgba(0,0,0,0.12); /* Enhanced shadow */
     max-width: 800px; /* Increased max-width */
-    width: 90%;      /* Use a percentage for better responsiveness */
+    width: 100%;      /* Use a percentage for better responsiveness */
     margin-top: 20px; /* Space below the h2 title */
     box-sizing: border-box;
   }

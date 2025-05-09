@@ -4,6 +4,18 @@
     {
       "src": "server.js",
       "use": "@vercel/node"
+    },
+    {
+      "src": "*.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "*.css",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "*.js",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
@@ -17,20 +29,20 @@
       "dest": "server.js"
     },
     {
+      "src": "/(.*\\.html)",
+      "dest": "/$1"
+    },
+    {
+      "src": "/(.*\\.css)",
+      "dest": "/$1"
+    },
+    {
+      "src": "/(.*\\.js)",
+      "dest": "/$1"
+    },
+    {
       "src": "/",
-      "dest": "server.js"
-    },
-    {
-      "src": "/index.html",
-      "dest": "server.js"
-    },
-    {
-      "src": "/distance.html",
-      "dest": "server.js"
-    },
-    {
-      "src": "/calculator.html",
-      "dest": "server.js"
+      "dest": "/index.html"
     }
   ]
 }
