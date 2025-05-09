@@ -315,28 +315,34 @@ body.dark-mode nav ul li a:hover {
   }
   .calc-schedule {
     flex: 0 0 33.33%;
+    display: flex; /* Added */
+    flex-direction: column; /* Added */
+    align-items: center; /* Added */
   }
   .schedule-title {
-    text-align: left;
+    text-align: center; /* Changed from left to center */
     margin-bottom: 10px;
   }
-  .results {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  .results h2 {
+.results {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Changed from flex-start to center */
+}
+.results h2 {
     margin-bottom: 10px;
     width: 100%;
-    text-align: left;
+    text-align: center; /* Changed from left to center */
   }
   
   /* Calculated Schedule Table (Light Mode Default) */
   #scheduleTable {
     width: 100%;
+    max-width: 400px; /* Added for consistency and centering */
     border-collapse: collapse;
     background-color: #fff;
+    margin-left: auto; /* Added for explicit centering */
+    margin-right: auto; /* Added for explicit centering */
     margin-bottom: 10px;
     table-layout: fixed;
   }
@@ -396,11 +402,11 @@ body.dark-mode nav ul li a:hover {
     margin-top: 10px;
     width: 90%;
     max-width: 400px;
-    text-align: left;
+    text-align: center; /* Changed from left to center */
   }
   .color-key h3 {
     margin-bottom: 10px;
-    text-align: left;
+    text-align: center; /* Changed from left to center */
   }
   .color-key p {
     margin: 5px 0;
