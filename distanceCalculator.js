@@ -1,10 +1,15 @@
 // Distance Calculator - Client-side Implementation
 document.addEventListener('DOMContentLoaded', () => {
     const calculateBtn = document.getElementById('calculateDistance');
-    calculateBtn.addEventListener('click', handleDistanceCalculation);
+    console.log('calculateBtn', calculateBtn)
+    calculateBtn.addEventListener('click', () => {
+        console.log('Calculate button clicked');
+        handleDistanceCalculation();
+    });
 });
 
 async function handleDistanceCalculation() {
+    console.log('handleDistanceCalculation called');
     const origin = document.getElementById('origin').value.trim();
     const destination = document.getElementById('destination').value.trim();
     const travelMode = document.getElementById('travelMode').value;
@@ -25,21 +30,14 @@ async function handleDistanceCalculation() {
     `;
 
     try {
-        const response = await fetch('/api/calculate-distance', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-                origin,
-                destination,
-                mode: travelMode,
-                units: unitSystem
-            })
-        });
-        const data = await response.json();
-
-        if (!response.ok) {
-            throw new Error(data.error || 'Failed to calculate distance');
-        }
+        // Simulate API response
+        const data = {
+            origin: origin,
+            destination: destination,
+            distance: '120 km',
+            duration: '2 hours',
+            status: 'OK'
+        };
         
         displayDistanceResults(data);
     } catch (error) {
