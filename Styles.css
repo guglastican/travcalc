@@ -285,19 +285,20 @@ body.dark-mode nav ul li a:hover {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     transition: background-color 0.2s, transform 0.2s;
   }
-  #calculateBtn {
-    background-color: #28a745;
-  }
-  #calculateBtn:hover {
-    background-color: #218838;
-    transform: translateY(-2px);
-  }
+  #calculateDistance, /* Targeting the button by ID from distance.html */
+  #calculateBtn, /* Keep existing for other pages if used */
   #resetBtn {
     background-color: #5cb85c;
   }
-  #resetBtn:hover {
+  #calculateBtn:hover {
     background-color: #4cae4c;
     transform: translateY(-2px);
+  }
+  .distance-info-row {
+    display: flex;
+    justify-content: space-around;
+    font-size: 1.2rem;
+    font-weight: bold;
   }
   .error-message {
     color: red;

@@ -60,10 +60,14 @@ function displayDistanceResults(data) {
     resultsDiv.innerHTML = `
         <div class="distance-result">
             <h3>Distance Information</h3>
-            <p><strong>From:</strong> ${data.origin}</p>
-            <p><strong>To:</strong> ${data.destination}</p>
-            <p><strong>Distance:</strong> ${data.distance}</p>
-            <p><strong>Duration:</strong> ${data.duration}</p>
+            <div class="distance-info-row">
+                <p><strong>From:</strong> ${data.origin}</p>
+                <p><strong>To:</strong> ${data.destination}</p>
+            </div>
+            <div class="distance-info-row">
+                <p><strong>Distance:</strong> ${data.distance}</p>
+                <p><strong>Duration:</strong> ${data.duration}</p>
+            </div>
             ${data.status !== 'OK' ? `<p class="warning">Note: ${data.status}</p>` : ''}
         </div>
     `;
