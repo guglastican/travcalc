@@ -299,19 +299,28 @@ body.dark-mode nav ul li a:hover {
     margin-bottom: 10px;
   }
 
-  .distance-info-row {
-    display: flex;
-    font-size: 1.2rem;
+  .distance-result {
+    text-align: center;
+  }
+
+  .distance-result h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+  }
+
+  .distance-info {
+    font-size: 1.5rem;
     font-weight: bold;
-    margin-bottom: 5px;
+    color: #007bff;
   }
 
-  .distance-info-row p {
-    margin-right: 20px;
+  .distance {
+    margin-right: 10px;
   }
 
-  .distance-info-row strong {
-    font-size: 1.3rem;
+  .duration {
+    font-size: 1.2rem;
+    color: #6c757d;
   }
 
   .error-message {
