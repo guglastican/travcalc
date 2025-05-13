@@ -47,6 +47,7 @@ async function handleDistanceCalculation() {
 }
 
 function displayDistanceResults(data) {
+    console.log('displayDistanceResults called');
     const resultsDiv = document.getElementById('distanceResults');
     const distanceCalculatorTitle = document.getElementById('distanceCalculatorTitle');
     
