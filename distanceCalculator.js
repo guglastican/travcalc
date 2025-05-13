@@ -48,11 +48,14 @@ async function handleDistanceCalculation() {
 
 function displayDistanceResults(data) {
     const resultsDiv = document.getElementById('distanceResults');
+    const distanceCalculatorTitle = document.getElementById('distanceCalculatorTitle');
     
     if (data.error) {
         resultsDiv.innerHTML = `<p class="error">${data.error}</p>`;
         return;
     }
+
+    distanceCalculatorTitle.textContent = `Distance Calculator from ${data.origin} to ${data.destination}`;
 
     resultsDiv.innerHTML = `
         <div class="distance-result">
