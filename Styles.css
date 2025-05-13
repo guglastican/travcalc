@@ -294,12 +294,26 @@ body.dark-mode nav ul li a:hover {
     background-color: #4cae4c;
     transform: translateY(-2px);
   }
+  .distance-result h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+  }
+
   .distance-info-row {
     display: flex;
-    justify-content: space-around;
     font-size: 1.2rem;
     font-weight: bold;
+    margin-bottom: 5px;
   }
+
+  .distance-info-row p {
+    margin-right: 20px;
+  }
+
+  .distance-info-row strong {
+    font-size: 1.3rem;
+  }
+
   .error-message {
     color: red;
     font-weight: bold;
