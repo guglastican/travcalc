@@ -11,6 +11,7 @@ body {
 /* Container for main content centering (used on <main class="container">) */
 .container {
   margin: auto;
+  text-align: left;
   display: flex;
   flex-direction: column;
   align-items: center; /* Center children horizontally */
