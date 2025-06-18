@@ -3,4 +3,4 @@ Allow: /
 Disallow: /private/
 Disallow: /admin/
 
-Sitemap: https://travel-calculator.com/sitemap.xml
+Sitemap: https://www.calculatortrip.com/sitemap.xml
