@@ -6,19 +6,7 @@ window.addEventListener("DOMContentLoaded", () => {
   const resetBtn = document.getElementById("resetBtn");
   resetBtn.addEventListener("click", resetForm);
 
-  // Dark Mode Toggle & Logo Switching
-  document.getElementById("darkModeToggle").addEventListener("change", function() {
-    const body = document.body;
-    const logoImg = document.getElementById("logoImg");
-    if (this.checked) {
-      body.classList.add("dark-mode");
-      logoImg.src = "logo_dark.jpg";
-    } else {
-      body.classList.remove("dark-mode");
-      logoImg.src = "logo_light.jpg";
-    }
-  });
-
+>>>>>>> REPLACE
 });
 
 

@@ -37,23 +37,15 @@
       "dest": "server.js"
     },
     {
-      "src": "/(.*\\.html)",
-      "dest": "/$1"
+      "src": "/(.*)",
+      "dest": "/$1.html"
     },
     {
-      "src": "/(.*\\.css)",
-      "dest": "/$1"
-    },
-    {
-      "src": "/(.*\\.js)",
-      "dest": "/$1"
-    },
-    {
-      "src": "/sitemap.xml",
+      "src": "/sitemap",
       "dest": "/sitemap.xml"
     },
     {
-      "src": "/robots.txt",
+      "src": "/robots",
       "dest": "/robots.txt"
     },
     {
