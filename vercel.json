@@ -51,6 +51,14 @@
     {
       "src": "/",
       "dest": "/index.html"
+    },
+    {
+      "src": "/blog",
+      "dest": "/blog/index.html"
+    },
+    {
+      "src": "/blog/(.*)",
+      "dest": "/blog/$1"
     }
   ]
 }
