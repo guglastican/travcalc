@@ -2,14 +2,12 @@ require('dotenv').config();
 const express = require('express');
 const axios = require('axios');
 const cors = require('cors');
-const path = require('path'); // For path.join
+const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// Simplified CORS setup
-app.use(cors()); 
-
+app.use(cors());
 app.use(express.json());
 
 // Distance Matrix API endpoint
@@ -81,6 +79,18 @@ app.get('/distance.html', (req, res) => {
 app.get('/calculator.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'calculator.html'));
 });
+
+// Blog routes
+app.get('/blog', (req, res) => {
+  res.sendFile(path.join(__dirname, 'blog', 'index.html'));
+});
+
+app.get('/blog/index.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'blog', 'index.html'));
+});
+
+// Serve static files from blog directory
+app.use('/blog', express.static(path.join(__dirname, 'blog')));
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}. Handles API and HTML serving.`);
