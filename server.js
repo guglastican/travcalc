@@ -80,18 +80,6 @@ app.get('/calculator.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'calculator.html'));
 });
 
-// Blog routes
-app.get('/blog', (req, res) => {
-  res.sendFile(path.join(__dirname, 'blog', 'index.html'));
-});
-
-app.get('/blog/index.html', (req, res) => {
-  res.sendFile(path.join(__dirname, 'blog', 'index.html'));
-});
-
-// Serve static files from blog directory
-app.use('/blog', express.static(path.join(__dirname, 'blog')));
-
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}. Handles API and HTML serving.`);
 });
