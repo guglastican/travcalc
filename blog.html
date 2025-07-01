@@ -54,7 +54,7 @@
           <h3 style="margin:0 0 0.5rem 0">${post.title}</h3>
           <small style="color:#666">${post.date}</small>
           <p>${post.excerpt}</p>
-          <a href="/posts/${post.title.toLowerCase().replace(/\s+/g, '-')}" style="color:blue">Read more</a>
+          <a href="/${post.title.toLowerCase().replace(/\s+/g, '-')}" style="color:blue">Read more</a>
         `;
         container.appendChild(postEl);
       });
