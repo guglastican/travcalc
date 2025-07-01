@@ -25,99 +25,43 @@
     <div id="blog-posts"></div>
   </main>
 
-  <script>
-    // Load markdown posts
-    async function loadPosts() {
+    <script>
+    function loadPosts() {
       const posts = [
-        'flying-vs-driving.md',
-        'road-trip-tips.md'
+        {
+          title: "Flying vs Driving",
+          date: "June 15, 2025",
+          excerpt: "Compare travel options for your next trip"
+        },
+        {
+          title: "Road Trip Tips", 
+          date: "May 28, 2025",
+          excerpt: "Essential planning advice for road trips"
+        }
       ];
-      
-      const postsContainer = document.getElementById('blog-posts');
-      postsContainer.style.display = 'grid';
-      postsContainer.style.gap = '2rem';
-      postsContainer.style.gridTemplateColumns = 'repeat(auto-fill, minmax(300px, 1fr))';
-      
-      for (const post of posts) {
-        const response = await fetch(`posts/${post}`);
-        const text = await response.text();
-        
-        // Parse frontmatter and content
-        const [_, frontmatter, content] = text.match(/---\n([\s\S]+?)\n---\n([\s\S]+)/);
-        const metadata = frontmatter.split('\n').reduce((acc, line) => {
-          const [key, ...value] = line.split(':');
-          if (key && value) acc[key.trim()] = value.join(':').trim().replace(/"/g, '');
-          return acc;
-        }, {});
-        
-        // Create post card element
-        const postEl = document.createElement('article');
-        postEl.className = 'blog-card';
-        postEl.innerHTML = `
-          <div class="card-image" style="background-image: url('${metadata.image || '/images/default-post.jpg'}')"></div>
-          <div class="card-content">
-            <div class="card-meta">
-              <span class="post-date">${new Date(metadata.date).toLocaleDateString()}</span>
-              ${metadata.tags ? `<span class="post-tags">${metadata.tags.split(',').map(t => `#${t.trim()}`).join(' ')}</span>` : ''}
-            </div>
-            <h3 class="card-title">${metadata.title}</h3>
-            <p class="card-excerpt">${metadata.excerpt || content.split('\n').slice(0, 2).join(' ')}</p>
-            <a href="/blog/${post.replace('.md', '')}" class="card-link">Read more →</a>
-          </div>
-        `;
-        
-        postsContainer.appendChild(postEl);
-      }
-    }
-    
-    document.addEventListener('DOMContentLoaded', loadPosts);
-  </script>
 
-  <style>
-    .blog-card {
-      background: white;
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-      transition: transform 0.2s;
+      const container = document.getElementById('blog-posts');
+      container.style.display = 'flex';
+      container.style.flexDirection = 'column';
+      container.style.gap = '1rem';
+
+      posts.forEach(post => {
+        const postEl = document.createElement('div');
+        postEl.style.padding = '1rem';
+        postEl.style.border = '1px solid #eee';
+        postEl.style.borderRadius = '4px';
+        postEl.innerHTML = `
+          <h3 style="margin:0 0 0.5rem 0">${post.title}</h3>
+          <small style="color:#666">${post.date}</small>
+          <p>${post.excerpt}</p>
+          <a href="#" style="color:blue">Read more</a>
+        `;
+        container.appendChild(postEl);
+      });
     }
-    .blog-card:hover {
-      transform: translateY(-5px);
-    }
-    .card-image {
-      height: 180px;
-      background-size: cover;
-      background-position: center;
-    }
-    .card-content {
-      padding: 1.5rem;
-    }
-    .card-meta {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 0.5rem;
-      font-size: 0.9rem;
-      color: #666;
-    }
-    .card-title {
-      margin: 0 0 1rem 0;
-      font-size: 1.25rem;
-    }
-    .card-excerpt {
-      color: #444;
-      margin-bottom: 1.5rem;
-      line-height: 1.5;
-    }
-    .card-link {
-      display: inline-block;
-      color: #0066cc;
-      text-decoration: none;
-      font-weight: 500;
-    }
-    .card-link:hover {
-      text-decoration: underline;
-    }
-  </style>
+
+    loadPosts();
+  </script>
 
   <footer>
     <div class="footer-content">
