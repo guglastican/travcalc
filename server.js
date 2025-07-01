@@ -5,7 +5,7 @@ const cors = require('cors');
 const path = require('path');
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 4000;
 
 app.use(cors());
 app.use(express.json());
@@ -78,6 +78,15 @@ app.get('/distance.html', (req, res) => {
 
 app.get('/calculator.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'calculator.html'));
+});
+
+// Blog routes
+app.get('/blog.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'blog.html'));
+});
+
+app.get('/posts/:postname', (req, res) => {
+  res.sendFile(path.join(__dirname, 'posts', `${req.params.postname}.html`));
 });
 
 app.listen(PORT, () => {
