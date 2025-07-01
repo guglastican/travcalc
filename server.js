@@ -85,6 +85,23 @@ app.get('/blog.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'blog.html'));
 });
 
+// Footer page routes
+app.get('/about', (req, res) => {
+  res.sendFile(path.join(__dirname, 'about.html'));
+});
+
+app.get('/privacy', (req, res) => {
+  res.sendFile(path.join(__dirname, 'privacy.html'));
+});
+
+app.get('/terms', (req, res) => {
+  res.sendFile(path.join(__dirname, 'terms.html'));
+});
+
+app.get('/contact', (req, res) => {
+  res.sendFile(path.join(__dirname, 'contact.html'));
+});
+
 // Post routes (support both with and without .html extension)
 app.get('/flying-vs-driving', (req, res) => {
   res.sendFile(path.join(__dirname, 'posts/flying-vs-driving.html'));
