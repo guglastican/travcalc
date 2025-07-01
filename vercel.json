@@ -28,6 +28,10 @@
     {
       "src": "blog/**",
       "use": "@vercel/static"
+    },
+    {
+      "src": "posts/**",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
