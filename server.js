@@ -85,6 +85,16 @@ app.get('/blog.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'blog.html'));
 });
 
+// Direct post routes
+app.get('/flying-vs-driving.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'posts/flying-vs-driving.html'));
+});
+
+app.get('/road-trip-tips.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'posts/road-trip-tips.html'));
+});
+
+// Keep old /posts/ routes for backward compatibility
 app.get('/posts/:postname', (req, res) => {
   res.sendFile(path.join(__dirname, 'posts', `${req.params.postname}.html`));
 });
