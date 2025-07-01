@@ -85,9 +85,17 @@ app.get('/blog.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'blog.html'));
 });
 
-// Direct post routes
+// Post routes (support both with and without .html extension)
+app.get('/flying-vs-driving', (req, res) => {
+  res.sendFile(path.join(__dirname, 'posts/flying-vs-driving.html'));
+});
+
 app.get('/flying-vs-driving.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'posts/flying-vs-driving.html'));
+});
+
+app.get('/road-trip-tips', (req, res) => {
+  res.sendFile(path.join(__dirname, 'posts/road-trip-tips.html'));
 });
 
 app.get('/road-trip-tips.html', (req, res) => {
