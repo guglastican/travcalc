@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Travel Blog | Travel Calculator</title>
+  <link rel="stylesheet" href="Styles.css">
+</head>
+<body>
+  <header>
+    <h1>Travel Calculator</h1>
+    <nav>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/turnaround-time-calculator">Turnaround Calculator</a></li>
+        <li><a href="/distance">Distance Calculator</a></li>
+        <li><a href="/places">Places</a></li>
+        <li><a href="/blog">Blog</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="container">
+    <h2>Travel Tips & Insights</h2>
+    <div id="blog-posts"></div>
+  </main>
+
+  <script>
+    // Load markdown posts
+    async function loadPosts() {
+      const posts = [
+        'flying-vs-driving.md',
+        'road-trip-tips.md'
+      ];
+      
+      const postsContainer = document.getElementById('blog-posts');
+      postsContainer.style.display = 'grid';
+      postsContainer.style.gap = '2rem';
+      postsContainer.style.gridTemplateColumns = 'repeat(auto-fill, minmax(300px, 1fr))';
+      
+      for (const post of posts) {
+        const response = await fetch(`posts/${post}`);
+        const text = await response.text();
+        
+        // Parse frontmatter and content
+        const [_, frontmatter, content] = text.match(/---\n([\s\S]+?)\n---\n([\s\S]+)/);
+        const metadata = frontmatter.split('\n').reduce((acc, line) => {
+          const [key, ...value] = line.split(':');
+          if (key && value) acc[key.trim()] = value.join(':').trim().replace(/"/g, '');
+          return acc;
+        }, {});
+        
+        // Create post card element
+        const postEl = document.createElement('article');
+        postEl.className = 'blog-card';
+        postEl.innerHTML = `
+          <div class="card-image" style="background-image: url('${metadata.image || '/images/default-post.jpg'}')"></div>
+          <div class="card-content">
+            <div class="card-meta">
+              <span class="post-date">${new Date(metadata.date).toLocaleDateString()}</span>
+              ${metadata.tags ? `<span class="post-tags">${metadata.tags.split(',').map(t => `#${t.trim()}`).join(' ')}</span>` : ''}
+            </div>
+            <h3 class="card-title">${metadata.title}</h3>
+            <p class="card-excerpt">${metadata.excerpt || content.split('\n').slice(0, 2).join(' ')}</p>
+            <a href="/blog/${post.replace('.md', '')}" class="card-link">Read more →</a>
+          </div>
+        `;
+        
+        postsContainer.appendChild(postEl);
+      }
+    }
+    
+    document.addEventListener('DOMContentLoaded', loadPosts);
+  </script>
+
+  <style>
+    .blog-card {
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      transition: transform 0.2s;
+    }
+    .blog-card:hover {
+      transform: translateY(-5px);
+    }
+    .card-image {
+      height: 180px;
+      background-size: cover;
+      background-position: center;
+    }
+    .card-content {
+      padding: 1.5rem;
+    }
+    .card-meta {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+      font-size: 0.9rem;
+      color: #666;
+    }
+    .card-title {
+      margin: 0 0 1rem 0;
+      font-size: 1.25rem;
+    }
+    .card-excerpt {
+      color: #444;
+      margin-bottom: 1.5rem;
+      line-height: 1.5;
+    }
+    .card-link {
+      display: inline-block;
+      color: #0066cc;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .card-link:hover {
+      text-decoration: underline;
+    }
+  </style>
+
+  <footer>
+    <div class="footer-content">
+      <p>&copy; 2025 Travel Calculator</p>
+      <nav class="footer-links">
+        <a href="/about">About</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/terms">Terms of Service</a>
+        <a href="/contact">Contact</a>
+      </nav>
+    </div>
+  </footer>
+</body>
+</html>
