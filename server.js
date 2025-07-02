@@ -104,7 +104,7 @@ app.get('/contact', (req, res) => {
 
 // Post routes (support both with and without .html extension)
 app.get('/flying-vs-driving', (req, res) => {
-  res.sendFile(path.join(__dirname, 'posts/flying-vs-driving.html'));
+  res.sendFile(path.join(__dirname, 'posts/how-many-days-do-i-need.html'));
 });
 
 app.get('/flying-vs-driving.html', (req, res) => {
