@@ -80,11 +80,6 @@ app.get('/calculator.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'calculator.html'));
 });
 
-// Blog routes
-app.get('/blog.html', (req, res) => {
-  res.sendFile(path.join(__dirname, 'blog.html'));
-});
-
 // Footer page routes
 app.get('/about', (req, res) => {
   res.sendFile(path.join(__dirname, 'about.html'));
@@ -100,28 +95,6 @@ app.get('/terms', (req, res) => {
 
 app.get('/contact', (req, res) => {
   res.sendFile(path.join(__dirname, 'contact.html'));
-});
-
-// Post routes (support both with and without .html extension)
-app.get('/how-many-days-do-i-need.html', (req, res) => {
-  res.sendFile(path.join(__dirname, 'posts/how-many-days-do-i-need.html'));
-});
-
-app.get('/how-many-days-do-i-need.html.html', (req, res) => {
-  res.sendFile(path.join(__dirname, 'posts/how-many-days-do-i-need.html'));
-});
-
-app.get('/road-trip-tips', (req, res) => {
-  res.sendFile(path.join(__dirname, 'posts/road-trip-tips.html'));
-});
-
-app.get('/road-trip-tips.html', (req, res) => {
-  res.sendFile(path.join(__dirname, 'posts/road-trip-tips.html'));
-});
-
-// Keep old /posts/ routes for backward compatibility
-app.get('/posts/:postname', (req, res) => {
-  res.sendFile(path.join(__dirname, 'posts', `${req.params.postname}.html`));
 });
 
 app.listen(PORT, () => {

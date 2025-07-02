@@ -24,14 +24,6 @@
     {
       "src": "robots.txt",
       "use": "@vercel/static"
-    },
-    {
-      "src": "blog/**",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "posts/**",
-      "use": "@vercel/static"
     }
   ],
   "routes": [
@@ -61,14 +53,6 @@
       "dest": "/contact.html"
     },
     {
-      "src": "/flying-vs-driving",
-      "dest": "/posts/how-many-days-do-i-need.html"
-    },
-    {
-      "src": "/road-trip-tips",
-      "dest": "/posts/road-trip-tips.html"
-    },
-    {
       "src": "/(.*)",
       "dest": "/$1.html"
     },
@@ -83,14 +67,6 @@
     {
       "src": "/",
       "dest": "/index.html"
-    },
-    {
-      "src": "/blog",
-      "dest": "/blog/index.html"
-    },
-    {
-      "src": "/blog/(.*)",
-      "dest": "/blog/$1"
     }
   ]
 }
