@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-video-preview:-1, max-image-preview:large">
+  <meta name="description" content="Find hotels and airports near your travel destination with our Places Finder. Search by location and radius to discover lodging options and nearby airports.">
+  <link rel="canonical" href="https://www.calculatortrip.com/places" />
+  <title>Places | Travel Calculator</title>
+  <link rel="stylesheet" href="Styles.css">
+  <style>
+    .tabs {
+      display: flex;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #ddd;
+    }
+    .tab-button {
+      padding: 10px 20px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      border-bottom: 3px solid transparent;
+    }
+    .tab-button.active {
+      border-bottom: 3px solid #007bff;
+      font-weight: bold;
+    }
+    .tab-content {
+      display: none;
+    }
+    .tab-content.active {
+      display: block;
+    }
+    .search-container {
+      margin-top: 20px;
+    }
+    .search-controls {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      align-items: flex-end;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .form-group label {
+      font-size: 0.9rem;
+      font-weight: bold;
+    }
+    .search-controls input {
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .search-controls button {
+      padding: 8px 16px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .results-container {
+      display: flex;
+      gap: 20px;
+    }
+    #hotel-map, #airport-map {
+      flex: 2;
+      height: 400px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    .results-list {
+      flex: 1;
+      max-height: 400px;
+      overflow-y: auto;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 10px;
+    }
+    .result-item {
+      padding: 10px;
+      border-bottom: 1px solid #eee;
+    }
+    .result-item:last-child {
+      border-bottom: none;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="title-section">
+      <h1>Travel Calculator</h1>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/turnaround-time-calculator">Turnaround Calculator</a></li>
+        <li><a href="/distance">Distance Calculator</a></li>
+        <li><a href="/places">Places</a></li>
+        <li><a href="/blog">Blog</a></li>
+      </ul>
+
+    </nav>
+  </header>
+
+  <main class="container">
+    <div class="tabs">
+      <button class="tab-button active" data-tab="hotels">Find Hotels</button>
+      <button class="tab-button" data-tab="airports">Find Airports</button>
+    </div>
+    
+    <div class="tab-content active" id="hotels-tab">
+      <h2>Hotel Finder</h2>
+      <p>Find hotels in your travel destination area.</p>
+      <div class="search-container">
+        <div class="search-controls">
+          <div class="form-group">
+            <label for="location-input">Location:</label>
+            <input type="text" id="location-input" placeholder="Enter city or address" aria-label="Location input">
+          </div>
+          <div class="form-group">
+            <label for="radius-input">Search Radius:</label>
+            <input type="number" id="radius-input" placeholder="Radius (meters)" min="100" value="5000" aria-label="Search radius in meters">
+          </div>
+          <button id="search-hotels" aria-label="Search for hotels">Find Hotels</button>
+        </div>
+        
+        <div class="results-container">
+          <div id="hotel-map"></div>
+          <div id="hotels-list" class="results-list"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-content" id="airports-tab">
+      <h2>Airport Finder</h2>
+      <p>Find airports near your travel destination.</p>
+      <div class="search-container">
+        <div class="search-controls">
+          <div class="form-group">
+            <label for="airport-location-input">Location:</label>
+            <input type="text" id="airport-location-input" placeholder="Enter city or address" aria-label="Airport location input">
+          </div>
+          <div class="form-group">
+            <label for="airport-radius-input">Search Radius:</label>
+            <input type="number" id="airport-radius-input" placeholder="Radius (km)" min="10" value="100" aria-label="Airport search radius in kilometers">
+          </div>
+          <button id="search-airports" aria-label="Search for airports">Find Airports</button>
+        </div>
+        
+        <div class="results-container">
+          <div id="airport-map"></div>
+          <div id="airports-list" class="results-list"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    let hotelMap, airportMap;
+    
+    function initMap() {
+      // Initialize both maps
+      hotelMap = new google.maps.Map(document.getElementById("hotel-map"), {
+        center: { lat: 0, lng: 0 },
+        zoom: 12
+      });
+
+      airportMap = new google.maps.Map(document.getElementById("airport-map"), {
+        center: { lat: 0, lng: 0 },
+        zoom: 8
+      });
+
+      // Tab switching functionality
+      document.querySelectorAll(".tab-button").forEach(button => {
+        button.addEventListener("click", () => {
+          document.querySelectorAll(".tab-button").forEach(btn => btn.classList.remove("active"));
+          document.querySelectorAll(".tab-content").forEach(content => content.classList.remove("active"));
+          
+          button.classList.add("active");
+          document.getElementById(`${button.dataset.tab}-tab`).classList.add("active");
+        });
+      });
+
+      // Hotel search functionality
+      document.getElementById("search-hotels").addEventListener("click", () => {
+        searchPlaces("lodging", hotelMap, "hotels-list");
+      });
+
+      // Airport search functionality
+      document.getElementById("search-airports").addEventListener("click", () => {
+        searchPlaces("airport", airportMap, "airports-list");
+      });
+
+      function searchPlaces(type, map, listId) {
+        const locationInput = type === "lodging" 
+          ? document.getElementById("location-input").value
+          : document.getElementById("airport-location-input").value;
+          
+        const radiusInput = type === "lodging"
+          ? parseInt(document.getElementById("radius-input").value)
+          : parseInt(document.getElementById("airport-radius-input").value) * 1000; // Convert km to meters
+
+        if (!locationInput) {
+          alert("Please enter a location");
+          return;
+        }
+
+        const geocoder = new google.maps.Geocoder();
+        geocoder.geocode({ address: locationInput }, (results, status) => {
+          if (status === "OK") {
+            const center = results[0].geometry.location;
+            map.setCenter(center);
+            
+            if (type === "airport") {
+              const service = new google.maps.places.PlacesService(map);
+              // First try text search for better airport results
+              service.textSearch({
+                query: "international airport near " + locationInput,
+                location: center,
+                radius: radiusInput
+              }, (results, status) => {
+                if (status === "OK" && results.length > 0) {
+                  displayResults(results, map, listId, type);
+                } else {
+                  // Fallback to nearby search if text search fails
+                  service.nearbySearch({
+                    location: center,
+                    radius: radiusInput,
+                    keyword: "airport",
+                    type: "airport"
+                  }, (results, status) => {
+                    if (status === "OK") {
+                      displayResults(results, map, listId, type);
+                    } else {
+                      alert("No airports found. Try a larger search radius or different location.");
+                    }
+                  });
+                }
+              });
+            } else {
+              const request = {
+                location: center,
+                radius: radiusInput,
+                type: type
+              };
+              const service = new google.maps.places.PlacesService(map);
+              service.nearbySearch(request, (results, status) => {
+                if (status === "OK") {
+                  displayResults(results, map, listId, type);
+                } else {
+                  alert("No results found. Please try a different location or larger radius.");
+                }
+              });
+            }
+          }
+        });
+      }
+
+      function displayResults(places, map, listId, type) {
+        const list = document.getElementById(listId);
+        list.innerHTML = "";
+        
+        // Clear existing markers
+        if (window[`${type}Markers`]) {
+          window[`${type}Markers`].forEach(marker => marker.setMap(null));
+        }
+        window[`${type}Markers`] = [];
+        
+        places.forEach(place => {
+          // Add marker to map
+          const marker = new google.maps.Marker({
+            map: map,
+            position: place.geometry.location,
+            title: place.name
+          });
+          window[`${type}Markers`].push(marker);
+
+          // Add to list
+          const item = document.createElement("div");
+          item.className = "result-item";
+          item.innerHTML = `
+            <h3>${place.name}</h3>
+            <p>${place.vicinity || "Address not available"}</p>
+            ${place.rating ? `<p>Rating: ${place.rating}/5</p>` : ""}
+            ${type === "airport" ? `<p>IATA Code: ${place.iata_code || "Not available"}</p>` : ""}
+          `;
+          list.appendChild(item);
+        });
+      }
+    }
+  </script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBnvEmLlcvBx_Z6NpAVB_08fOKw2C2WSIw&libraries=places&callback=initMap" async defer></script>
+
+  <footer>
+    <div class="footer-content">
+      <p>&copy; 2025 Travel Calculator</p>
+      <nav class="footer-links">
+        <a href="/about">About</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/terms">Terms of Service</a>
+        <a href="/contact">Contact</a>
+      </nav>
+    </div>
+  </footer>
+>>>>>>> REPLACE
+</body>
+</html>
