@@ -6,6 +6,10 @@
       "use": "@vercel/node"
     },
     {
+      "src": "blog/_site/**",
+      "use": "@vercel/static"
+    },
+    {
       "src": "*.html",
       "use": "@vercel/static"
     },
@@ -15,14 +19,6 @@
     },
     {
       "src": "*.js",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "sitemap.xml",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "robots.txt",
       "use": "@vercel/static"
     }
   ],
@@ -37,36 +33,22 @@
       "dest": "server.js"
     },
     {
-      "src": "/about",
-      "dest": "/about.html"
-    },
-    {
-      "src": "/privacy",
-      "dest": "/privacy.html"
-    },
-    {
-      "src": "/terms",
-      "dest": "/terms.html"
-    },
-    {
-      "src": "/contact",
-      "dest": "/contact.html"
+      "src": "/tool/(.*)",
+      "dest": "/blog/_site/tool/$1/index.html"
     },
     {
       "src": "/(.*)",
       "dest": "/$1.html"
     },
     {
-      "src": "/sitemap",
-      "dest": "/sitemap.xml"
-    },
-    {
-      "src": "/robots",
-      "dest": "/robots.txt"
-    },
-    {
       "src": "/",
       "dest": "/index.html"
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/tool/:name",
+      "destination": "/blog/_site/tool/:name/index.html"
     }
   ]
 }
