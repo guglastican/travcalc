@@ -6,10 +6,10 @@
       "use": "@vercel/node"
     },
     {
-      "src": "blog/package.json",
+      "src": "blog/package.json", 
       "use": "@vercel/static-build",
       "config": {
-        "distDir": "blog/_site"
+        "distDir": "_site/blog"
       }
     }
   ],
@@ -19,8 +19,12 @@
       "dest": "server.js"
     },
     {
-      "src": "/tool/(.*)",
-      "dest": "/blog/_site/tool/$1/index.html"
+      "src": "/blog/(.*)",
+      "dest": "/_site/blog/$1"
+    },
+    {
+      "src": "/tool/(.*)", 
+      "dest": "/_site/blog/tool/$1/index.html"
     },
     {
       "src": "/(.*)",

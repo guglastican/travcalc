@@ -2,7 +2,6 @@ module.exports = function(eleventyConfig) {
   // Add support for data directory
   eleventyConfig.addDataExtension("js", {
     parser: (contents, path) => {
-      // This ensures JS data files are properly processed
       const module = { exports: {} };
       const fn = new Function('module', 'exports', 'require', contents);
       fn(module, module.exports, require);
@@ -14,7 +13,8 @@ module.exports = function(eleventyConfig) {
     dir: {
       input: ".",
       includes: "_includes",
-      data: "data"
+      data: "data",
+      output: "../_site/blog"
     }
   };
 };
