@@ -6,29 +6,67 @@
       "use": "@vercel/node"
     },
     {
-      "src": "blog/package.json", 
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "_site/blog"
-      }
+      "src": "*.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "*.css",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "*.js",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "sitemap.xml",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "robots.txt",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
     {
-      "src": "/api/.*",
+      "src": "/api/calculate-distance",
+      "methods": ["POST"],
       "dest": "server.js"
     },
     {
-      "src": "/blog/(.*)",
-      "dest": "/_site/blog/$1"
+      "src": "/api/(.*)",
+      "dest": "server.js"
     },
     {
-      "src": "/tool/(.*)", 
-      "dest": "/_site/blog/tool/$1/index.html"
+      "src": "/about",
+      "dest": "/about.html"
+    },
+    {
+      "src": "/privacy",
+      "dest": "/privacy.html"
+    },
+    {
+      "src": "/terms",
+      "dest": "/terms.html"
+    },
+    {
+      "src": "/contact",
+      "dest": "/contact.html"
     },
     {
       "src": "/(.*)",
       "dest": "/$1.html"
+    },
+    {
+      "src": "/sitemap",
+      "dest": "/sitemap.xml"
+    },
+    {
+      "src": "/robots",
+      "dest": "/robots.txt"
+    },
+    {
+      "src": "/",
+      "dest": "/index.html"
     }
   ]
 }
