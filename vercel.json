@@ -9,41 +9,22 @@
       "src": "blog/package.json",
       "use": "@vercel/static-build",
       "config": {
-        "distDir": "_site"
+        "distDir": "blog/_site"
       }
     }
   ],
   "routes": [
     {
-      "src": "/api/calculate-distance",
-      "methods": ["POST"],
-      "dest": "server.js"
-    },
-    {
-      "src": "/api/(.*)",
+      "src": "/api/.*",
       "dest": "server.js"
     },
     {
       "src": "/tool/(.*)",
-      "dest": "/_site/tool/$1/index.html"
+      "dest": "/blog/_site/tool/$1/index.html"
     },
     {
       "src": "/(.*)",
       "dest": "/$1.html"
-    },
-    {
-      "src": "/",
-      "dest": "/index.html"
-    }
-  ],
-  "rewrites": [
-    {
-      "source": "/tool/(.*)",
-      "destination": "/_site/tool/$1/index.html"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/_site/$1"
     }
   ]
 }
