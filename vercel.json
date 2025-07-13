@@ -6,19 +6,14 @@
       "use": "@vercel/node"
     },
     {
+      "src": "blog/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "blog/_site"
+      }
+    },
+    {
       "src": "blog/_site/**",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "*.html",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "*.css",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "*.js",
       "use": "@vercel/static"
     }
   ],
@@ -47,8 +42,8 @@
   ],
   "rewrites": [
     {
-      "source": "/tool/:name",
-      "destination": "/blog/_site/tool/:name/index.html"
+      "source": "/tool/(.*)",
+      "destination": "/blog/_site/tool/$1/index.html"
     }
   ]
 }
