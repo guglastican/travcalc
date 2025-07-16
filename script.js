@@ -1,12 +1,25 @@
 // Wait for DOM to load
 window.addEventListener("DOMContentLoaded", () => {
+  console.log("DOM loaded - initializing calculator");
+  
   const calculateBtn = document.getElementById("calculateBtn");
+  if (!calculateBtn) {
+    console.error("Calculate button not found");
+    return;
+  }
   calculateBtn.addEventListener("click", generateSchedule);
 
   const resetBtn = document.getElementById("resetBtn");
+  if (!resetBtn) {
+    console.error("Reset button not found");
+    return;
+  }
   resetBtn.addEventListener("click", resetForm);
 
->>>>>>> REPLACE
+  // Check if dateMapping is available
+  if (typeof dateMapping === 'undefined') {
+    console.warn("dateMapping not found - using fallback day calculation");
+  }
 });
 
 
@@ -177,8 +190,14 @@ function fetchWeatherForecast(city, tripStartDate) {
     queryCity += ",US";
   }
 
-  const apiKey = "bcd1c74eba3c2bf07a30f51e158d65bf"; // Replace with your real API key
-  const url = `https://api.openweathermap.org/data/2.5/forecast?q=${queryCity}&appid=${apiKey}&units=imperial`;
+  // Skip weather API if no key is configured
+  if (!window.WEATHER_API_KEY) {
+    console.log("No weather API key configured - skipping forecast");
+    document.getElementById("weatherForecast").innerHTML = 
+      "<p>Weather forecast not available - API key not configured</p>";
+    return;
+  }
+  const url = `https://api.openweathermap.org/data/2.5/forecast?q=${queryCity}&appid=${window.WEATHER_API_KEY}&units=imperial`;
 
   fetch(url)
     .then(response => {
