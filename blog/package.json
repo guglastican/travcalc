@@ -4,7 +4,8 @@
   "description": "Travel Calculator API",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
+    "build": "eleventy",
+    "start": "eleventy --serve",
     "dev": "nodemon server.js"
   },
   "dependencies": {
