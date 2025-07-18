@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js",
-    "build": "eleventy --input blog --output blog/_site"
+    "build": "node node_modules/@11ty/eleventy/cmd.js --input blog --output blog/_site"
   },
   "dependencies": {
     "@11ty/eleventy": "^3.1.2",
