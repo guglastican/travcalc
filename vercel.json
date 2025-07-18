@@ -6,24 +6,8 @@
       "use": "@vercel/node"
     },
     {
-      "src": "*.html",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "*.css",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "*.js",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "sitemap.xml",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "robots.txt",
-      "use": "@vercel/static"
+      "src": "blog/package.json",
+      "use": "@vercel/static-build"
     }
   ],
   "routes": [
@@ -35,6 +19,14 @@
     {
       "src": "/api/(.*)",
       "dest": "server.js"
+    },
+    {
+      "src": "/blog/(.*)",
+      "dest": "blog/_site/$1"
+    },
+    {
+      "src": "/blog",
+      "dest": "blog/_site/index.html"
     },
     {
       "src": "/about",
@@ -53,30 +45,20 @@
       "dest": "/contact.html"
     },
     {
-      "src": "/(.*)",
-      "dest": "/$1.html"
-    },
-    {
-      "src": "/sitemap",
+      "src": "/sitemap.xml",
       "dest": "/sitemap.xml"
     },
     {
-      "src": "/robots",
+      "src": "/robots.txt",
       "dest": "/robots.txt"
     },
     {
       "src": "/",
       "dest": "/index.html"
-    }, 
+    },
     {
-      "src": "package.json",
-      "use": "@vercel/node"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/site/$1"
+      "src": "/([^/.]+)",
+      "dest": "/$1.html"
     }
   ]
 }
