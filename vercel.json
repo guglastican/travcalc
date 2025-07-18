@@ -34,11 +34,11 @@
     },
     {
       "src": "/blog/(.*)",
-      "dest": "blog/_site/$1"
+      "dest": "/blog/_site/$1"
     },
     {
       "src": "/blog",
-      "dest": "blog/_site/index.html"
+      "dest": "/blog/_site/index.html"
     },
     {
       "src": "/about",

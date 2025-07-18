@@ -6,7 +6,7 @@ pagination:
   addAllPagesToCollections: true
 tags: tools
 layout: base.html
-permalink: "/tool/{{ tool.Name }}/"
+permalink: "/{{ tool.Name | slugify }}/"
 templateEngineOverride: md, liquid
 eleventyComputed:
   title: "{{ tool.Name | default: 'Untitled Tool' }}"
