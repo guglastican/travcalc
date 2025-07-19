@@ -10,9 +10,9 @@ permalink: "/{{ tool.Keyword | slugify }}/"
 templateEngineOverride: md, liquid
 eleventyComputed:
   title: "{{ tool.Title | default: 'Untitled Tool' }}"
-  description: "{{ tool.MetaDescription | default: 'No description available' }}"
+  description: "{{ tool.Metadescription | default: 'No description available' }}"
 ---
-
+{{ tool.H1 }}
 {{ tool.Introduction }}
 
 ## Foods  for  {{ tool.Name }} {{ tool.Foods }}
