@@ -2,17 +2,17 @@
 pagination:
   data: tools
   size: 1
-  alias: tool
+  alias: .eleventy
   addAllPagesToCollections: true
-tags: tools
+tags: eleventy
 layout: base.html
-permalink: "/{{ tool.Keyword | slugify }}/"
+permalink: "/{{ eleventy.Keyword | slugify }}/"
 templateEngineOverride: md, liquid
 eleventyComputed:
-  title: "{{ tool.Title | default: 'Untitled Tool' }}"
+  title: "{{ eleventy.Title | default: 'Untitled Tool' }}"
   description: "{{ tool.Metadescription | default: 'No description available' }}"
 ---
-{{ tool.H1 }}
-{{ tool.Introduction }}
+{{ eleventy.H1 }}
+{{ eleventy.Introduction }}
 
 ## Foods  for  {{ tool.Name }} {{ tool.Foods }}
