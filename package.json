@@ -6,7 +6,9 @@
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js",
-    "build": "npm exec @11ty/eleventy"
+    "build": "eleventy",
+    "serve": "eleventy --serve",
+    "eleventy": "eleventy"
   },
   "dependencies": {
     "@11ty/eleventy": "^3.1.2",
