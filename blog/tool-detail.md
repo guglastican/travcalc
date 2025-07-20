@@ -12,11 +12,10 @@ eleventyComputed:
   title: "{{ tool.Title | default: 'Untitled Tool' }}"
   description: "{{ tool.MetaDescription | default: 'No description available' }}"
 ---
-{{ tool.H1 }}
+{{ tool.H2 }}
 {{ tool.Introduction }}
 
-{{ tool.H2 }}
-{{ tool.Introductionn }}
+
 ## Foods  for  {{ tool.Introductionn }} 
 
 ## Foods  for  {{ tool.Description2 }} 
