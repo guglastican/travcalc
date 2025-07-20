@@ -8,8 +8,6 @@ tags: tool
 layout: base.html
 permalink: "/{{ tool.Keyword | slugify }}/"
 templateEngineOverride: md, liquid
-eleventyExcludeFromCollections: true
-draft: true
 eleventyComputed:
   title: "{{ tool.Title | default: 'Untitled Tool' }}"
   MetaDescription: "{{ tool.MetaDescription | default: 'No description available' }}"
