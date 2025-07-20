@@ -5,7 +5,9 @@ layout: base.html
 
 Put something here!
 
-## Heading 2
+<article>
+   <h2>Explore cool tools</h2>
+</article>
 
 - list 1
 - list 2
