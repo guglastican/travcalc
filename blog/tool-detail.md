@@ -1,7 +1,7 @@
 ---
 pagination:
   data: tools
-  size: 1
+  size: 3
   alias: tool
   addAllPagesToCollections: true
 tags: tool
@@ -14,6 +14,7 @@ eleventyComputed:
 ---
 {{ tool.H1 }}
 {{ tool.Introduction }}
+
 {{ tool.H2 }}
 {{ tool.Introductionn }}
 ## Foods  for  {{ tool.Introductionn }} 
