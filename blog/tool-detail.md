@@ -17,8 +17,6 @@ eleventyComputed:
 
 
 {{ tool.Place2 }}
-{{ tool.Introductionn }}
+{{ tool.Introduction }}
 {{ tool.Slugs }}
-## Foods  for  {{ tool.Introductionn }} 
-
-## Foods  for  {{ tool.Description2 }}
+## Foods  for  {{ tool.Introduction }}
