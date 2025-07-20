@@ -1,7 +1,7 @@
 ---
 pagination:
   data: tools
-  size: 3
+  size: 1
   alias: tool
   addAllPagesToCollections: true
 tags: tool
