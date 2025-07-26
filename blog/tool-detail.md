@@ -18,8 +18,13 @@ eleventyComputed:
 {{ tool.Introduction }}
 
 
-{{ tool.Place2 }}
+{{ tool.H2 }}
+{{ tool.Introduction2 }}
 
-{{ tool.Introduction }}
-{{ tool.Slugs }}
+{{ tool.H3 }}
+{{ tool.Introduction3 }}
+
+{{ tool.H4 }}
+{{ tool.Introduction4 }}
+
 ## Foods  for  {{ tool.Introduction }}
