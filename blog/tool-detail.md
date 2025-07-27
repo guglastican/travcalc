@@ -14,7 +14,7 @@ eleventyComputed:
   title: "{{ tool.Title | default: 'Untitled Tool' }}"
   MetaDescription: "{{ tool.MetaDescription | default: 'No description available' }}"
 ---
-# {{ tool.H1 }}
+
 
 {{ tool.Introduction }}
 
