@@ -25,11 +25,11 @@
     },
     {
       "src": "/blog/(.*)",
-      "dest": "/blog/_site/$1"
+      "dest": "/_site/$1"
     },
     {
       "src": "/blog",
-      "dest": "/blog/_site/index.html"
+      "dest": "/_site/index.html"
     },
     {
       "src": "/about",
@@ -49,7 +49,7 @@
     },
     {
       "src": "/sitemap.xml",
-      "dest": "/blog/_site/sitemap.xml"
+      "dest": "/_site/sitemap.xml"
     },
     {
       "src": "/robots.txt",
