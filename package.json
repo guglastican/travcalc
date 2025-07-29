@@ -6,9 +6,9 @@
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js",
-    "build": "node node_modules/@11ty/eleventy/cmd.js",
-    "serve": "node node_modules/@11ty/eleventy/cmd.js --serve",
-    "eleventy": "node node_modules/@11ty/eleventy/cmd.js"
+    "build": "npx @11ty/eleventy",
+    "serve": "npx @11ty/eleventy --serve",
+    "eleventy": "npx @11ty/eleventy"
   },
   "dependencies": {
     "@11ty/eleventy": "^3.1.2",
