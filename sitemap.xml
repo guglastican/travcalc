@@ -1,57 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://www.calculatortrip.com/</loc>
-    <lastmod>2025-07-27</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://www.calculatortrip.com/distance</loc>
-    <lastmod>2025-07-27</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://www.calculatortrip.com/turnaround-time-calculator</loc>
-    <lastmod>2025-07-27</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://www.calculatortrip.com/places</loc>
-    <lastmod>2025-07-27</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://www.calculatortrip.com/blog/</loc>
-    <lastmod>2025-07-27</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.calculatortrip.com/blog/eastern/</loc>
-    <lastmod>2025-07-27</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://www.calculatortrip.com/blog/how-far-london-to-cambridge/</loc>
-    <lastmod>2025-07-27</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://www.calculatortrip.com/blog/how-far-london-to-edinburgh/</loc>
-    <lastmod>2025-07-27</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://www.calculatortrip.com/blog/how-far-london-to-paris/</loc>
-    <lastmod>2025-07-27</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-</urlset>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <sitemap>
+    <loc>https://www.calculatortrip.com/sitemap-main.xml</loc>
+    <lastmod>{{ "now" | date: "%Y-%m-%d" }}</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>https://www.calculatortrip.com/blog/sitemap.xml</loc>
+    <lastmod>{{ "now" | date: "%Y-%m-%d" }}</lastmod>
+  </sitemap>
+</sitemapindex>
