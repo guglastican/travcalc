@@ -1,9 +1,14 @@
 ---
-permalink: "sitemap.xml"
+permalink: "blog/sitemap.xml"
 eleventyExcludeFromCollections: true
 ---
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>{{ metadata.website_url }}/</loc>
+    <lastmod>{{ collections.all[0].date | date: '%Y-%m-%d' }}</lastmod>
+    <priority>1.0</priority>
+  </url>
 {%- for item in collections.post %}
   {%- unless item.data.ignore or item.data.eleventyExcludeFromCollections %}
   <url>
