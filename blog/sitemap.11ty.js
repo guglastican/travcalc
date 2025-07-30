@@ -10,16 +10,15 @@ module.exports = class {
     const siteUrl = data.metadata.website_url || 'https://www.calculatortrip.com';
     return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  ${data.collections.all.map(item => {
-    if (item.data.eleventyExcludeFromCollections) {
-      return '';
-    }
-    return `
+  <url>
+    <loc>${siteUrl}/</loc>
+    <lastmod>${this.formatDate(new Date())}</lastmod>
+  </url>
+  ${(data.collections.tool || []).map(item => `
     <url>
       <loc>${siteUrl}${item.url}</loc>
       <lastmod>${this.formatDate(item.date)}</lastmod>
-    </url>`;
-  }).join('')}
+    </url>`).join('')}
 </urlset>`;
   }
 
