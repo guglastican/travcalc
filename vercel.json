@@ -58,7 +58,7 @@
     },
     {
       "src": "/sitemap.xml",
-      "dest": "/sitemap.xml"
+      "dest": "/blog/_site/sitemap.xml"
     },
     {
       "src": "/robots.txt",
