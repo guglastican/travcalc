@@ -1,17 +1,24 @@
 ---
-title: HomePage
-layout: base.html
+title: "Our Blog"
+layout: "base.html"
+templateEngineOverride: "html, liquid"
 ---
 
-Put something here!
+<header>
+  <h2 style="text-align: center; margin-bottom: 2rem;">Welcome to the Blog</h2>
+  <p style="text-align: center;">Discover our latest articles, tools, and insights.</p>
+</header>
 
-{% if tools %}
-  {% for tool in tools %}
-    <h3><a href="{{ tool.url }}">{{ tool.data.title }}</a></h3>
-    <p>{{ tool.data.desc }}</p>
-    <a href="{{ tool.url }}" role="button" class="btn">Explore</a>
+<div class="grid">
+  {% for tool in collections.tool %}
+    <article>
+      <header>
+        <h3><a href="/blog{{ tool.url }}" style="text-decoration: none;">{{ tool.data.title }}</a></h3>
+      </header>
+      <p>{{ tool.data.MetaDescription }}</p>
+      <footer style="padding-top: 1rem;">
+        <a href="/blog{{ tool.url }}" role="button" class="secondary">Read More</a>
+      </footer>
+    </article>
   {% endfor %}
-{% else %}
-  <p>No tools available at the moment.</p>
-{% endif %}
-
+</div>
