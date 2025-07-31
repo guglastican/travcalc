@@ -2,6 +2,7 @@
 title: "Our Blog"
 layout: "base.html"
 templateEngineOverride: "html, liquid"
+MetaDescription: "Find out the distance between cities and get travel times, routes, and tips for your journey."
 ---
 
 <header>
