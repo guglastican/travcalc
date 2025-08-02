@@ -18,7 +18,7 @@ eleventyComputed:
 
 
 ## {{ tool.H2 }}
-
+<a href="{{ tool.url }}">{{ tool.data.title }}</a>
 {{ tool.Introduction2 }}
 
 ## {{ tool.H3 }}
