@@ -25,6 +25,18 @@
 <h1>{{ title }}</h1>
 {{ content }}
 
+{% if tool %}
+<hr>
+<h3>See Also</h3>
+<ul>
+  {% for other_tool in collections.tool %}
+    {% if other_tool.url != page.url %}
+      <li><a href="/blog{{ other_tool.url }}">{{ other_tool.data.title }}</a></li>
+    {% endif %}
+  {% endfor %}
+</ul>
+{% endif %}
+
 </main>
 </body>
 </html>
