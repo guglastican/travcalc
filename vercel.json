@@ -20,6 +20,10 @@
     {
       "src": "*.js",
       "use": "@vercel/static"
+    },
+    {
+      "src": "*.xml",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
@@ -59,6 +63,10 @@
     {
       "src": "/sitemap.xml",
       "dest": "/blog/_site/sitemap.xml"
+    },
+    {
+      "src": "/sitemap-main.xml",
+      "dest": "/sitemap-main.xml"
     },
     {
       "src": "/robots.txt",
