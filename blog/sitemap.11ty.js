@@ -12,20 +12,16 @@ module.exports = class {
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>${siteUrl}/</loc>
-    <lastmod>${this.formatDate(new Date())}</lastmod>
+    <lastmod>2025-06-26T21:08:52.008Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1</priority>
   </url>
   ${(data.collections.tool || []).map(item => `
     <url>
       <loc>${siteUrl}${item.url}</loc>
-      <lastmod>${this.formatDate(item.date)}</lastmod>
+      <lastmod>2025-06-26T21:08:52.008Z</lastmod>
+      <changefreq>weekly</changefreq>
     </url>`).join('')}
 </urlset>`;
-  }
-
-  formatDate(date) {
-    if (!date) {
-      return new Date().toISOString().split('T')[0];
-    }
-    return new Date(date).toISOString().split('T')[0];
   }
 };

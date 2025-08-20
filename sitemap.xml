@@ -3,9 +3,11 @@
   <sitemap>
     <loc>https://www.calculatortrip.com/sitemap-main.xml</loc>
     <lastmod>2025-06-26T21:08:52.008Z</lastmod>
+    <changefreq>weekly</changefreq>
   </sitemap>
   <sitemap>
     <loc>https://www.calculatortrip.com/blog/sitemap.xml</loc>
     <lastmod>2025-06-26T21:08:52.008Z</lastmod>
+    <changefreq>weekly</changefreq>
   </sitemap>
 </sitemapindex>
