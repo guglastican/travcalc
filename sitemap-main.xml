@@ -2,34 +2,34 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://www.calculatortrip.com/</loc>
-    <lastmod>{{ "now" | date: "%Y-%m-%d" }}</lastmod>
+    <lastmod>2025-06-26T21:08:52.008Z</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
+    <priority>1</priority>
   </url>
   <url>
     <loc>https://www.calculatortrip.com/about.html</loc>
-    <lastmod>{{ "now" | date: "%Y-%m-%d" }}</lastmod>
+    <lastmod>2025-06-26T21:08:52.008Z</lastmod>
     <changefreq>monthly</changefreq>
   </url>
   <url>
     <loc>https://www.calculatortrip.com/contact.html</loc>
-    <lastmod>{{ "now" | date: "%Y-%m-%d" }}</lastmod>
+    <lastmod>2025-06-26T21:08:52.008Z</lastmod>
     <changefreq>monthly</changefreq>
   </url>
   <url>
     <loc>https://www.calculatortrip.com/distance.html</loc>
-    <lastmod>{{ "now" | date: "%Y-%m-%d" }}</lastmod>
+    <lastmod>2025-06-26T21:08:52.008Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.calculatortrip.com/places.html</loc>
-    <lastmod>{{ "now" | date: "%Y-%m-%d" }}</lastmod>
+    <lastmod>2025-06-26T21:08:52.008Z</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
     <loc>https://www.calculatortrip.com/turnaround-time-calculator.html</loc>
-    <lastmod>{{ "now" | date: "%Y-%m-%d" }}</lastmod>
+    <lastmod>2025-06-26T21:08:52.008Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
