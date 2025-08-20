@@ -10,32 +10,28 @@
     <loc>https://www.calculatortrip.com/about.html</loc>
     <lastmod>2025-06-26T21:08:52.008Z</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>1</priority>
   </url>
   <url>
     <loc>https://www.calculatortrip.com/contact.html</loc>
     <lastmod>2025-06-26T21:08:52.008Z</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>1</priority>
   </url>
   <url>
     <loc>https://www.calculatortrip.com/distance.html</loc>
     <lastmod>2025-06-26T21:08:52.008Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
-    <priority>1</priority>
   </url>
   <url>
     <loc>https://www.calculatortrip.com/places.html</loc>
     <lastmod>2025-06-26T21:08:52.008Z</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>1</priority>
   </url>
   <url>
     <loc>https://www.calculatortrip.com/turnaround-time-calculator.html</loc>
     <lastmod>2025-06-26T21:08:52.008Z</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>1</priority>
+    <priority>0.8</priority>
   </url>
  
 </urlset>
