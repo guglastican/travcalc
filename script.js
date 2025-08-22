@@ -1,20 +1,27 @@
 // Wait for DOM to load
 window.addEventListener("DOMContentLoaded", () => {
   console.log("DOM loaded - initializing calculator");
+
+  // Mobile menu toggle
+  const menuToggle = document.querySelector(".menu-toggle");
+  const mainNav = document.querySelector(".main-nav");
+
+  if (menuToggle && mainNav) {
+    menuToggle.addEventListener("click", () => {
+      mainNav.classList.toggle("active");
+      menuToggle.classList.toggle("active");
+    });
+  }
   
   const calculateBtn = document.getElementById("calculateBtn");
-  if (!calculateBtn) {
-    console.error("Calculate button not found");
-    return;
+  if (calculateBtn) {
+    calculateBtn.addEventListener("click", generateSchedule);
   }
-  calculateBtn.addEventListener("click", generateSchedule);
 
   const resetBtn = document.getElementById("resetBtn");
-  if (!resetBtn) {
-    console.error("Reset button not found");
-    return;
+  if (resetBtn) {
+    resetBtn.addEventListener("click", resetForm);
   }
-  resetBtn.addEventListener("click", resetForm);
 
   // Check if dateMapping is available
   if (typeof dateMapping === 'undefined') {
