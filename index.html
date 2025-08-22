@@ -31,6 +31,43 @@
   </header>
 
   <main class="container" style="margin-top: 20px; text-align: left; width: 800px; max-width: 100%;">
+    <div id="formSection" class="form-section">
+      <fieldset>
+        <legend>Enter Locations</legend>
+        <div class="form-group">
+          <label for="origin">Origin:</label>
+          <input type="text" id="origin" placeholder="Enter starting location">
+        </div>
+        <div class="form-group">
+          <label for="destination">Destination:</label>
+          <input type="text" id="destination" placeholder="Enter destination">
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="travelMode">Travel Mode:</label>
+            <select id="travelMode" class="form-control">
+              <option value="driving">Driving</option>
+              <option value="walking">Walking</option>
+              <option value="bicycling">Bicycling</option>
+              <option value="transit">Public Transit</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="unitSystem">Units:</label>
+            <select id="unitSystem" class="form-control">
+              <option value="imperial">Imperial (miles)</option>
+              <option value="metric">Metric (kilometers)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <button id="calculateDistance" class="btn">Calculate</button>
+        </div>
+        <div id="distanceResults" class="results"></div>
+      </fieldset>
+    </div>
     <h2>Plan Every Journey with Confidence</h2>
     <p>Plan every journey with confidence using our easy-to-use travel calculators. Whether you’re deciding between flying or driving, mapping out a road trip, or budgeting for fuel costs, our tools help you make informed travel decisions—fast.</p>
 
@@ -44,6 +81,8 @@
       <li>Total trip duration (including layovers and airport time)</li>
     </ul>
     <p>👉 Example: Calculate the driving distance between cities and flight time to figure out whether it’s better to fly or drive.</p>
+
+    
 
     <h3>What You Can Do with Our Travel Calculators</h3>
     <h4>🚗 Driving Distance Calculator</h4>
@@ -80,5 +119,6 @@
 
 
   <script src="script.js"></script>
+  <script src="distanceCalculator.js"></script>
 </body>
 </html>
