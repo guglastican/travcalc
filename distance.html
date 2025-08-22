@@ -11,15 +11,8 @@
 </head>
 <body>
   <header>
-    <div class="header-container">
-      <h1 id="travelCalculatorTitle">Travel Calculator</h1>
-      <button class="menu-toggle" aria-label="Toggle navigation menu">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-    </div>
-    <nav class="main-nav">
+    <h1 id="travelCalculatorTitle">Travel Calculator</h1>
+    <nav>
       <ul>
         <li><a href="/">Home</a></li>
         <li><a href="/turnaround-time-calculator">Turnaround Calculator</a></li>
@@ -27,6 +20,7 @@
         <li><a href="/places">Places</a></li>
         <li><a href="/blog">Blog</a></li>
       </ul>
+
     </nav>
   </header>
 
@@ -125,7 +119,6 @@
 
 
   <script src="distanceCalculator.js"></script>
-  <script src="script.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const resultsDiv = document.getElementById('distanceResults');
