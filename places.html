@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="index, follow, max-snippet:-1, max-video-preview:-1, max-image-preview:large">
-  <meta name="description" content="Find hotels and airports near your travel destination with our Places Finder. Search by location and radius to discover lodging options and nearby airports.">
+  <meta name="description"
+    content="Find hotels and airports near your travel destination with our Places Finder. Search by location and radius to discover lodging options and nearby airports.">
   <link rel="canonical" href="https://www.calculatortrip.com/places" />
   <title>Places | Travel Calculator</title>
   <link rel="icon" href="https://www.google.com/s2/favicons?domain=www.calculatortrip.com" type="image/x-icon">
@@ -15,6 +17,7 @@
       margin-bottom: 20px;
       border-bottom: 1px solid #ddd;
     }
+
     .tab-button {
       padding: 10px 20px;
       background: none;
@@ -23,39 +26,48 @@
       font-size: 1rem;
       border-bottom: 3px solid transparent;
     }
+
     .tab-button.active {
       border-bottom: 3px solid #007bff;
       font-weight: bold;
     }
+
     .tab-content {
       display: none;
     }
+
     .tab-content.active {
       display: block;
     }
+
     .search-container {
       margin-top: 20px;
     }
+
     .search-controls {
       display: flex;
       gap: 10px;
       margin-bottom: 20px;
       align-items: flex-end;
     }
+
     .form-group {
       display: flex;
       flex-direction: column;
       gap: 5px;
     }
+
     .form-group label {
       font-size: 0.9rem;
       font-weight: bold;
     }
+
     .search-controls input {
       padding: 8px;
       border: 1px solid #ccc;
       border-radius: 4px;
     }
+
     .search-controls button {
       padding: 8px 16px;
       background-color: #007bff;
@@ -64,16 +76,20 @@
       border-radius: 4px;
       cursor: pointer;
     }
+
     .results-container {
       display: flex;
       gap: 20px;
     }
-    #hotel-map, #airport-map {
+
+    #hotel-map,
+    #airport-map {
       flex: 2;
       height: 400px;
       border: 1px solid #ddd;
       border-radius: 4px;
     }
+
     .results-list {
       flex: 1;
       max-height: 400px;
@@ -82,15 +98,18 @@
       border-radius: 4px;
       padding: 10px;
     }
+
     .result-item {
       padding: 10px;
       border-bottom: 1px solid #eee;
     }
+
     .result-item:last-child {
       border-bottom: none;
     }
   </style>
 </head>
+
 <body>
   <header>
     <div class="header-container">
@@ -105,7 +124,6 @@
         <li><a href="/turnaround-time-calculator">Turnaround Calculator</a></li>
         <li><a href="/distance">Distance Calculator</a></li>
         <li><a href="/places">Places</a></li>
-        <li><a href="/blog">Blog</a></li>
       </ul>
     </nav>
   </header>
@@ -115,7 +133,7 @@
       <button class="tab-button active" data-tab="hotels">Find Hotels</button>
       <button class="tab-button" data-tab="airports">Find Airports</button>
     </div>
-    
+
     <div class="tab-content active" id="hotels-tab">
       <h2>Hotel Finder</h2>
       <p>Find hotels in your travel destination area.</p>
@@ -127,11 +145,12 @@
           </div>
           <div class="form-group">
             <label for="radius-input">Search Radius:</label>
-            <input type="number" id="radius-input" placeholder="Radius (meters)" min="100" value="5000" aria-label="Search radius in meters">
+            <input type="number" id="radius-input" placeholder="Radius (meters)" min="100" value="5000"
+              aria-label="Search radius in meters">
           </div>
           <button id="search-hotels" aria-label="Search for hotels">Find Hotels</button>
         </div>
-        
+
         <div class="results-container">
           <div id="hotel-map"></div>
           <div id="hotels-list" class="results-list"></div>
@@ -146,15 +165,17 @@
         <div class="search-controls">
           <div class="form-group">
             <label for="airport-location-input">Location:</label>
-            <input type="text" id="airport-location-input" placeholder="Enter city or address" aria-label="Airport location input">
+            <input type="text" id="airport-location-input" placeholder="Enter city or address"
+              aria-label="Airport location input">
           </div>
           <div class="form-group">
             <label for="airport-radius-input">Search Radius:</label>
-            <input type="number" id="airport-radius-input" placeholder="Radius (km)" min="10" value="100" aria-label="Airport search radius in kilometers">
+            <input type="number" id="airport-radius-input" placeholder="Radius (km)" min="10" value="100"
+              aria-label="Airport search radius in kilometers">
           </div>
           <button id="search-airports" aria-label="Search for airports">Find Airports</button>
         </div>
-        
+
         <div class="results-container">
           <div id="airport-map"></div>
           <div id="airports-list" class="results-list"></div>
@@ -165,7 +186,7 @@
 
   <script>
     let hotelMap, airportMap;
-    
+
     function initMap() {
       // Initialize both maps
       hotelMap = new google.maps.Map(document.getElementById("hotel-map"), {
@@ -183,7 +204,7 @@
         button.addEventListener("click", () => {
           document.querySelectorAll(".tab-button").forEach(btn => btn.classList.remove("active"));
           document.querySelectorAll(".tab-content").forEach(content => content.classList.remove("active"));
-          
+
           button.classList.add("active");
           document.getElementById(`${button.dataset.tab}-tab`).classList.add("active");
         });
@@ -200,10 +221,10 @@
       });
 
       function searchPlaces(type, map, listId) {
-        const locationInput = type === "lodging" 
+        const locationInput = type === "lodging"
           ? document.getElementById("location-input").value
           : document.getElementById("airport-location-input").value;
-          
+
         const radiusInput = type === "lodging"
           ? parseInt(document.getElementById("radius-input").value)
           : parseInt(document.getElementById("airport-radius-input").value) * 1000; // Convert km to meters
@@ -218,7 +239,7 @@
           if (status === "OK") {
             const center = results[0].geometry.location;
             map.setCenter(center);
-            
+
             if (type === "airport") {
               const service = new google.maps.places.PlacesService(map);
               // First try text search for better airport results
@@ -267,13 +288,13 @@
       function displayResults(places, map, listId, type) {
         const list = document.getElementById(listId);
         list.innerHTML = "";
-        
+
         // Clear existing markers
         if (window[`${type}Markers`]) {
           window[`${type}Markers`].forEach(marker => marker.setMap(null));
         }
         window[`${type}Markers`] = [];
-        
+
         places.forEach(place => {
           // Add marker to map
           const marker = new google.maps.Marker({
@@ -297,7 +318,9 @@
       }
     }
   </script>
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBnvEmLlcvBx_Z6NpAVB_08fOKw2C2WSIw&libraries=places&callback=initMap" async defer></script>
+  <script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBnvEmLlcvBx_Z6NpAVB_08fOKw2C2WSIw&libraries=places&callback=initMap"
+    async defer></script>
 
   <footer>
     <div class="footer-content">
@@ -312,4 +335,5 @@
   </footer>
   <script src="script.js"></script>
 </body>
+
 </html>

@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="index, follow, max-snippet:-1, max-video-preview:-1, max-image-preview:large">
-  <meta name="description" content="Plan every journey with confidence using our travel calculators. Compare driving vs flying options, calculate distances, flight times, and fuel costs.">
+  <meta name="description"
+    content="Plan every journey with confidence using our travel calculators. Compare driving vs flying options, calculate distances, flight times, and fuel costs.">
   <link rel="canonical" href="https://www.calculatortrip.com/" />
   <title>Travel Calculator</title>
   <link rel="icon" href="https://www.google.com/s2/favicons?domain=www.calculatortrip.com" type="image/x-icon">
   <link rel="stylesheet" href="Styles.css">
 </head>
+
 <body>
   <header>
     <div class="header-container">
@@ -24,7 +27,6 @@
         <li><a href="/turnaround-time-calculator">Turnaround Calculator</a></li>
         <li><a href="/distance">Distance Calculator</a></li>
         <li><a href="/places">Places</a></li>
-        <li><a href="/blog">Blog</a></li>
       </ul>
     </nav>
     <meta name="google-site-verification" content="8FBf7lC48PyxMmAS88813m0vqlhqauQwWAZF512BdcE" />
@@ -42,7 +44,7 @@
           <label for="destination">Destination:</label>
           <input type="text" id="destination" placeholder="Enter destination">
         </div>
-        
+
         <div class="form-row">
           <div class="form-group">
             <label for="travelMode">Travel Mode:</label>
@@ -69,7 +71,9 @@
       </fieldset>
     </div>
     <h2>Plan Every Journey with Confidence</h2>
-    <p>Plan every journey with confidence using our easy-to-use travel calculators. Whether you’re deciding between flying or driving, mapping out a road trip, or budgeting for fuel costs, our tools help you make informed travel decisions—fast.</p>
+    <p>Plan every journey with confidence using our easy-to-use travel calculators. Whether you’re deciding between
+      flying or driving, mapping out a road trip, or budgeting for fuel costs, our tools help you make informed travel
+      decisions—fast.</p>
 
     <h3>Calculate the Best Way to Travel</h3>
     <p>Not sure if you should fly or drive to your next destination? Our travel calculators let you compare:</p>
@@ -80,22 +84,27 @@
       <li>Fuel costs vs airfare</li>
       <li>Total trip duration (including layovers and airport time)</li>
     </ul>
-    <p>👉 Example: Calculate the driving distance between cities and flight time to figure out whether it’s better to fly or drive.</p>
+    <p>👉 Example: Calculate the driving distance between cities and flight time to figure out whether it’s better to
+      fly or drive.</p>
 
-    
+
 
     <h3>What You Can Do with Our Travel Calculators</h3>
     <h4>🚗 Driving Distance Calculator</h4>
-    <p>Enter your start and end locations to get the total miles or kilometers, average driving time, and suggested routes. Perfect for road trip planning or daily commuting analysis.</p>
+    <p>Enter your start and end locations to get the total miles or kilometers, average driving time, and suggested
+      routes. Perfect for road trip planning or daily commuting analysis.</p>
 
     <h4>✈️ Flight Time Calculator</h4>
-    <p>Find out how long a flight will take between any two cities worldwide. Includes time zone differences and estimated gate-to-gate duration.</p>
+    <p>Find out how long a flight will take between any two cities worldwide. Includes time zone differences and
+      estimated gate-to-gate duration.</p>
 
     <h4>💸 Fuel Cost Estimator</h4>
-    <p>Input your vehicle’s fuel efficiency and local fuel prices to calculate how much your road trip will cost in gas.</p>
+    <p>Input your vehicle’s fuel efficiency and local fuel prices to calculate how much your road trip will cost in gas.
+    </p>
 
     <h4>🕒 Trip Duration Calculator</h4>
-    <p>Want to know how long the entire trip will take from door to door? We add it all up—travel to the airport, wait times, flight, and final ground transportation.</p>
+    <p>Want to know how long the entire trip will take from door to door? We add it all up—travel to the airport, wait
+      times, flight, and final ground transportation.</p>
 
     <h3>Why Use Our Travel Calculators?</h3>
     <ul>
@@ -104,6 +113,34 @@
       <li>✅ Save Money – Find the most cost-effective way to travel</li>
       <li>✅ Plan Smarter – Get the full picture before booking anything</li>
     </ul>
+    <section id="popularRoutes" class="popular-routes"
+      style="margin-top: 40px; border-top: 1px solid #eee; padding-top: 20px;">
+      <h3>Recent Route Calculations</h3>
+      <div id="popularRoutesList" class="routes-grid">
+        <p>Loading recent routes...</p>
+      </div>
+    </section>
+
+    <script>
+      fetch('/api/popular-routes')
+        .then(res => res.json())
+        .then(routes => {
+          const list = document.getElementById('popularRoutesList');
+          if (routes.length === 0) {
+            list.innerHTML = '<p>No routes calculated yet. Be the first!</p>';
+            return;
+          }
+          list.innerHTML = routes.map(r => `
+            <div class="route-item" style="margin-bottom: 10px;">
+              <a href="/udaljenost/${r.slug}" style="color: #007bff; text-decoration: none; font-weight: 500;">
+                Distance from ${r.origin} to ${r.destination}
+              </a>
+              <span style="color: #666; font-size: 0.9em; margin-left: 10px;">(${r.distance})</span>
+            </div>
+          `).join('');
+        })
+        .catch(err => console.error('Error fetching popular routes:', err));
+    </script>
   </main>
   <footer>
     <div class="footer-content">
@@ -121,4 +158,5 @@
   <script src="script.js"></script>
   <script src="distanceCalculator.js"></script>
 </body>
+
 </html>

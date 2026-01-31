@@ -20,7 +20,7 @@ async function handleDistanceCalculation() {
         resultsDiv.innerHTML = '<p class="error">✋ Please enter both locations</p>';
         return;
     }
-    
+
     // Show loading state with animation
     resultsDiv.innerHTML = `
         <div class="loading-state">
@@ -30,27 +30,52 @@ async function handleDistanceCalculation() {
     `;
 
     try {
-        // Simulate API response
-        const data = {
-            origin: origin,
-            destination: destination,
-            distance: '120 km',
-            duration: '2 hours',
-            status: 'OK'
-        };
-        
-        displayDistanceResults(data);
+        const response = await fetch('/api/calculate-distance', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                origin,
+                destination,
+                mode: travelMode,
+                units: unitSystem
+            })
+        });
+
+        const data = await response.json();
+
+        if (data.error) {
+            throw new Error(data.error);
+        }
+
+        // Redirect to the pSEO URL
+        window.location.href = `/udaljenost/${data.slug}`;
+
     } catch (error) {
         console.error('Error calculating distance:', error);
         resultsDiv.innerHTML = `<p class="error">Error calculating distance: ${error.message}</p>`;
     }
 }
 
+// Handle data injected by server for pSEO
+if (window.PSEO_DATA) {
+    document.addEventListener('DOMContentLoaded', () => {
+        displayDistanceResults(window.PSEO_DATA);
+
+        // Pre-fill inputs
+        const originInput = document.getElementById('origin');
+        const destInput = document.getElementById('destination');
+        if (originInput) originInput.value = window.PSEO_DATA.origin;
+        if (destInput) destInput.value = window.PSEO_DATA.destination;
+    });
+}
+
 function displayDistanceResults(data) {
     console.log('displayDistanceResults called');
     const resultsDiv = document.getElementById('distanceResults');
     const distanceCalculatorTitle = document.getElementById('distanceCalculatorTitle');
-    
+
     if (data.error) {
         resultsDiv.innerHTML = `<p class="error">${data.error}</p>`;
         return;
