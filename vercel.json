@@ -28,21 +28,16 @@
   ],
   "routes": [
     {
-      "src": "/api/calculate-distance",
-      "methods": ["POST"],
-      "dest": "server.js"
-    },
-    {
       "src": "/api/(.*)",
       "dest": "server.js"
     },
     {
-      "src": "/blog/(.*)",
-      "dest": "/blog/_site/$1"
+      "src": "/udaljenost/(.*)",
+      "dest": "server.js"
     },
     {
-      "src": "/blog",
-      "dest": "/blog/_site/index.html"
+      "src": "/sitemap-dynamic.xml",
+      "dest": "server.js"
     },
     {
       "src": "/about",
@@ -61,11 +56,15 @@
       "dest": "/contact.html"
     },
     {
-      "src": "/sitemap.xml",
-      "dest": "/blog/_site/sitemap.xml"
+      "src": "/turnaround-time-calculator",
+      "dest": "/turnaround-time-calculator.html"
     },
     {
-      "src": "/sitemap-main.xml",
+      "src": "/places",
+      "dest": "/places.html"
+    },
+    {
+      "src": "/sitemap.xml",
       "dest": "/sitemap-main.xml"
     },
     {
@@ -75,6 +74,10 @@
     {
       "src": "/",
       "dest": "/index.html"
+    },
+    {
+      "src": "/distance",
+      "dest": "/distance.html"
     },
     {
       "src": "/([^/.]+)",
