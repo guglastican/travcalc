@@ -151,6 +151,10 @@ app.get('/udaljenost/:slug', async (req, res) => {
     }
   }
 
+  if (!route) {
+    return res.status(404).send('Udaljenost nije pronađena. Molimo pokušajte ponovo sa početne strane sa tačnim nazivima gradova.');
+  }
+
   // Load and inject into distance.html
   try {
     let html = fs.readFileSync(path.join(__dirname, 'distance.html'), 'utf8');
