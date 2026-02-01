@@ -111,10 +111,59 @@ app.get('/udaljenost/:slug', async (req, res) => {
 
   let html = fs.readFileSync(path.join(__dirname, 'distance.html'), 'utf8');
   const title = `Distance from ${route.origin} to ${route.destination}`;
-  const description = `The distance between ${route.origin} and ${route.destination} is ${route.distance}. Travel time is approx ${route.duration}.`;
+  const description = `Find out the exact distance between ${route.origin} and ${route.destination}. Travel time is approximately ${route.duration}. Driving distance and directions.`;
+  const url = `https://www.calculatortrip.com/udaljenost/${route.slug}`;
+
+  // Generate dynamic SEO content
+  const dynamicArticle = `
+    <article class="dynamic-seo-content" style="margin-top: 40px; padding: 20px; background: #fff; border-radius: 12px; border: 1px solid #eee;">
+      <h2>Traveling between ${route.origin} and ${route.destination}</h2>
+      <p>Planning a trip from <strong>${route.origin}</strong> to <strong>${route.destination}</strong>? Understanding the travel logistics is key to a smooth journey. Whether you are traveling for business or leisure, knowing the distance and estimated travel time helps you manage your schedule effectively.</p>
+      
+      <h3>How far is ${route.origin} from ${route.destination}?</h3>
+      <p>The total driving distance between these two locations is approximately <strong>${route.distance}</strong>. Depending on traffic conditions, the estimated travel time is about <strong>${route.duration}</strong>. This route connects two vibrant areas, each offering its own unique attractions and atmosphere.</p>
+
+      <h3>Travel Tips for your journey</h3>
+      <p>When driving between ${route.origin} and ${route.destination}, it's always a good idea to check for real-time traffic updates. If you are using public transit or other modes of transport, travel times may vary significantly. Make sure to plan for breaks if you are on a long road trip to ensure safety and comfort.</p>
+      
+      <p>Use our calculator above to explore alternative travel modes like walking, bicycling, or transit if available for this specific route. Safe travels!</p>
+    </article>
+  `;
 
   html = html.replace(/<title>.*?<\/title>/, `<title>${title} | Travel Calculator</title>`);
   html = html.replace(/<meta name="description" content=".*?">/, `<meta name="description" content="${description}">`);
+
+  // Inject article before the footer or at the end of main
+  html = html.replace('</main>', `${dynamicArticle}</main>`);
+
+  // Inject OG Tags and JSON-LD
+  const advancedSEO = `
+    <meta property="og:title" content="${title}">
+    <meta property="og:description" content="${description}">
+    <meta property="og:url" content="${url}">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://www.calculatortrip.com/social-share.jpg">
+    <link rel="canonical" href="${url}">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "${title}",
+      "description": "${description}",
+      "url": "${url}",
+      "publisher": {
+        "@type": "Organization",
+        "name": "Travel Calculator",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://www.calculatortrip.com/logo.png"
+        }
+      }
+    }
+    </script>
+  `;
+
+  html = html.replace('</head>', `${advancedSEO}</head>`);
   html = html.replace('</head>', `<script>window.PSEO_DATA = ${JSON.stringify(route)};</script></head>`);
   res.send(html);
 });
@@ -153,15 +202,27 @@ app.get('/sitemap-dynamic.xml', (req, res) => {
   const routes = readData(ROUTES_PATH);
   const places = readData(PLACES_PATH);
   const baseUrl = 'https://www.calculatortrip.com';
+  const today = new Date().toISOString().split('T')[0];
 
   let xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`;
 
   routes.forEach(r => {
-    xml += `\n  <url><loc>${baseUrl}/udaljenost/${r.slug}</loc><priority>0.8</priority></url>`;
+    xml += `\n  <url>
+    <loc>${baseUrl}/udaljenost/${r.slug}</loc>
+    <lastmod>${r.timestamp ? r.timestamp.split('T')[0] : today}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>`;
   });
+
   places.forEach(p => {
-    xml += `\n  <url><loc>${baseUrl}/places/${p.slug}</loc><priority>0.7</priority></url>`;
+    xml += `\n  <url>
+    <loc>${baseUrl}/places/${p.slug}</loc>
+    <lastmod>${p.timestamp ? p.timestamp.split('T')[0] : today}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>`;
   });
 
   xml += '\n</urlset>';
