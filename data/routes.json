@@ -1,10 +1,42 @@
 [
   {
+    "origin": "London",
+    "destination": "Paris",
+    "distance": "456 km",
+    "duration": "5 hours 30 mins",
+    "slug": "london-to-paris",
+    "timestamp": "2026-02-01T21:20:00.000Z"
+  },
+  {
+    "origin": "New York",
+    "destination": "Los Angeles",
+    "distance": "4489 km",
+    "duration": "42 hours",
+    "slug": "new-york-to-los-angeles",
+    "timestamp": "2026-02-01T21:20:00.000Z"
+  },
+  {
     "origin": "Zagreb",
-    "destination": "Split",
-    "distance": "410 km",
+    "destination": "Belgrade",
+    "distance": "393 km",
     "duration": "4 hours",
-    "slug": "zagreb-to-split",
-    "timestamp": "2026-01-31T21:10:23.208Z"
+    "slug": "zagreb-to-belgrade",
+    "timestamp": "2026-02-01T21:20:00.000Z"
+  },
+  {
+    "origin": "Berlin",
+    "destination": "Munich",
+    "distance": "585 km",
+    "duration": "6 hours",
+    "slug": "berlin-to-munich",
+    "timestamp": "2026-02-01T21:20:00.000Z"
+  },
+  {
+    "origin": "Sarajevo",
+    "destination": "Zagreb",
+    "distance": "403 km",
+    "duration": "5 hours",
+    "slug": "sarajevo-to-zagreb",
+    "timestamp": "2026-02-01T21:20:00.000Z"
   }
 ]

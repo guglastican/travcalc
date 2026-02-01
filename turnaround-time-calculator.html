@@ -143,6 +143,18 @@
 
     <script src="/dateMapping.js"></script>
     <script src="/script.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        if (window.TURNAROUND_PSEO) {
+          const cityInput = document.getElementById('cityInput');
+          if (cityInput) {
+            cityInput.value = window.TURNAROUND_PSEO.city;
+            // You might also want to trigger the calculation button here if needed
+            // document.getElementById('calculateBtn').click();
+          }
+        }
+      });
+    </script>
     <footer>
       <div class="footer-content">
         <p>&copy; 2025 Travel Calculator</p>
