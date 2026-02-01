@@ -108,16 +108,47 @@ app.get('/udaljenost/:slug', async (req, res) => {
   let route = routes.find(r => r.slug === slug);
 
   if (!route) {
-    // Try to parse from slug if not in DB (simple attempt)
+    // Attempt to calculate on-the-fly
     const parts = slug.split('-to-');
     if (parts.length === 2) {
       const origin = parts[0].replace(/-/g, ' ');
       const destination = parts[1].replace(/-/g, ' ');
 
-      // We could trigger a search here, but for now just 404 or redirect
-      return res.status(404).send('Route not found. Please search from the homepage.');
+      console.log(`Route not found in DB. Calculating on-the-fly for: ${origin} to ${destination}`);
+
+      try {
+        const response = await axios.get('https://maps.googleapis.com/maps/api/distancematrix/json', {
+          params: {
+            origins: origin,
+            destinations: destination,
+            mode: 'driving',
+            units: 'metric',
+            key: process.env.GOOGLE_MAPS_API_KEY
+          }
+        });
+
+        if (response.data.status === 'OK') {
+          const result = response.data?.rows?.[0]?.elements?.[0];
+          if (result && result.status === 'OK') {
+            const originAddr = response.data?.origin_addresses?.[0] || origin;
+            const destAddr = response.data?.destination_addresses?.[0] || destination;
+
+            route = {
+              origin: originAddr,
+              destination: destAddr,
+              distance: result.distance?.text || 'Unknown',
+              duration: result.duration?.text || 'Unknown',
+              slug: slug,
+              timestamp: new Date().toISOString()
+            };
+
+            saveRoute(route);
+          }
+        }
+      } catch (error) {
+        console.error('Error calculating route on-the-fly:', error.message);
+      }
     }
-    return res.status(404).send('Invalid route');
   }
 
   // Load and inject into distance.html
