@@ -271,6 +271,7 @@ app.get('/sitemap-dynamic.xml', (req, res) => {
   const today = new Date().toISOString().split('T')[0];
 
   let xml = `<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`;
 
   // Distance routes
@@ -311,6 +312,7 @@ pages.forEach(p => app.get(`/${p}`, (req, res) => res.sendFile(path.join(__dirna
 app.get('/sitemap.xml', (req, res) => {
   const baseUrl = 'https://www.calculatortrip.com';
   res.type('application/xml').send(`<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemaps.org/0.9">
   <sitemap><loc>${baseUrl}/sitemap-main.xml</loc></sitemap>
   <sitemap><loc>${baseUrl}/sitemap-dynamic.xml</loc></sitemap>
