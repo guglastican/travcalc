@@ -1,98 +1,362 @@
 [
-    {
-        "slug": "hotels-in-london",
-        "city": "London",
-        "type": "hotels",
-        "timestamp": "2026-02-01T21:20:00.000Z"
-    },
-    {
-        "slug": "airports-near-london",
-        "city": "London",
-        "type": "airports",
-        "timestamp": "2026-02-01T21:20:00.000Z"
-    },
-    {
-        "slug": "hotels-in-paris",
-        "city": "Paris",
-        "type": "hotels",
-        "timestamp": "2026-02-01T21:20:00.000Z"
-    },
-    {
-        "slug": "airports-near-paris",
-        "city": "Paris",
-        "type": "airports",
-        "timestamp": "2026-02-01T21:20:00.000Z"
-    },
-    {
-        "slug": "hotels-in-zagreb",
-        "city": "Zagreb",
-        "type": "hotels",
-        "timestamp": "2026-02-01T21:20:00.000Z"
-    },
-    {
-        "slug": "airports-near-zagreb",
-        "city": "Zagreb",
-        "type": "airports",
-        "timestamp": "2026-02-01T21:20:00.000Z"
-    },
-    {
-        "slug": "hotels-in-belgrade",
-        "city": "Belgrade",
-        "type": "hotels",
-        "timestamp": "2026-02-01T21:20:00.000Z"
-    },
-    {
-        "slug": "airports-near-belgrade",
-        "city": "Belgrade",
-        "type": "airports",
-        "timestamp": "2026-02-01T21:20:00.000Z"
-    },
-    {
-        "slug": "hotels-in-new-york",
-        "city": "New York",
-        "type": "hotels",
-        "timestamp": "2026-02-01T21:20:00.000Z"
-    },
-    {
-        "slug": "airports-near-new-york",
-        "city": "New York",
-        "type": "airports",
-        "timestamp": "2026-02-01T21:20:00.000Z"
-    },
-    {
-        "slug": "hotels-in-tokyo",
-        "city": "Tokyo",
-        "type": "hotels",
-        "timestamp": "2026-02-01T21:20:00.000Z"
-    },
-    {
-        "slug": "airports-near-tokyo",
-        "city": "Tokyo",
-        "type": "airports",
-        "timestamp": "2026-02-01T21:20:00.000Z"
-    },
-    {
-        "slug": "hotels-in-berlin",
-        "city": "Berlin",
-        "type": "hotels",
-        "timestamp": "2026-02-01T21:20:00.000Z"
-    },
-    {
-        "slug": "airports-near-berlin",
-        "city": "Berlin",
-        "type": "airports",
-        "timestamp": "2026-02-01T21:20:00.000Z"
-    },
-    {
-        "slug": "hotels-in-rome",
-        "city": "Rome",
-        "type": "hotels",
-        "timestamp": "2026-02-01T21:20:00.000Z"
-    },
-    {
-        "slug": "airports-near-rome",
-        "city": "Rome",
-        "type": "airports",
-        "timestamp": "2026-02-01T21:20:00.000Z"
-    }
+  {
+    "slug": "hotels-in-london",
+    "city": "London",
+    "type": "hotels",
+    "timestamp": "2026-02-01T21:20:00.000Z"
+  },
+  {
+    "slug": "airports-near-london",
+    "city": "London",
+    "type": "airports",
+    "timestamp": "2026-02-01T21:20:00.000Z"
+  },
+  {
+    "slug": "hotels-in-paris",
+    "city": "Paris",
+    "type": "hotels",
+    "timestamp": "2026-02-01T21:20:00.000Z"
+  },
+  {
+    "slug": "airports-near-paris",
+    "city": "Paris",
+    "type": "airports",
+    "timestamp": "2026-02-01T21:20:00.000Z"
+  },
+  {
+    "slug": "hotels-in-zagreb",
+    "city": "Zagreb",
+    "type": "hotels",
+    "timestamp": "2026-02-01T21:20:00.000Z"
+  },
+  {
+    "slug": "airports-near-zagreb",
+    "city": "Zagreb",
+    "type": "airports",
+    "timestamp": "2026-02-01T21:20:00.000Z"
+  },
+  {
+    "slug": "hotels-in-belgrade",
+    "city": "Belgrade",
+    "type": "hotels",
+    "timestamp": "2026-02-01T21:20:00.000Z"
+  },
+  {
+    "slug": "airports-near-belgrade",
+    "city": "Belgrade",
+    "type": "airports",
+    "timestamp": "2026-02-01T21:20:00.000Z"
+  },
+  {
+    "slug": "hotels-in-new-york",
+    "city": "New York",
+    "type": "hotels",
+    "timestamp": "2026-02-01T21:20:00.000Z"
+  },
+  {
+    "slug": "airports-near-new-york",
+    "city": "New York",
+    "type": "airports",
+    "timestamp": "2026-02-01T21:20:00.000Z"
+  },
+  {
+    "slug": "hotels-in-tokyo",
+    "city": "Tokyo",
+    "type": "hotels",
+    "timestamp": "2026-02-01T21:20:00.000Z"
+  },
+  {
+    "slug": "airports-near-tokyo",
+    "city": "Tokyo",
+    "type": "airports",
+    "timestamp": "2026-02-01T21:20:00.000Z"
+  },
+  {
+    "slug": "hotels-in-berlin",
+    "city": "Berlin",
+    "type": "hotels",
+    "timestamp": "2026-02-01T21:20:00.000Z"
+  },
+  {
+    "slug": "airports-near-berlin",
+    "city": "Berlin",
+    "type": "airports",
+    "timestamp": "2026-02-01T21:20:00.000Z"
+  },
+  {
+    "slug": "hotels-in-rome",
+    "city": "Rome",
+    "type": "hotels",
+    "timestamp": "2026-02-01T21:20:00.000Z"
+  },
+  {
+    "slug": "airports-near-rome",
+    "city": "Rome",
+    "type": "airports",
+    "timestamp": "2026-02-01T21:20:00.000Z"
+  },
+  {
+    "slug": "hotels-in-sarajevo",
+    "city": "Sarajevo",
+    "type": "hotels",
+    "timestamp": "2026-02-01T20:41:50.462Z"
+  },
+  {
+    "slug": "airports-near-sarajevo",
+    "city": "Sarajevo",
+    "type": "airports",
+    "timestamp": "2026-02-01T20:41:50.463Z"
+  },
+  {
+    "slug": "hotels-in-madrid",
+    "city": "Madrid",
+    "type": "hotels",
+    "timestamp": "2026-02-01T20:41:50.465Z"
+  },
+  {
+    "slug": "airports-near-madrid",
+    "city": "Madrid",
+    "type": "airports",
+    "timestamp": "2026-02-01T20:41:50.465Z"
+  },
+  {
+    "slug": "hotels-in-vienna",
+    "city": "Vienna",
+    "type": "hotels",
+    "timestamp": "2026-02-01T20:41:50.466Z"
+  },
+  {
+    "slug": "airports-near-vienna",
+    "city": "Vienna",
+    "type": "airports",
+    "timestamp": "2026-02-01T20:41:50.466Z"
+  },
+  {
+    "slug": "hotels-in-prague",
+    "city": "Prague",
+    "type": "hotels",
+    "timestamp": "2026-02-01T20:41:50.467Z"
+  },
+  {
+    "slug": "airports-near-prague",
+    "city": "Prague",
+    "type": "airports",
+    "timestamp": "2026-02-01T20:41:50.468Z"
+  },
+  {
+    "slug": "hotels-in-budapest",
+    "city": "Budapest",
+    "type": "hotels",
+    "timestamp": "2026-02-01T20:41:50.468Z"
+  },
+  {
+    "slug": "airports-near-budapest",
+    "city": "Budapest",
+    "type": "airports",
+    "timestamp": "2026-02-01T20:41:50.469Z"
+  },
+  {
+    "slug": "hotels-in-ljubljana",
+    "city": "Ljubljana",
+    "type": "hotels",
+    "timestamp": "2026-02-01T20:41:50.470Z"
+  },
+  {
+    "slug": "airports-near-ljubljana",
+    "city": "Ljubljana",
+    "type": "airports",
+    "timestamp": "2026-02-01T20:41:50.471Z"
+  },
+  {
+    "slug": "hotels-in-split",
+    "city": "Split",
+    "type": "hotels",
+    "timestamp": "2026-02-01T20:41:50.471Z"
+  },
+  {
+    "slug": "airports-near-split",
+    "city": "Split",
+    "type": "airports",
+    "timestamp": "2026-02-01T20:41:50.472Z"
+  },
+  {
+    "slug": "hotels-in-dubai",
+    "city": "Dubai",
+    "type": "hotels",
+    "timestamp": "2026-02-01T20:41:50.473Z"
+  },
+  {
+    "slug": "airports-near-dubai",
+    "city": "Dubai",
+    "type": "airports",
+    "timestamp": "2026-02-01T20:41:50.473Z"
+  },
+  {
+    "slug": "hotels-in-singapore",
+    "city": "Singapore",
+    "type": "hotels",
+    "timestamp": "2026-02-01T20:41:50.474Z"
+  },
+  {
+    "slug": "airports-near-singapore",
+    "city": "Singapore",
+    "type": "airports",
+    "timestamp": "2026-02-01T20:41:50.475Z"
+  },
+  {
+    "slug": "hotels-in-sydney",
+    "city": "Sydney",
+    "type": "hotels",
+    "timestamp": "2026-02-01T20:41:50.475Z"
+  },
+  {
+    "slug": "airports-near-sydney",
+    "city": "Sydney",
+    "type": "airports",
+    "timestamp": "2026-02-01T20:41:50.476Z"
+  },
+  {
+    "slug": "hotels-in-toronto",
+    "city": "Toronto",
+    "type": "hotels",
+    "timestamp": "2026-02-01T20:41:50.477Z"
+  },
+  {
+    "slug": "airports-near-toronto",
+    "city": "Toronto",
+    "type": "airports",
+    "timestamp": "2026-02-01T20:41:50.477Z"
+  },
+  {
+    "slug": "hotels-in-istanbul",
+    "city": "Istanbul",
+    "type": "hotels",
+    "timestamp": "2026-02-01T20:41:50.478Z"
+  },
+  {
+    "slug": "airports-near-istanbul",
+    "city": "Istanbul",
+    "type": "airports",
+    "timestamp": "2026-02-01T20:41:50.479Z"
+  },
+  {
+    "slug": "hotels-in-los-angeles",
+    "city": "Los Angeles",
+    "type": "hotels",
+    "timestamp": "2026-02-01T20:41:50.479Z"
+  },
+  {
+    "slug": "airports-near-los-angeles",
+    "city": "Los Angeles",
+    "type": "airports",
+    "timestamp": "2026-02-01T20:41:50.480Z"
+  },
+  {
+    "slug": "hotels-in-chicago",
+    "city": "Chicago",
+    "type": "hotels",
+    "timestamp": "2026-02-01T20:41:50.480Z"
+  },
+  {
+    "slug": "airports-near-chicago",
+    "city": "Chicago",
+    "type": "airports",
+    "timestamp": "2026-02-01T20:41:50.481Z"
+  },
+  {
+    "slug": "hotels-in-miami",
+    "city": "Miami",
+    "type": "hotels",
+    "timestamp": "2026-02-01T20:41:50.482Z"
+  },
+  {
+    "slug": "airports-near-miami",
+    "city": "Miami",
+    "type": "airports",
+    "timestamp": "2026-02-01T20:41:50.482Z"
+  },
+  {
+    "slug": "hotels-in-san-francisco",
+    "city": "San Francisco",
+    "type": "hotels",
+    "timestamp": "2026-02-01T20:41:50.483Z"
+  },
+  {
+    "slug": "airports-near-san-francisco",
+    "city": "San Francisco",
+    "type": "airports",
+    "timestamp": "2026-02-01T20:41:50.484Z"
+  },
+  {
+    "slug": "hotels-in-amsterdam",
+    "city": "Amsterdam",
+    "type": "hotels",
+    "timestamp": "2026-02-01T20:41:50.484Z"
+  },
+  {
+    "slug": "airports-near-amsterdam",
+    "city": "Amsterdam",
+    "type": "airports",
+    "timestamp": "2026-02-01T20:41:50.485Z"
+  },
+  {
+    "slug": "hotels-in-brussels",
+    "city": "Brussels",
+    "type": "hotels",
+    "timestamp": "2026-02-01T20:41:50.486Z"
+  },
+  {
+    "slug": "airports-near-brussels",
+    "city": "Brussels",
+    "type": "airports",
+    "timestamp": "2026-02-01T20:41:50.487Z"
+  },
+  {
+    "slug": "hotels-in-munich",
+    "city": "Munich",
+    "type": "hotels",
+    "timestamp": "2026-02-01T20:41:50.488Z"
+  },
+  {
+    "slug": "airports-near-munich",
+    "city": "Munich",
+    "type": "airports",
+    "timestamp": "2026-02-01T20:41:50.489Z"
+  },
+  {
+    "slug": "hotels-in-milan",
+    "city": "Milan",
+    "type": "hotels",
+    "timestamp": "2026-02-01T20:41:50.489Z"
+  },
+  {
+    "slug": "airports-near-milan",
+    "city": "Milan",
+    "type": "airports",
+    "timestamp": "2026-02-01T20:41:50.490Z"
+  },
+  {
+    "slug": "hotels-in-barcelona",
+    "city": "Barcelona",
+    "type": "hotels",
+    "timestamp": "2026-02-01T20:41:50.492Z"
+  },
+  {
+    "slug": "airports-near-barcelona",
+    "city": "Barcelona",
+    "type": "airports",
+    "timestamp": "2026-02-01T20:41:50.492Z"
+  },
+  {
+    "slug": "hotels-in-lisbon",
+    "city": "Lisbon",
+    "type": "hotels",
+    "timestamp": "2026-02-01T20:41:50.493Z"
+  },
+  {
+    "slug": "airports-near-lisbon",
+    "city": "Lisbon",
+    "type": "airports",
+    "timestamp": "2026-02-01T20:41:50.494Z"
+  }
 ]

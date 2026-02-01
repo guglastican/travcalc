@@ -38,5 +38,45 @@
     "duration": "5 hours",
     "slug": "sarajevo-to-zagreb",
     "timestamp": "2026-02-01T21:20:00.000Z"
+  },
+  {
+    "origin": "Split",
+    "destination": "Zagreb",
+    "distance": "Calculating...",
+    "duration": "Calculating...",
+    "slug": "split-to-zagreb",
+    "timestamp": "2026-02-01T20:41:50.454Z"
+  },
+  {
+    "origin": "Vienna",
+    "destination": "Budapest",
+    "distance": "Calculating...",
+    "duration": "Calculating...",
+    "slug": "vienna-to-budapest",
+    "timestamp": "2026-02-01T20:41:50.455Z"
+  },
+  {
+    "origin": "Rome",
+    "destination": "Milan",
+    "distance": "Calculating...",
+    "duration": "Calculating...",
+    "slug": "rome-to-milan",
+    "timestamp": "2026-02-01T20:41:50.456Z"
+  },
+  {
+    "origin": "Paris",
+    "destination": "Amsterdam",
+    "distance": "Calculating...",
+    "duration": "Calculating...",
+    "slug": "paris-to-amsterdam",
+    "timestamp": "2026-02-01T20:41:50.457Z"
+  },
+  {
+    "origin": "New York",
+    "destination": "Miami",
+    "distance": "Calculating...",
+    "duration": "Calculating...",
+    "slug": "new-york-to-miami",
+    "timestamp": "2026-02-01T20:41:50.458Z"
   }
 ]
