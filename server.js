@@ -19,270 +19,215 @@ app.use((req, res, next) => {
 app.use(express.json());
 
 const ROUTES_PATH = path.join(__dirname, 'data', 'routes.json');
+const PLACES_PATH = path.join(__dirname, 'data', 'places.json');
 
-// Helper to read routes
-const getRoutes = () => {
+// Helper to read data
+const readData = (filePath) => {
   try {
-    if (!fs.existsSync(ROUTES_PATH)) {
-      return [];
-    }
-    const data = fs.readFileSync(ROUTES_PATH, 'utf8');
+    if (!fs.existsSync(filePath)) return [];
+    const data = fs.readFileSync(filePath, 'utf8');
     return JSON.parse(data || '[]');
   } catch (error) {
-    console.error('Error reading routes:', error);
+    console.error(`Error reading ${filePath}:`, error);
     return [];
   }
 };
 
-// Helper to save routes
-const saveRoute = (route) => {
+// Helper to save data
+const saveData = (filePath, item) => {
   try {
-    const routes = getRoutes();
-    // Check if route already exists
-    if (!routes.find(r => r.slug === route.slug)) {
-      routes.push(route);
-      fs.writeFileSync(ROUTES_PATH, JSON.stringify(routes, null, 2));
+    const data = readData(filePath);
+    if (!data.find(r => r.slug === item.slug)) {
+      data.push(item);
+      fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
     }
   } catch (error) {
-    console.error('Error saving route:', error);
+    console.error(`Error saving to ${filePath}:`, error);
   }
 };
 
-// Distance Matrix API endpoint (updated to save to DB)
+// Distance Matrix API endpoint
 app.post('/api/calculate-distance', async (req, res) => {
   try {
     const { origin, destination, mode, units } = req.body;
-
-    if (!origin || !destination) {
-      return res.status(400).json({ error: 'Origin and destination are required' });
-    }
+    if (!origin || !destination) return res.status(400).json({ error: 'Locations required' });
 
     const response = await axios.get('https://maps.googleapis.com/maps/api/distancematrix/json', {
-      params: {
-        origins: origin,
-        destinations: destination,
-        mode: mode || 'driving',
-        units: units || 'metric', // Changed default to metric
-        key: process.env.GOOGLE_MAPS_API_KEY
-      }
+      params: { origins: origin, destinations: destination, mode: mode || 'driving', units: units || 'metric', key: process.env.GOOGLE_MAPS_API_KEY }
     });
 
-    if (response.data.status !== 'OK') {
-      throw new Error(response.data.error_message || 'Failed to calculate distance');
-    }
+    if (response.data.status !== 'OK') throw new Error(response.data.error_message || 'API Error');
 
     const result = response.data?.rows?.[0]?.elements?.[0];
-    if (!result || result.status !== 'OK') {
-      throw new Error('No valid route found between locations');
-    }
-
-    const originAddr = response.data?.origin_addresses?.[0] || origin;
-    const destAddr = response.data?.destination_addresses?.[0] || destination;
-    const distanceTxt = result.distance?.text || 'Unknown distance';
-    const durationTxt = result.duration?.text || 'Unknown duration';
-
-    const slug = `${originAddr.toLowerCase().replace(/[^a-z0-9]/g, '-')}-to-${destAddr.toLowerCase().replace(/[^a-z0-9]/g, '-')}`;
+    if (!result || result.status !== 'OK') throw new Error('Route not found');
 
     const routeData = {
-      origin: originAddr,
-      destination: destAddr,
-      distance: distanceTxt,
-      duration: durationTxt,
-      slug: slug,
+      origin: response.data.origin_addresses[0],
+      destination: response.data.destination_addresses[0],
+      distance: result.distance.text,
+      duration: result.duration.text,
+      slug: `${response.data.origin_addresses[0].toLowerCase().replace(/[^a-z0-9]/g, '-')}-to-${response.data.destination_addresses[0].toLowerCase().replace(/[^a-z0-9]/g, '-')}`,
       timestamp: new Date().toISOString()
     };
 
-    saveRoute(routeData);
-
+    saveData(ROUTES_PATH, routeData);
     res.json(routeData);
   } catch (error) {
-    console.error('API Error:', error.message);
     res.status(500).json({ error: error.message });
   }
 });
 
-// Programmatic SEO route
+// Distance pSEO route
 app.get('/udaljenost/:slug', async (req, res) => {
   const { slug } = req.params;
-  const routes = getRoutes();
-  let route = routes.find(r => r.slug === slug);
+  let route = readData(ROUTES_PATH).find(r => r.slug === slug);
 
   if (!route) {
-    // Attempt to calculate on-the-fly
     const parts = slug.split('-to-');
     if (parts.length === 2) {
       const origin = parts[0].replace(/-/g, ' ');
       const destination = parts[1].replace(/-/g, ' ');
-
-      console.log(`Route not found in DB. Calculating on-the-fly for: ${origin} to ${destination}`);
-
       try {
         const response = await axios.get('https://maps.googleapis.com/maps/api/distancematrix/json', {
-          params: {
-            origins: origin,
-            destinations: destination,
-            mode: 'driving',
-            units: 'metric',
-            key: process.env.GOOGLE_MAPS_API_KEY
-          }
+          params: { origins: origin, destinations: destination, mode: 'driving', units: 'metric', key: process.env.GOOGLE_MAPS_API_KEY }
         });
-
-        if (response.data.status === 'OK') {
-          const result = response.data?.rows?.[0]?.elements?.[0];
-          if (result && result.status === 'OK') {
-            const originAddr = response.data?.origin_addresses?.[0] || origin;
-            const destAddr = response.data?.destination_addresses?.[0] || destination;
-
-            route = {
-              origin: originAddr,
-              destination: destAddr,
-              distance: result.distance?.text || 'Unknown',
-              duration: result.duration?.text || 'Unknown',
-              slug: slug,
-              timestamp: new Date().toISOString()
-            };
-
-            saveRoute(route);
-          }
+        const result = response.data?.rows?.[0]?.elements?.[0];
+        if (result && result.status === 'OK') {
+          route = {
+            origin: response.data.origin_addresses[0],
+            destination: response.data.destination_addresses[0],
+            distance: result.distance.text,
+            duration: result.duration.text,
+            slug,
+            timestamp: new Date().toISOString()
+          };
+          saveData(ROUTES_PATH, route);
         }
-      } catch (error) {
-        console.error('Error calculating route on-the-fly:', error.message);
-      }
+      } catch (e) { }
     }
   }
 
-  if (!route) {
-    return res.status(404).send('Udaljenost nije pronađena. Molimo pokušajte ponovo sa početne strane sa tačnim nazivima gradova.');
-  }
+  if (!route) return res.status(404).send('Ruta nije pronađena.');
 
-  // Load and inject into distance.html
-  try {
-    let html = fs.readFileSync(path.join(__dirname, 'distance.html'), 'utf8');
+  let html = fs.readFileSync(path.join(__dirname, 'distance.html'), 'utf8');
+  const title = `Distance from ${route.origin} to ${route.destination}`;
+  const description = `The distance between ${route.origin} and ${route.destination} is ${route.distance}. Travel time is approx ${route.duration}.`;
 
-    // Simple template injection
-    const title = `Distance from ${route.origin} to ${route.destination}`;
-    const description = `Find out the exact distance between ${route.origin} and ${route.destination}. Travel time is approximately ${route.duration}. Driving distance and directions.`;
-    const url = `https://www.calculatortrip.com/udaljenost/${route.slug}`;
-
-    html = html.replace(/<title>.*?<\/title>/, `<title>${title} | Travel Calculator</title>`);
-    html = html.replace(/<meta name="description" content=".*?">/, `<meta name="description" content="${description}">`);
-
-    // Inject OG Tags and JSON-LD
-    const advancedSEO = `
-      <meta property="og:title" content="${title}">
-      <meta property="og:description" content="${description}">
-      <meta property="og:url" content="${url}">
-      <meta property="og:type" content="website">
-      <meta name="twitter:card" content="summary_large_image">
-      
-      <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "Distance",
-        "name": "${title}",
-        "description": "${description}",
-        "url": "${url}",
-        "origin": {
-          "@type": "Place",
-          "name": "${route.origin}"
-        },
-        "destination": {
-          "@type": "Place",
-          "name": "${route.destination}"
-        },
-        "distance": "${route.distance}"
-      }
-      </script>
-
-      <script>
-        window.PSEO_DATA = ${JSON.stringify(route)};
-      </script>
-    `;
-    html = html.replace('</head>', `${advancedSEO}</head>`);
-
-    res.send(html);
-  } catch (err) {
-    res.status(500).send('Error loading page');
-  }
+  html = html.replace(/<title>.*?<\/title>/, `<title>${title} | Travel Calculator</title>`);
+  html = html.replace(/<meta name="description" content=".*?">/, `<meta name="description" content="${description}">`);
+  html = html.replace('</head>', `<script>window.PSEO_DATA = ${JSON.stringify(route)};</script></head>`);
+  res.send(html);
 });
 
-// Dynamic Sitemap
+// Places pSEO route
+app.get('/places/:slug', async (req, res) => {
+  const { slug } = req.params;
+  // slug format: hotels-in-paris or airports-near-london
+  const type = slug.includes('hotels-in-') ? 'hotels' : slug.includes('airports-near-') ? 'airports' : null;
+  const city = slug.replace('hotels-in-', '').replace('airports-near-', '').replace(/-/g, ' ');
+
+  if (!type) return res.status(404).send('Invalid place category');
+
+  let html = fs.readFileSync(path.join(__dirname, 'places.html'), 'utf8');
+  const title = type === 'hotels' ? `Best Hotels in ${city}` : `Airports near ${city}`;
+  const description = type === 'hotels' ? `Find the best rated hotels in ${city} with our Travel Calculator tool.` : `Locate international and local airports near ${city}.`;
+
+  html = html.replace(/<title>.*?<\/title>/, `<title>${title} | Travel Calculator</title>`);
+  html = html.replace(/<meta name="description" content=".*?">/, `<meta name="description" content="${description}">`);
+
+  // Inject data for the frontend to pick up and trigger search
+  html = html.replace('</head>', `
+    <script>
+      window.PLACES_PSEO = { type: "${type}", city: "${city}", slug: "${slug}" };
+    </script>
+  </head>`);
+
+  // Log to places.json for sitemap
+  saveData(PLACES_PATH, { slug, city, type, timestamp: new Date().toISOString() });
+
+  res.send(html);
+});
+
+// Combined Dynamic Sitemap
 app.get('/sitemap-dynamic.xml', (req, res) => {
-  const routes = getRoutes();
-  const baseUrl = 'https://www.calculatortrip.com'; // Change to actual domain if needed
+  const routes = readData(ROUTES_PATH);
+  const places = readData(PLACES_PATH);
+  const baseUrl = 'https://www.calculatortrip.com';
 
   let xml = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>${baseUrl}/</loc>
-    <priority>1.0</priority>
-  </url>`;
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`;
 
-  routes.forEach(route => {
-    xml += `
-  <url>
-    <loc>${baseUrl}/udaljenost/${route.slug}</loc>
-    <lastmod>${route.timestamp ? route.timestamp.split('T')[0] : new Date().toISOString().split('T')[0]}</lastmod>
-    <priority>0.8</priority>
-  </url>`;
+  routes.forEach(r => {
+    xml += `\n  <url><loc>${baseUrl}/udaljenost/${r.slug}</loc><priority>0.8</priority></url>`;
+  });
+  places.forEach(p => {
+    xml += `\n  <url><loc>${baseUrl}/places/${p.slug}</loc><priority>0.7</priority></url>`;
   });
 
   xml += '\n</urlset>';
-  res.type('application/xml');
-  res.send(xml);
+  res.type('application/xml').send(xml);
 });
 
 // Popular Routes API
 app.get('/api/popular-routes', (req, res) => {
-  const routes = getRoutes().slice(-10).reverse(); // Last 10 searches
-  res.json(routes);
+  res.json(readData(ROUTES_PATH).slice(-12).reverse());
 });
 
-// Serve HTML pages
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
-});
+// Redirects and Static serving
+app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
+app.get('/distance', (req, res) => res.sendFile(path.join(__dirname, 'distance.html')));
+app.get('/turnaround-time-calculator', (req, res) => res.sendFile(path.join(__dirname, 'turnaround-time-calculator.html')));
+app.get('/places', (req, res) => res.sendFile(path.join(__dirname, 'places.html')));
 
-app.get('/index.html', (req, res) => {
-  res.redirect(301, '/');
-});
+const pages = ['about', 'privacy', 'terms', 'contact'];
+pages.forEach(p => app.get(`/${p}`, (req, res) => res.sendFile(path.join(__dirname, `${p}.html`))));
 
-app.get('/distance', (req, res) => {
-  res.sendFile(path.join(__dirname, 'distance.html'));
-});
-
-app.get('/distance.html', (req, res) => {
-  res.redirect(301, '/distance');
-});
-
-// Footer page routes (clean URLs)
-const pages = ['about', 'privacy', 'terms', 'contact', 'turnaround-time-calculator', 'places'];
-pages.forEach(page => {
-  app.get(`/${page}`, (req, res) => {
-    res.sendFile(path.join(__dirname, `${page}.html`));
-  });
-});
-
-// Sitemap routes (Index of all sitemaps)
 app.get('/sitemap.xml', (req, res) => {
   const baseUrl = 'https://www.calculatortrip.com';
-  const xml = `<?xml version="1.0" encoding="UTF-8"?>
+  res.type('application/xml').send(`<?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemaps.org/0.9">
-  <sitemap>
-    <loc>${baseUrl}/sitemap-main.xml</loc>
-  </sitemap>
-  <sitemap>
-    <loc>${baseUrl}/sitemap-dynamic.xml</loc>
-  </sitemap>
-</sitemapindex>`;
-  res.type('application/xml');
-  res.send(xml);
+  <sitemap><loc>${baseUrl}/sitemap-main.xml</loc></sitemap>
+  <sitemap><loc>${baseUrl}/sitemap-dynamic.xml</loc></sitemap>
+</sitemapindex>`);
 });
 
-app.get('/sitemap-main.xml', (req, res) => {
-  res.sendFile(path.join(__dirname, 'sitemap-main.xml'));
-});
+app.get('/sitemap-main.xml', (req, res) => res.sendFile(path.join(__dirname, 'sitemap-main.xml')));
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}. Handling API, pSEO, and HTML.`);
-});
+// SEEDING LOGIC - Populate some top routes if empty
+const seedData = async () => {
+  const routes = readData(ROUTES_PATH);
+  const places = readData(PLACES_PATH);
+
+  const topCities = ["London", "Paris", "New York", "Zagreb", "Belgrade", "Sarajevo", "Tokyo", "Berlin", "Rome", "Madrid", "Vienna", "Prague", "Budapest", "Ljubljana", "Split", "Dubai", "Singapore", "Sydney", "Toronto", "Istanbul"];
+
+  // Seed Distance
+  if (routes.length < 10) {
+    const seeds = [
+      { origin: "London", destination: "Paris" },
+      { origin: "New York", destination: "Los Angeles" },
+      { origin: "Zagreb", destination: "Belgrade" },
+      { origin: "Berlin", destination: "Munich" },
+      { origin: "Sarajevo", destination: "Zagreb" },
+      { origin: "Split", destination: "Zagreb" },
+      { origin: "Vienna", destination: "Budapest" },
+      { origin: "Rome", destination: "Milan" }
+    ];
+    seeds.forEach(s => {
+      const slug = `${s.origin.toLowerCase().replace(/[^a-z0-9]/g, '-')}-to-${s.destination.toLowerCase().replace(/[^a-z0-9]/g, '-')}`;
+      saveData(ROUTES_PATH, { ...s, distance: "Calculating...", duration: "Calculating...", slug, timestamp: new Date().toISOString() });
+    });
+  }
+
+  // Seed Places
+  if (places.length < 10) {
+    topCities.forEach(city => {
+      const hotelSlug = `hotels-in-${city.toLowerCase().replace(/[^a-z0-9]/g, '-')}`;
+      const airportSlug = `airports-near-${city.toLowerCase().replace(/[^a-z0-9]/g, '-')}`;
+      saveData(PLACES_PATH, { slug: hotelSlug, city, type: "hotels", timestamp: new Date().toISOString() });
+      saveData(PLACES_PATH, { slug: airportSlug, city, type: "airports", timestamp: new Date().toISOString() });
+    });
+  }
+};
+seedData();
+
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

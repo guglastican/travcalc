@@ -220,6 +220,20 @@
         searchPlaces("airport", airportMap, "airports-list");
       });
 
+      // pSEO Automatic Trigger
+      if (window.PLACES_PSEO) {
+        const { type, city } = window.PLACES_PSEO;
+        if (type === 'hotels') {
+          document.getElementById("location-input").value = city;
+          searchPlaces("lodging", hotelMap, "hotels-list");
+        } else if (type === 'airports') {
+          // Switch tab first
+          document.querySelector('[data-tab="airports"]').click();
+          document.getElementById("airport-location-input").value = city;
+          searchPlaces("airport", airportMap, "airports-list");
+        }
+      }
+
       function searchPlaces(type, map, listId) {
         const locationInput = type === "lodging"
           ? document.getElementById("location-input").value
