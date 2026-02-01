@@ -157,18 +157,44 @@ app.get('/udaljenost/:slug', async (req, res) => {
 
     // Simple template injection
     const title = `Distance from ${route.origin} to ${route.destination}`;
-    const description = `The distance between ${route.origin} and ${route.destination} is ${route.distance}. Travel time is approximately ${route.duration}.`;
+    const description = `Find out the exact distance between ${route.origin} and ${route.destination}. Travel time is approximately ${route.duration}. Driving distance and directions.`;
+    const url = `https://www.calculatortrip.com/udaljenost/${route.slug}`;
 
     html = html.replace(/<title>.*?<\/title>/, `<title>${title} | Travel Calculator</title>`);
     html = html.replace(/<meta name="description" content=".*?">/, `<meta name="description" content="${description}">`);
 
-    // Inject JSON for client-side to pick up
-    const scriptInjection = `
+    // Inject OG Tags and JSON-LD
+    const advancedSEO = `
+      <meta property="og:title" content="${title}">
+      <meta property="og:description" content="${description}">
+      <meta property="og:url" content="${url}">
+      <meta property="og:type" content="website">
+      <meta name="twitter:card" content="summary_large_image">
+      
+      <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Distance",
+        "name": "${title}",
+        "description": "${description}",
+        "url": "${url}",
+        "origin": {
+          "@type": "Place",
+          "name": "${route.origin}"
+        },
+        "destination": {
+          "@type": "Place",
+          "name": "${route.destination}"
+        },
+        "distance": "${route.distance}"
+      }
+      </script>
+
       <script>
         window.PSEO_DATA = ${JSON.stringify(route)};
       </script>
     `;
-    html = html.replace('</head>', `${scriptInjection}</head>`);
+    html = html.replace('</head>', `${advancedSEO}</head>`);
 
     res.send(html);
   } catch (err) {
@@ -233,8 +259,23 @@ pages.forEach(page => {
   });
 });
 
-// Sitemap routes
+// Sitemap routes (Index of all sitemaps)
 app.get('/sitemap.xml', (req, res) => {
+  const baseUrl = 'https://www.calculatortrip.com';
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemaps.org/0.9">
+  <sitemap>
+    <loc>${baseUrl}/sitemap-main.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>${baseUrl}/sitemap-dynamic.xml</loc>
+  </sitemap>
+</sitemapindex>`;
+  res.type('application/xml');
+  res.send(xml);
+});
+
+app.get('/sitemap-main.xml', (req, res) => {
   res.sendFile(path.join(__dirname, 'sitemap-main.xml'));
 });
 
