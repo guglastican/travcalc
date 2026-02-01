@@ -329,7 +329,7 @@ app.get('/sitemap.xml', (req, res) => {
   const baseUrl = 'https://www.calculatortrip.com';
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>
-<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemaps.org/0.9">
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <sitemap><loc>${baseUrl}/sitemap-main.xml</loc></sitemap>
   <sitemap><loc>${baseUrl}/sitemap-dynamic.xml</loc></sitemap>
 </sitemapindex>`.trim();
