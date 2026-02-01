@@ -24,11 +24,19 @@
     {
       "src": "*.xml",
       "use": "@vercel/static"
+    },
+    {
+      "src": "*.xsl",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
     {
-      "src": "/api/(.*)",
+      "src": "/sitemap-dynamic.xml",
+      "dest": "server.js"
+    },
+    {
+      "src": "/sitemap.xml",
       "dest": "server.js"
     },
     {
@@ -36,8 +44,24 @@
       "dest": "server.js"
     },
     {
-      "src": "/sitemap-dynamic.xml",
+      "src": "/places/(.*)",
       "dest": "server.js"
+    },
+    {
+      "src": "/turnaround/(.*)",
+      "dest": "server.js"
+    },
+    {
+      "src": "/api/(.*)",
+      "dest": "server.js"
+    },
+    {
+      "src": "/sitemap-main.xml",
+      "dest": "/sitemap-main.xml"
+    },
+    {
+      "src": "/sitemap.xsl",
+      "dest": "/sitemap.xsl"
     },
     {
       "src": "/about",
@@ -64,8 +88,8 @@
       "dest": "/places.html"
     },
     {
-      "src": "/sitemap.xml",
-      "dest": "/sitemap-main.xml"
+      "src": "/distance",
+      "dest": "/distance.html"
     },
     {
       "src": "/robots.txt",
@@ -74,10 +98,6 @@
     {
       "src": "/",
       "dest": "/index.html"
-    },
-    {
-      "src": "/distance",
-      "dest": "/distance.html"
     },
     {
       "src": "/([^/.]+)",

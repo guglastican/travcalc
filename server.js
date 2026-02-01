@@ -276,23 +276,39 @@ app.get('/sitemap-dynamic.xml', (req, res) => {
 
   // Distance routes
   routes.forEach(r => {
-    xml += `\n  <url><loc>${baseUrl}/udaljenost/${r.slug}</loc><lastmod>${today}</lastmod><priority>0.8</priority></url>`;
+    xml += `
+  <url>
+    <loc>${baseUrl}/udaljenost/${r.slug}</loc>
+    <lastmod>${today}</lastmod>
+    <priority>0.8</priority>
+  </url>`;
   });
 
   // Places routes
   places.forEach(p => {
-    xml += `\n  <url><loc>${baseUrl}/places/${p.slug}</loc><lastmod>${today}</lastmod><priority>0.7</priority></url>`;
+    xml += `
+  <url>
+    <loc>${baseUrl}/places/${p.slug}</loc>
+    <lastmod>${today}</lastmod>
+    <priority>0.7</priority>
+  </url>`;
   });
 
-  // Turnaround routes (from seeded cities)
+  // Turnaround routes
   const topCities = ["London", "Paris", "New York", "Zagreb", "Belgrade", "Sarajevo", "Tokyo", "Berlin", "Rome", "Madrid"];
   topCities.forEach(city => {
-    const slug = cleanSlug(city);
-    xml += `\n  <url><loc>${baseUrl}/turnaround/${slug}</loc><lastmod>${today}</lastmod><priority>0.6</priority></url>`;
+    xml += `
+  <url>
+    <loc>${baseUrl}/turnaround/${cleanSlug(city)}</loc>
+    <lastmod>${today}</lastmod>
+    <priority>0.6</priority>
+  </url>`;
   });
 
   xml += '\n</urlset>';
-  res.type('application/xml').send(xml);
+  res.set('Content-Type', 'application/xml; charset=utf-8');
+  res.set('X-Content-Type-Options', 'nosniff');
+  res.send(xml.trim());
 });
 
 // Popular Routes API
@@ -311,15 +327,21 @@ pages.forEach(p => app.get(`/${p}`, (req, res) => res.sendFile(path.join(__dirna
 
 app.get('/sitemap.xml', (req, res) => {
   const baseUrl = 'https://www.calculatortrip.com';
-  res.type('application/xml').send(`<?xml version="1.0" encoding="UTF-8"?>
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemaps.org/0.9">
   <sitemap><loc>${baseUrl}/sitemap-main.xml</loc></sitemap>
   <sitemap><loc>${baseUrl}/sitemap-dynamic.xml</loc></sitemap>
-</sitemapindex>`);
+</sitemapindex>`.trim();
+  res.set('Content-Type', 'application/xml; charset=utf-8');
+  res.set('X-Content-Type-Options', 'nosniff');
+  res.send(xml);
 });
 
-app.get('/sitemap-main.xml', (req, res) => res.sendFile(path.join(__dirname, 'sitemap-main.xml')));
+app.get('/sitemap-main.xml', (req, res) => {
+  res.set('Content-Type', 'application/xml; charset=utf-8');
+  res.sendFile(path.join(__dirname, 'sitemap-main.xml'));
+});
 
 // SEEDING LOGIC - Populate some top routes if empty
 const seedData = async () => {
