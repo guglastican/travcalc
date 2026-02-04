@@ -145,7 +145,7 @@ app.get('/udaljenost/:slug', async (req, res) => {
 
   // Generate dynamic SEO content
   const dynamicArticle = `
-    <article class="dynamic-seo-content" style="margin-top: 40px; padding: 20px; background: #fff; border-radius: 12px; border: 1px solid #eee;">
+    <article class="dynamic-seo-content" style="margin-top: 40px;">
       <h2>Traveling between ${route.origin} and ${route.destination}</h2>
       <p>Planning a trip from <strong>${route.origin}</strong> to <strong>${route.destination}</strong>? Understanding the travel logistics is key to a smooth journey. Whether you are traveling for business or leisure, knowing the distance and estimated travel time helps you manage your schedule effectively.</p>
       
@@ -210,9 +210,43 @@ app.get('/places/:slug', async (req, res) => {
   const title = type === 'hotels' ? `Best Hotels in ${city}` : `Airports near ${city}`;
   const description = type === 'hotels' ? `Find the best rated hotels in ${city}.` : `Locate airports near ${city}.`;
 
+  // Generate dynamic SEO content
+  const dynamicArticle = type === 'hotels'
+    ? `
+    <article class="dynamic-seo-content" style="margin-top: 40px;">
+      <h2>Discover the Best Hotels in ${city}</h2>
+      <p>Looking for the perfect accommodation in <strong>${city}</strong>? Our hotel finder makes it easy to discover top-rated hotels in your destination. Whether you're planning a business trip, family vacation, or romantic getaway, finding the right hotel is essential for a comfortable stay.</p>
+      
+      <h3>Why Choose Hotels in ${city}?</h3>
+      <p>${city} offers a diverse range of accommodations to suit every budget and preference. From luxury five-star hotels with world-class amenities to cozy boutique hotels with personalized service, you'll find the perfect place to rest after exploring the city's attractions.</p>
+
+      <h3>How to Find Your Ideal Hotel</h3>
+      <p>Use our interactive map above to browse hotels by location. You can search within a specific radius to find accommodations near landmarks, business districts, or transportation hubs. Each hotel listing includes ratings, addresses, and location markers to help you make an informed decision.</p>
+      
+      <p>Start your search above to discover available hotels in ${city} and book your perfect stay!</p>
+    </article>
+  `
+    : `
+    <article class="dynamic-seo-content" style="margin-top: 40px;">
+      <h2>Airports Near ${city}</h2>
+      <p>Planning your travel to or from <strong>${city}</strong>? Knowing which airports serve the area helps you find the most convenient flight options and plan your ground transportation efficiently.</p>
+      
+      <h3>Finding the Right Airport</h3>
+      <p>The region around ${city} may be served by multiple airports, including major international hubs and smaller regional airports. Each airport offers different flight options, amenities, and accessibility to the city center.</p>
+
+      <h3>Airport Search Tips</h3>
+      <p>Use our map-based search tool above to locate all airports within your specified radius. This helps you compare distances, evaluate transportation options, and choose the most convenient arrival or departure point for your journey.</p>
+      
+      <p>Search above to discover all airports serving the ${city} area and plan your travel accordingly!</p>
+    </article>
+  `;
+
   html = html.replace(/<title>.*?<\/title>/, `<title>${title} | Travel Calculator</title>`);
   html = html.replace(/<meta name="description" content=".*?">/, `<meta name="description" content="${description}">`);
   html = html.replace('</head>', `<script>window.PLACES_PSEO = { type: "${type}", city: "${city}", slug: "${slug}" };</script></head>`);
+
+  // Inject SEO article before footer
+  html = html.replace('</main>', `${dynamicArticle}</main>`);
   html = html.replace('</footer>', `${generateFooterLinks()}</footer>`);
 
   saveData(PLACES_PATH, { slug, city, type, timestamp: new Date().toISOString() });
