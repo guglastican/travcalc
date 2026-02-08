@@ -141,11 +141,11 @@ app.get('/distance/:slug', async (req, res) => {
   let html = fs.readFileSync(path.join(__dirname, 'distance.html'), 'utf8');
   const title = `Distance from ${route.origin} to ${route.destination}`;
   const description = `Find out the exact distance between ${route.origin} and ${route.destination}. Travel time is approximately ${route.duration}. Driving distance and directions.`;
-  html = html.replace(/<h1 id="distanceCalculatorTitle">.*?<\/h1>/, `<h1 id="distanceCalculatorTitle">${dynamicTitle}</h1>`);
   const url = `https://www.calculatortrip.com/distance/${route.slug}`;
+  const dynamicTitle = `Traveling between ${route.origin} and ${route.destination}`;
+  html = html.replace(/<h1 id="distanceCalculatorTitle">.*?<\/h1>/, `<h1 id="distanceCalculatorTitle">${dynamicTitle}</h1>`);
 
   // Generate dynamic SEO content
-  const dynamicTitle = `Traveling between ${route.origin} and ${route.destination}`;
   const dynamicArticle = `
     <article class="dynamic-seo-content" style="margin-top: 40px;">
       <p>Planning a trip from <strong>${route.origin}</strong> to <strong>${route.destination}</strong>? Understanding the travel logistics is key to a smooth journey. Whether you are traveling for business or leisure, knowing the distance and estimated travel time helps you manage your schedule effectively.</p>
