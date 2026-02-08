@@ -197,14 +197,13 @@ app.get('/distance/:slug', async (req, res) => {
     ${EXPLORE_TOOLS_HTML}
   </main>`);
 
-  // Inject OG Tags and JSON-LD
+  // Inject OG Tags and JSON-LD (replacing existing canonical if present)
   const advancedSEO = `
     <meta property="og:title" content="${title}">
     <meta property="og:description" content="${description}">
     <meta property="og:url" content="${url}">
     <meta property="og:type" content="website">
     <meta property="og:image" content="https://www.calculatortrip.com/social-share.jpg">
-    <link rel="canonical" href="${url}">
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -223,6 +222,10 @@ app.get('/distance/:slug', async (req, res) => {
     }
     </script>
   `;
+
+  // Replace default canonical with dynamic one
+  html = html.replace(/<link rel="canonical" href=".*?">/, `<link rel="canonical" href="${url}">`);
+  html = html.replace(/<link rel="canonical" href=".*?" \/>/, `<link rel="canonical" href="${url}">`);
 
   html = html.replace('</head>', `${advancedSEO}</head>`);
   html = html.replace('</head>', `<script>window.PSEO_DATA = ${JSON.stringify(route)};</script></head>`);
@@ -378,8 +381,11 @@ app.get('/places/:slug', async (req, res) => {
     <meta property="og:url" content="${url}">
     <meta property="og:type" content="website">
     <meta property="og:image" content="https://www.calculatortrip.com/social-share.jpg">
-    <link rel="canonical" href="${url}">
   `;
+
+  // Replace default canonical with dynamic one
+  html = html.replace(/<link rel="canonical" href=".*?">/, `<link rel="canonical" href="${url}">`);
+  html = html.replace(/<link rel="canonical" href=".*?" \/>/, `<link rel="canonical" href="${url}">`);
 
   html = html.replace(/<title>.*?<\/title>/, `<title>${title} | Travel Calculator</title>`);
   html = html.replace(/<meta name="description" content=".*?">/, `<meta name="description" content="${description}">`);
@@ -423,8 +429,11 @@ app.get('/turnaround/:slug', async (req, res) => {
     <meta property="og:url" content="${url}">
     <meta property="og:type" content="website">
     <meta property="og:image" content="https://www.calculatortrip.com/social-share.jpg">
-    <link rel="canonical" href="${url}">
   `;
+
+  // Replace default canonical with dynamic one
+  html = html.replace(/<link rel="canonical" href=".*?">/, `<link rel="canonical" href="${url}">`);
+  html = html.replace(/<link rel="canonical" href=".*?" \/>/, `<link rel="canonical" href="${url}">`);
 
   html = html.replace(/<title>.*?<\/title>/, `<title>${title} | Travel Calculator</title>`);
   html = html.replace(/<meta name="description" content=".*?">/, `<meta name="description" content="${description}">`);
