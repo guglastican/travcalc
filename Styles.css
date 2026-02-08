@@ -622,3 +622,75 @@ footer {
     font-size: 1.2rem;
   }
 }
+
+/* Explore Our Tools Section */
+.explore-tools-section {
+  margin-top: 60px;
+  margin-bottom: 40px;
+  padding: 40px 20px;
+  background: rgba(40, 167, 69, 0.03);
+  border-radius: 16px;
+  border: 1px solid #eee;
+  width: 100%;
+  max-width: 900px;
+  box-sizing: border-box;
+}
+
+.explore-tools-section h2 {
+  font-size: 1.8rem;
+  margin-bottom: 30px;
+  color: #333;
+  text-align: center;
+}
+
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.tool-card {
+  background: #ffffff;
+  padding: 25px 20px;
+  border-radius: 12px;
+  text-decoration: none;
+  color: #333;
+  text-align: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid #eee;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.tool-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  border-color: #5cb85c;
+}
+
+.tool-card .icon {
+  font-size: 2rem;
+  margin-bottom: 12px;
+}
+
+.tool-card span {
+  font-weight: 600;
+  font-size: 1.05rem;
+}
+
+.tool-card p {
+  font-size: 0.9rem;
+  color: #666;
+  margin: 10px 0 0;
+  line-height: 1.4;
+  text-align: center;
+  max-width: 100%;
+}
+
+@media (max-width: 600px) {
+  .tools-grid {
+    grid-template-columns: 1fr;
+  }
+}

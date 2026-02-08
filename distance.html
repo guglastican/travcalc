@@ -180,7 +180,33 @@
             <p>The route from <b>${origin}</b> to <b>${destination}</b> is dotted with various points of interest. Travelers might encounter historical landmarks, scenic viewpoints, or vibrant local communities. Highlighting these aspects can transform a simple commute into an enriching adventure.</p>
 
             <h3>Conclusion</h3>
-            <p>In conclusion, the journey from <b>${origin}</b> to <b>${destination}</b> is more than just a transfer from one place to another. Once you arrive, you might need to find <a href="/places/hotels-in-${destination.toLowerCase().replace(/ /g, '-')}">hotels in ${destination}</a> or check nearby <a href="/places/airports-near-${destination.toLowerCase().replace(/ /g, '-')}">airports</a>. For multi-day stays, our <a href="/turnaround-time-calculator">Turnaround Calculator</a> can help you manage your schedule.</p>
+            <p>Once you arrive, you might need to find hotels or check nearby airports. Our unified tools below can help you finalize your stay and schedule.</p>
+            
+            <section class="explore-tools-section">
+              <h2>Explore Our Travel Tools</h2>
+              <div class="tools-grid">
+                <a href="/" class="tool-card">
+                  <div class="icon">🏠</div>
+                  <span>Trip Planner</span>
+                  <p>Plan your entire journey from start to finish with our comprehensive core tool.</p>
+                </a>
+                <a href="/distance" class="tool-card">
+                  <div class="icon">🚗</div>
+                  <span>Distance Calculator</span>
+                  <p>Get accurate driving, walking, and transit distances between any two cities.</p>
+                </a>
+                <a href="/places" class="tool-card">
+                  <div class="icon">🏨</div>
+                  <span>Hotel & Airport Finder</span>
+                  <p>Discover the best places to stay and most convenient gateways for your trip.</p>
+                </a>
+                <a href="/turnaround-time-calculator" class="tool-card">
+                  <div class="icon">⏱️</div>
+                  <span>Turnaround Calculator</span>
+                  <p>Master your schedule by calculating gaps and turnaround days between trip segments.</p>
+                </a>
+              </div>
+            </section>
           </article>
         `;
         article.innerHTML = articleContent;

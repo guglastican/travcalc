@@ -21,6 +21,34 @@ app.use(express.json());
 const ROUTES_PATH = path.join(__dirname, 'data', 'routes.json');
 const PLACES_PATH = path.join(__dirname, 'data', 'places.json');
 
+const EXPLORE_TOOLS_HTML = `
+  <section class="explore-tools-section">
+    <h2>Explore Our Travel Tools</h2>
+    <div class="tools-grid">
+      <a href="/" class="tool-card">
+        <div class="icon">🏠</div>
+        <span>Trip Planner</span>
+        <p>Plan your entire journey from start to finish with our comprehensive core tool.</p>
+      </a>
+      <a href="/distance" class="tool-card">
+        <div class="icon">🚗</div>
+        <span>Distance Calculator</span>
+        <p>Get accurate driving, walking, and transit distances between any two cities.</p>
+      </a>
+      <a href="/places" class="tool-card">
+        <div class="icon">🏨</div>
+        <span>Hotel & Airport Finder</span>
+        <p>Discover the best places to stay and most convenient gateways for your trip.</p>
+      </a>
+      <a href="/turnaround-time-calculator" class="tool-card">
+        <div class="icon">⏱️</div>
+        <span>Turnaround Calculator</span>
+        <p>Master your schedule by calculating gaps and turnaround days between trip segments.</p>
+      </a>
+    </div>
+  </section>
+`;
+
 // Helper to read data
 const readData = (filePath) => {
   try {
@@ -163,10 +191,10 @@ app.get('/distance/:slug', async (req, res) => {
   html = html.replace(/<title>.*?<\/title>/, `<title>${title} | Travel Calculator</title>`);
   html = html.replace(/<meta name="description" content=".*?">/, `<meta name="description" content="${description}">`);
 
-  // Inject article before the footer or at the end of main
+  // Inject article and unified navigation
   html = html.replace('</main>', `
     ${dynamicArticle}
-    <p style="margin-top: 20px;">Use our <a href="/distance">Distance Calculator</a> to find the exact mileage for other routes, or explore nearby accommodations with our <a href="/places">Hotel & Airport Finder</a>. If you're scheduling a complex trip, our <a href="/turnaround-time-calculator">Turnaround Day Calculator</a> can help you stay on track.</p>
+    ${EXPLORE_TOOLS_HTML}
   </main>`);
 
   // Inject OG Tags and JSON-LD
@@ -343,13 +371,23 @@ app.get('/places/:slug', async (req, res) => {
     </article>
   `;
 
+  const url = `https://www.calculatortrip.com/places/${slug}`;
+  const advancedSEO = `
+    <meta property="og:title" content="${title}">
+    <meta property="og:description" content="${description}">
+    <meta property="og:url" content="${url}">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://www.calculatortrip.com/social-share.jpg">
+    <link rel="canonical" href="${url}">
+  `;
+
   html = html.replace(/<title>.*?<\/title>/, `<title>${title} | Travel Calculator</title>`);
   html = html.replace(/<meta name="description" content=".*?">/, `<meta name="description" content="${description}">`);
-  html = html.replace('</head>', `<script>window.PLACES_PSEO = { type: "${type}", city: "${city}", slug: "${slug}" };</script></head>`);
+  html = html.replace('</head>', `${advancedSEO}<script>window.PLACES_PSEO = { type: "${type}", city: "${city}", slug: "${slug}" };</script></head>`);
 
   // Inject SEO article into the correct placeholder
   const placeholderId = type === 'hotels' ? 'id="pseo-article-hotels"' : 'id="pseo-article-airports"';
-  html = html.replace(`<div ${placeholderId}></div>`, `<div ${placeholderId}>${dynamicArticle}</div>`);
+  html = html.replace(`<div ${placeholderId}></div>`, `<div ${placeholderId}>${dynamicArticle}${EXPLORE_TOOLS_HTML}</div>`);
 
   saveData(PLACES_PATH, { slug, city, type, timestamp: new Date().toISOString() });
   res.send(html);
@@ -378,14 +416,27 @@ app.get('/turnaround/:slug', async (req, res) => {
     </article>
   `;
 
+  const url = `https://www.calculatortrip.com/turnaround/${slug}`;
+  const advancedSEO = `
+    <meta property="og:title" content="${title}">
+    <meta property="og:description" content="${description}">
+    <meta property="og:url" content="${url}">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://www.calculatortrip.com/social-share.jpg">
+    <link rel="canonical" href="${url}">
+  `;
+
   html = html.replace(/<title>.*?<\/title>/, `<title>${title} | Travel Calculator</title>`);
   html = html.replace(/<meta name="description" content=".*?">/, `<meta name="description" content="${description}">`);
 
-  // Inject article
-  html = html.replace('</main>', `${dynamicArticle}</main>`);
+  // Inject article and navigation
+  html = html.replace('</main>', `
+    ${dynamicArticle}
+    ${EXPLORE_TOOLS_HTML}
+  </main>`);
 
-  // Inject data to trigger search in turnaround calculator
-  html = html.replace('</head>', `<script>window.TURNAROUND_PSEO = { city: "${city}", slug: "${slug}" };</script></head>`);
+  // Inject data and SEO
+  html = html.replace('</head>', `${advancedSEO}<script>window.TURNAROUND_PSEO = { city: "${city}", slug: "${slug}" };</script></head>`);
 
   res.send(html);
 });
