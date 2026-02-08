@@ -50,7 +50,7 @@ async function handleDistanceCalculation() {
         }
 
         // Redirect to the pSEO URL
-        window.location.href = `/udaljenost/${data.slug}`;
+        window.location.href = `/distance/${data.slug}`;
 
     } catch (error) {
         console.error('Error calculating distance:', error);

@@ -40,7 +40,7 @@
       "dest": "server.js"
     },
     {
-      "src": "/udaljenost/(.*)",
+      "src": "/distance/(.*)",
       "dest": "server.js"
     },
     {

@@ -96,7 +96,7 @@ app.post('/api/calculate-distance', async (req, res) => {
 });
 
 // Distance pSEO route
-app.get('/udaljenost/:slug', async (req, res) => {
+app.get('/distance/:slug', async (req, res) => {
   const { slug } = req.params;
   const routes = readData(ROUTES_PATH);
   let route = routes.find(r => r.slug === slug);
@@ -119,7 +119,7 @@ app.get('/udaljenost/:slug', async (req, res) => {
 
           // Redirect to clean slug if current one is messy
           if (slug !== clean) {
-            return res.redirect(301, `/udaljenost/${clean}`);
+            return res.redirect(301, `/distance/${clean}`);
           }
 
           route = {
@@ -136,13 +136,13 @@ app.get('/udaljenost/:slug', async (req, res) => {
     }
   }
 
-  if (!route) return res.status(404).send('Udaljenost nije pronađena.');
+  if (!route) return res.status(404).send('Distance route not found.');
 
   let html = fs.readFileSync(path.join(__dirname, 'distance.html'), 'utf8');
   const title = `Distance from ${route.origin} to ${route.destination}`;
   const description = `Find out the exact distance between ${route.origin} and ${route.destination}. Travel time is approximately ${route.duration}. Driving distance and directions.`;
   html = html.replace(/<h1 id="distanceCalculatorTitle">.*?<\/h1>/, `<h1>${dynamicTitle}</h1>`);
-  const url = `https://www.calculatortrip.com/udaljenost/${route.slug}`;
+  const url = `https://www.calculatortrip.com/distance/${route.slug}`;
 
   // Generate dynamic SEO content
   const dynamicTitle = `Traveling between ${route.origin} and ${route.destination}`;
@@ -198,8 +198,12 @@ app.get('/udaljenost/:slug', async (req, res) => {
 
   html = html.replace('</head>', `${advancedSEO}</head>`);
   html = html.replace('</head>', `<script>window.PSEO_DATA = ${JSON.stringify(route)};</script></head>`);
-  html = html.replace('</head>', `<script>window.PSEO_DATA = ${JSON.stringify(route)};</script></head>`);
   res.send(html);
+});
+
+// Legacy redirect for /udaljenost
+app.get('/udaljenost/:slug', (req, res) => {
+  res.redirect(301, `/distance/${req.params.slug}`);
 });
 
 // Places pSEO route
@@ -401,7 +405,7 @@ app.get('/sitemap-dynamic.xml', (req, res) => {
   routes.forEach(r => {
     xml += `
   <url>
-    <loc>${baseUrl}/udaljenost/${r.slug}</loc>
+    <loc>${baseUrl}/distance/${r.slug}</loc>
     <lastmod>${today}</lastmod>
     <priority>0.8</priority>
   </url>`;
