@@ -10,7 +10,7 @@ body {
 /* Container for main content centering (used on <main class="container">) */
 .container {
   margin: auto;
-  text-align: left;
+  text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -40,6 +40,7 @@ header {
 .logo {
   margin: 0;
   font-size: 1.8rem;
+  font-weight: bold;
 }
 
 header img {
@@ -258,8 +259,7 @@ footer {
 
 .narrow-article {
   max-width: 800px;
-  align-items: left;
-  text-align: left;
+  text-align: center;
   margin: 0 auto;
   padding: 20px;
 }

@@ -16,7 +16,7 @@
 <body>
   <header>
     <div class="header-container">
-      <h1 id="travelCalculatorTitle" class="logo">Travel Calculator</h1>
+      <div id="travelCalculatorLogo" class="logo">Travel Calculator</div>
       <button class="menu-toggle" aria-label="Toggle navigation">
         <span class="hamburger"></span>
       </button>
@@ -69,7 +69,7 @@
         </div>
         <div id="distanceResults" class="results"></div>
       </fieldset>
-    </div id="article" class="container">
+    </div>
     <article class="narrow-article">
       <h2>Why Use a Distance Calculator?</h2>
       <p>In today’s fast-paced world, accuracy and convenience are key when it comes to travel, planning, or logistics.
@@ -170,7 +170,7 @@
         const { origin, destination, distance, duration } = data;
         const articleContent = `
           <article>
-            <h2>Exploring the Journey from <b>${origin}</b> to <b>${destination}</b></h2>
+            <h3>Exploring the Journey from <b>${origin}</b> to <b>${destination}</b></h3>
             <p>Embark on a virtual journey as we explore the distance between <b>${origin}</b> and <b>${destination}</b>. This route not only connects two distinct locations but also offers a passage through diverse landscapes and experiences.</p>
             <p>The total distance between <b>${origin}</b> and <b>${destination}</b> is approximately <b>${distance}</b>. This calculation provides a clear understanding of the physical separation between these two points, essential for planning travel and logistics.</p>
             <p>Traveling from <b>${origin}</b> to <b>${destination}</b> typically takes around <b>${duration}</b>. The duration can vary based on the mode of transportation, traffic conditions, and any planned stops along the way.</p>
@@ -179,7 +179,7 @@
             <p>When planning a trip between <b>${origin} and <b>${destination}</b>, consider factors such as the best time of year to travel, available transportation options, and potential cultural experiences. Each of these elements contributes to a more fulfilling and memorable journey.</p>
             <p>The route from <b>${origin}</b> to <b>${destination}</b> is dotted with various points of interest. Travelers might encounter historical landmarks, scenic viewpoints, or vibrant local communities. Highlighting these aspects can transform a simple commute into an enriching adventure.</p>
 
-            <h2>Conclusion</h2>
+            <h3>Conclusion</h3>
             <p>In conclusion, the journey from <b>${origin}</b> to <b>${destination}</b> is more than just a transfer from one place to another. It represents an opportunity to explore, discover, and connect with the world around us. Whether for business or pleasure, understanding the nuances of this route can greatly enhance the travel experience.</p>
           </article>
         `;
