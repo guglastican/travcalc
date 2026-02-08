@@ -1,22 +1,96 @@
 /* Overall Page Style */
 body {
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-    background-color: #F3ECE4;
-    line-height: 1.5;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: #F3ECE4;
+  line-height: 1.5;
+}
+
+/* Internal Links Section (SEO) */
+.internal-links {
+  margin-top: 50px;
+  padding: 40px 20px;
+  border-top: 2px solid #eee;
+  font-size: 0.95em;
+  width: 100%;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  background: #fdfdfd;
+  border-radius: 8px;
+}
+
+.internal-links h4 {
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 1.1em;
+  text-align: center;
+}
+
+.internal-links-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+}
+
+.internal-link-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.internal-link-list li {
+  margin-bottom: 8px;
+}
+
+.internal-link-list a {
+  color: #007bff;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.internal-link-list a:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+  .internal-links-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
 }
 
 /* Container for main content centering (used on <main class="container">) */
 .container {
   margin: auto;
-  text-align: center;
+  text-align: left;
+  /* Left align text for better readability inside centered column */
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 20px;
   width: 100%;
+  max-width: 1200px;
   box-sizing: border-box;
+}
+
+.container h1,
+.container h2,
+.container h3 {
+  text-align: center;
+  width: 100%;
+}
+
+.container p,
+.container ul,
+.container ol {
+  width: 100%;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.6;
 }
 
 /* Header with Logo and Title */
@@ -101,7 +175,7 @@ nav ul li a:hover {
   padding: 40px;
   background-color: #ffffff;
   border-radius: 12px;
-  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
   max-width: 800px;
   width: 100%;
   margin-top: 20px;
@@ -259,9 +333,25 @@ footer {
 
 .narrow-article {
   max-width: 800px;
-  text-align: center;
+  text-align: left;
   margin: 0 auto;
   padding: 20px;
+  line-height: 1.7;
+}
+
+.narrow-article h2,
+.narrow-article h3 {
+  text-align: center;
+}
+
+.narrow-article ul,
+.narrow-article ol {
+  padding-left: 20px;
+  margin-bottom: 20px;
+}
+
+.narrow-article li {
+  margin-bottom: 10px;
 }
 
 /* Top Section: Left & Right Columns */
@@ -509,21 +599,23 @@ footer {
     flex-direction: column;
     gap: 20px;
   }
-  
+
   .calc-schedule,
   .results {
     flex: 1 0 100%;
   }
-  
-  header, .form-section, .top-section {
+
+  header,
+  .form-section,
+  .top-section {
     margin: 10px;
     padding: 10px;
   }
-  
+
   .title-section h1 {
     font-size: 2rem;
   }
-  
+
   .title-section p {
     font-size: 1.2rem;
   }

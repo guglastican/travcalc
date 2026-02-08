@@ -260,15 +260,15 @@ const generateFooterLinks = () => {
   const hotelLinks = cities.map(c => `<li><a href="/places/hotels-in-${cleanSlug(c)}">Hotels in ${c}</a></li>`).join('');
 
   return `
-    <section class="internal-links" style="margin-top: 50px; padding-top: 20px; border-top: 2px solid #eee; font-size: 0.9em;">
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+    <section class="internal-links">
+      <div class="internal-links-grid">
         <div>
           <h4>Travel Schedules</h4>
-          <ul style="list-style: none; padding: 0;">${links}</ul>
+          <ul class="internal-link-list">${links}</ul>
         </div>
         <div>
           <h4>Popular Destinations</h4>
-          <ul style="list-style: none; padding: 0;">${hotelLinks}</ul>
+          <ul class="internal-link-list">${hotelLinks}</ul>
         </div>
       </div>
     </section>

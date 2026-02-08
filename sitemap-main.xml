@@ -8,31 +8,41 @@
     <priority>1</priority>
   </url>
   <url>
-    <loc>https://www.calculatortrip.com/about.html</loc>
+    <loc>https://www.calculatortrip.com/about</loc>
     <lastmod>2025-06-26T21:08:52.008Z</lastmod>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://www.calculatortrip.com/contact.html</loc>
+    <loc>https://www.calculatortrip.com/contact</loc>
     <lastmod>2025-06-26T21:08:52.008Z</lastmod>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://www.calculatortrip.com/distance.html</loc>
+    <loc>https://www.calculatortrip.com/distance</loc>
     <lastmod>2025-06-26T21:08:52.008Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.calculatortrip.com/places.html</loc>
+    <loc>https://www.calculatortrip.com/places</loc>
     <lastmod>2025-06-26T21:08:52.008Z</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
-    <loc>https://www.calculatortrip.com/turnaround-time-calculator.html</loc>
+    <loc>https://www.calculatortrip.com/turnaround-time-calculator</loc>
     <lastmod>2025-06-26T21:08:52.008Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.calculatortrip.com/privacy</loc>
+    <lastmod>2025-06-26T21:08:52.008Z</lastmod>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://www.calculatortrip.com/terms</loc>
+    <lastmod>2025-06-26T21:08:52.008Z</lastmod>
+    <changefreq>monthly</changefreq>
   </url>
  
 </urlset>
