@@ -22,10 +22,12 @@ body {
 }
 
 .internal-links h4 {
-  margin-bottom: 20px;
+  margin-top: 0;
+  margin-bottom: 25px;
   color: #333;
-  font-size: 1.1em;
+  font-size: 1.2em;
   text-align: center;
+  font-weight: 600;
 }
 
 .internal-links-grid {

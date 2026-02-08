@@ -146,10 +146,10 @@ app.get('/udaljenost/:slug', async (req, res) => {
   // Generate dynamic SEO content
   const dynamicArticle = `
     <article class="dynamic-seo-content" style="margin-top: 40px;">
-      <h2>Traveling between ${route.origin} and ${route.destination}</h2>
+      <h1>Traveling between ${route.origin} and ${route.destination}</h1>
       <p>Planning a trip from <strong>${route.origin}</strong> to <strong>${route.destination}</strong>? Understanding the travel logistics is key to a smooth journey. Whether you are traveling for business or leisure, knowing the distance and estimated travel time helps you manage your schedule effectively.</p>
       
-      <h3>How far is ${route.origin} from ${route.destination}?</h3>
+      <h2>How far is ${route.origin} from ${route.destination}?</h2>
       <p>The total driving distance between these two locations is approximately <strong>${route.distance}</strong>. Depending on traffic conditions, the estimated travel time is about <strong>${route.duration}</strong>. This route connects two vibrant areas, each offering its own unique attractions and atmosphere.</p>
 
       <h3>Travel Tips for your journey</h3>
@@ -214,10 +214,10 @@ app.get('/places/:slug', async (req, res) => {
   const dynamicArticle = type === 'hotels'
     ? `
     <article class="dynamic-seo-content" style="margin-top: 40px;">
-      <h2>Discover the Best Hotels in ${city}</h2>
+      <h1>Discover the Best Hotels in ${city}</h1>
       <p>Looking for the perfect accommodation in <strong>${city}</strong>? Our hotel finder makes it easy to discover top-rated hotels in your destination. Whether you're planning a business trip, family vacation, or romantic getaway, finding the right hotel is essential for a comfortable stay.</p>
       
-      <h3>Why Choose Hotels in ${city}?</h3>
+      <h2>Why Choose Hotels in ${city}?</h2>
       <p>${city} offers a diverse range of accommodations to suit every budget and preference. From luxury five-star hotels with world-class amenities to cozy boutique hotels with personalized service, you'll find the perfect place to rest after exploring the city's attractions.</p>
 
       <h3>How to Find Your Ideal Hotel</h3>
@@ -228,10 +228,10 @@ app.get('/places/:slug', async (req, res) => {
   `
     : `
     <article class="dynamic-seo-content" style="margin-top: 40px;">
-      <h2>Airports Near ${city}</h2>
+      <h1>Airports Near ${city}</h1>
       <p>Planning your travel to or from <strong>${city}</strong>? Knowing which airports serve the area helps you find the most convenient flight options and plan your ground transportation efficiently.</p>
       
-      <h3>Finding the Right Airport</h3>
+      <h2>Finding the Right Airport</h2>
       <p>The region around ${city} may be served by multiple airports, including major international hubs and smaller regional airports. Each airport offers different flight options, amenities, and accessibility to the city center.</p>
 
       <h3>Airport Search Tips</h3>
@@ -255,21 +255,18 @@ app.get('/places/:slug', async (req, res) => {
 
 // Helper to generate internal links footer
 const generateFooterLinks = () => {
-  const cities = ["London", "Paris", "New York", "Zagreb", "Belgrade", "Sarajevo", "Berlin", "Rome"];
-  const links = cities.map(c => `<li><a href="/turnaround/${cleanSlug(c)}">Turnaround ${c}</a></li>`).join('');
-  const hotelLinks = cities.map(c => `<li><a href="/places/hotels-in-${cleanSlug(c)}">Hotels in ${c}</a></li>`).join('');
-
   return `
     <section class="internal-links">
+      <h4>Explore Our Tools</h4>
       <div class="internal-links-grid">
-        <div>
-          <h4>Travel Schedules</h4>
-          <ul class="internal-link-list">${links}</ul>
-        </div>
-        <div>
-          <h4>Popular Destinations</h4>
-          <ul class="internal-link-list">${hotelLinks}</ul>
-        </div>
+        <ul class="internal-link-list">
+          <li><a href="/">🏠 Home / Trip Planner</a></li>
+          <li><a href="/distance">📏 Distance Calculator</a></li>
+        </ul>
+        <ul class="internal-link-list">
+          <li><a href="/places">📍 Places Finder (Hotels & Airports)</a></li>
+          <li><a href="/turnaround-time-calculator">⏱️ Turnaround Day Calculator</a></li>
+        </ul>
       </div>
     </section>
   `;
