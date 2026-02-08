@@ -141,7 +141,7 @@ app.get('/distance/:slug', async (req, res) => {
   let html = fs.readFileSync(path.join(__dirname, 'distance.html'), 'utf8');
   const title = `Distance from ${route.origin} to ${route.destination}`;
   const description = `Find out the exact distance between ${route.origin} and ${route.destination}. Travel time is approximately ${route.duration}. Driving distance and directions.`;
-  html = html.replace(/<h1 id="distanceCalculatorTitle">.*?<\/h1>/, `<h1>${dynamicTitle}</h1>`);
+  html = html.replace(/<h1 id="distanceCalculatorTitle">.*?<\/h1>/, `<h1 id="distanceCalculatorTitle">${dynamicTitle}</h1>`);
   const url = `https://www.calculatortrip.com/distance/${route.slug}`;
 
   // Generate dynamic SEO content
