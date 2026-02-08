@@ -141,12 +141,13 @@ app.get('/udaljenost/:slug', async (req, res) => {
   let html = fs.readFileSync(path.join(__dirname, 'distance.html'), 'utf8');
   const title = `Distance from ${route.origin} to ${route.destination}`;
   const description = `Find out the exact distance between ${route.origin} and ${route.destination}. Travel time is approximately ${route.duration}. Driving distance and directions.`;
+  html = html.replace(/<h1 id="distanceCalculatorTitle">.*?<\/h1>/, `<h1>${dynamicTitle}</h1>`);
   const url = `https://www.calculatortrip.com/udaljenost/${route.slug}`;
 
   // Generate dynamic SEO content
+  const dynamicTitle = `Traveling between ${route.origin} and ${route.destination}`;
   const dynamicArticle = `
     <article class="dynamic-seo-content" style="margin-top: 40px;">
-      <h1>Traveling between ${route.origin} and ${route.destination}</h1>
       <p>Planning a trip from <strong>${route.origin}</strong> to <strong>${route.destination}</strong>? Understanding the travel logistics is key to a smooth journey. Whether you are traveling for business or leisure, knowing the distance and estimated travel time helps you manage your schedule effectively.</p>
       
       <h2>How far is ${route.origin} from ${route.destination}?</h2>
@@ -210,14 +211,15 @@ app.get('/places/:slug', async (req, res) => {
   if (!type) return res.status(404).send('Invalid place category');
 
   let html = fs.readFileSync(path.join(__dirname, 'places.html'), 'utf8');
+  const dynamicTitle = type === 'hotels' ? `Discover the Best Hotels in ${city}: Your Ultimate Accommodation Guide` : `Airports Near ${city}: Comprehensive Travel and Aviation Guide`;
   const title = type === 'hotels' ? `Best Hotels in ${city}` : `Airports near ${city}`;
   const description = type === 'hotels' ? `Find the best rated hotels in ${city}.` : `Locate airports near ${city}.`;
+  html = html.replace('<h1>Places Finder: Hotels and Airports</h1>', `<h1 style="font-size: 2.5rem; margin-bottom: 1.5rem;">${dynamicTitle}</h1>`);
 
   // Generate dynamic SEO content
   const dynamicArticle = type === 'hotels'
     ? `
     <article class="dynamic-seo-content" style="margin-top: 40px; line-height: 1.8; color: #333; font-family: 'Inter', system-ui, -apple-system, sans-serif;">
-      <h1 style="font-size: 2.5rem; margin-bottom: 1.5rem;">Discover the Best Hotels in ${city}: Your Ultimate Accommodation Guide</h1>
       <p>Finding the perfect place to stay in <strong>${city}</strong> is more than just picking a room; it's about setting the stage for your entire travel experience. Whether you're visiting for a high-stakes business meeting, a much-needed family vacation, or a spontaneous weekend getaway, the right accommodation can make all the difference. Our comprehensive hotel finder is designed to help you navigate the diverse lodging landscape of ${city} with ease and confidence. In this guide, we dive deep into everything you need to know about choosing the right stay, from neighborhood nuances to booking secrets that only seasoned travelers know.</p>
       
       <p>${city} is a destination that caters to every type of traveler, offering a rich tapestry of neighborhoods, each with its own unique character and charm. From the bustling energy of the city center to the serene quiet of residential districts, understanding the layout of the city is the first step in choosing your home away from home. When you search for hotels in ${city}, you aren't just looking for a bed; you're looking for a base from which to explore the local culture, cuisine, and history. The proximity to local highlights and transport links can drastically change how you perceive your time in this wonderful location.</p>
@@ -278,7 +280,6 @@ app.get('/places/:slug', async (req, res) => {
   `
     : `
     <article class="dynamic-seo-content" style="margin-top: 40px; line-height: 1.8; color: #333; font-family: 'Inter', system-ui, -apple-system, sans-serif;">
-      <h1 style="font-size: 2.5rem; margin-bottom: 1.5rem;">Airports Near ${city}: Comprehensive Travel and Aviation Guide</h1>
       <p>Whether you're arriving by air or planning your next departure, understanding the aviation landscape around <strong>${city}</strong> is crucial for a seamless travel experience. Choosing the right airport can significantly impact your travel time, overall costs, and the level of convenience you enjoy during your journey. This comprehensive guide provides everything you need to know about the air gateways serving the ${city} region, from terminal maps to ground transport secrets.</p>
       
       <p>The area surrounding ${city} is typically served by a network of airports ranging from massive international hubs to smaller regional terminals. Depending on your origin or destination, you may find that different airports offer varying flight schedules, airline options, and amenities. Some travelers prioritize proximity, while others look for the best fare or the most comfortable lounge. In this guide, we break down those choices to help you fly like a pro.</p>
@@ -358,11 +359,11 @@ app.get('/turnaround/:slug', async (req, res) => {
   let html = fs.readFileSync(path.join(__dirname, 'turnaround-time-calculator.html'), 'utf8');
   const title = `Turnaround Time Calculator for ${city}`;
   const description = `Calculate turnaround days and trip schedules for travel to ${city}. Ideal for business and leisure trip planning.`;
+  html = html.replace('<h1>Turnaround Day Calculator</h1>', `<h1>Turnaround Time Planning for ${city}</h1>`);
 
   // Generate dynamic SEO content
   const dynamicArticle = `
     <article class="dynamic-seo-content" style="margin-top: 40px;">
-      <h1>Turnaround Time Planning for ${city}</h1>
       <p>Managing a busy travel schedule in <strong>${city}</strong> requires precise timing. Our turnaround day calculator helps you determine the exact number of days between trip segments, ensuring you never miss a connection or overstay your welcome.</p>
       
       <h2>Optimizing Your Trip to ${city}</h2>
