@@ -80,9 +80,9 @@
       <p>In this article, we’ll explore what a distance calculator is, how it works, its main features, and the many
         scenarios where it can be extremely helpful.</p>
 
-      <h3>What Is a Distance Calculator?</h3>
       <p>A distance calculator is an online tool or mobile application that helps users determine the distance between
-        two geographic points. These tools can measure distances:</p>
+        two geographic points. For those searching for a place to stay at their destination, our <a href="/places">Hotel
+          Finder</a> is the perfect companion. These tools can measure distances:</p>
 
       <ul>
         <li>As the crow flies (straight-line or air distance)</li>
@@ -123,19 +123,6 @@
 
       <p>For anyone who values precision and wants to avoid surprises, using a distance calculator is a smart move.</p>
     </article>
-    <section class="internal-links">
-      <h4>Explore Our Tools</h4>
-      <div class="internal-links-grid">
-        <ul class="internal-link-list">
-          <li><a href="/">🏠 Home / Trip Planner</a></li>
-          <li><a href="/distance">📏 Distance Calculator</a></li>
-        </ul>
-        <ul class="internal-link-list">
-          <li><a href="/places">📍 Places Finder (Hotels & Airports)</a></li>
-          <li><a href="/turnaround-time-calculator">⏱️ Turnaround Day Calculator</a></li>
-        </ul>
-      </div>
-    </section>
   </main>
   <footer>
     <div class="footer-content">
@@ -193,7 +180,7 @@
             <p>The route from <b>${origin}</b> to <b>${destination}</b> is dotted with various points of interest. Travelers might encounter historical landmarks, scenic viewpoints, or vibrant local communities. Highlighting these aspects can transform a simple commute into an enriching adventure.</p>
 
             <h3>Conclusion</h3>
-            <p>In conclusion, the journey from <b>${origin}</b> to <b>${destination}</b> is more than just a transfer from one place to another. It represents an opportunity to explore, discover, and connect with the world around us. Whether for business or pleasure, understanding the nuances of this route can greatly enhance the travel experience.</p>
+            <p>In conclusion, the journey from <b>${origin}</b> to <b>${destination}</b> is more than just a transfer from one place to another. Once you arrive, you might need to find <a href="/places/hotels-in-${destination.toLowerCase().replace(/ /g, '-')}">hotels in ${destination}</a> or check nearby <a href="/places/airports-near-${destination.toLowerCase().replace(/ /g, '-')}">airports</a>. For multi-day stays, our <a href="/turnaround-time-calculator">Turnaround Calculator</a> can help you manage your schedule.</p>
           </article>
         `;
         article.innerHTML = articleContent;

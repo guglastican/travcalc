@@ -163,7 +163,10 @@ app.get('/udaljenost/:slug', async (req, res) => {
   html = html.replace(/<meta name="description" content=".*?">/, `<meta name="description" content="${description}">`);
 
   // Inject article before the footer or at the end of main
-  html = html.replace('</main>', `${dynamicArticle}</main>`);
+  html = html.replace('</main>', `
+    ${dynamicArticle}
+    <p style="margin-top: 20px;">Use our <a href="/distance">Distance Calculator</a> to find the exact mileage for other routes, or explore nearby accommodations with our <a href="/places">Hotel & Airport Finder</a>. If you're scheduling a complex trip, our <a href="/turnaround-time-calculator">Turnaround Day Calculator</a> can help you stay on track.</p>
+  </main>`);
 
   // Inject OG Tags and JSON-LD
   const advancedSEO = `
@@ -194,7 +197,7 @@ app.get('/udaljenost/:slug', async (req, res) => {
 
   html = html.replace('</head>', `${advancedSEO}</head>`);
   html = html.replace('</head>', `<script>window.PSEO_DATA = ${JSON.stringify(route)};</script></head>`);
-  html = html.replace('</footer>', `${generateFooterLinks()}</footer>`);
+  html = html.replace('</head>', `<script>window.PSEO_DATA = ${JSON.stringify(route)};</script></head>`);
   res.send(html);
 });
 
@@ -224,6 +227,7 @@ app.get('/places/:slug', async (req, res) => {
       <p>Use our interactive map above to browse hotels by location. You can search within a specific radius to find accommodations near landmarks, business districts, or transportation hubs. Each hotel listing includes ratings, addresses, and location markers to help you make an informed decision.</p>
       
       <p>Start your search above to discover available hotels in ${city} and book your perfect stay!</p>
+      <p style="margin-top: 20px;">Once you've picked your hotel, use our <a href="/distance">Distance Calculator</a> to plan your local travel, or consult our <a href="/turnaround-time-calculator">Turnaround Day Calculator</a> to optimize your trip schedule.</p>
     </article>
   `
     : `
@@ -238,6 +242,7 @@ app.get('/places/:slug', async (req, res) => {
       <p>Use our map-based search tool above to locate all airports within your specified radius. This helps you compare distances, evaluate transportation options, and choose the most convenient arrival or departure point for your journey.</p>
       
       <p>Search above to discover all airports serving the ${city} area and plan your travel accordingly!</p>
+      <p style="margin-top: 20px;">Need to know how long it takes to get here? Check our <a href="/distance">Distance Calculator</a>. For those planning business trips or tight schedules, our <a href="/turnaround-time-calculator">Turnaround Day Calculator</a> provides essential timing insights.</p>
     </article>
   `;
 
@@ -245,32 +250,13 @@ app.get('/places/:slug', async (req, res) => {
   html = html.replace(/<meta name="description" content=".*?">/, `<meta name="description" content="${description}">`);
   html = html.replace('</head>', `<script>window.PLACES_PSEO = { type: "${type}", city: "${city}", slug: "${slug}" };</script></head>`);
 
-  // Inject SEO article before footer
-  html = html.replace('</main>', `${dynamicArticle}</main>`);
-  html = html.replace('</footer>', `${generateFooterLinks()}</footer>`);
+  // Inject SEO article into the correct placeholder
+  const placeholderId = type === 'hotels' ? 'id="pseo-article-hotels"' : 'id="pseo-article-airports"';
+  html = html.replace(`<div ${placeholderId}></div>`, `<div ${placeholderId}>${dynamicArticle}</div>`);
 
   saveData(PLACES_PATH, { slug, city, type, timestamp: new Date().toISOString() });
   res.send(html);
 });
-
-// Helper to generate internal links footer
-const generateFooterLinks = () => {
-  return `
-    <section class="internal-links">
-      <h4>Explore Our Tools</h4>
-      <div class="internal-links-grid">
-        <ul class="internal-link-list">
-          <li><a href="/">🏠 Home / Trip Planner</a></li>
-          <li><a href="/distance">📏 Distance Calculator</a></li>
-        </ul>
-        <ul class="internal-link-list">
-          <li><a href="/places">📍 Places Finder (Hotels & Airports)</a></li>
-          <li><a href="/turnaround-time-calculator">⏱️ Turnaround Day Calculator</a></li>
-        </ul>
-      </div>
-    </section>
-  `;
-};
 
 // Turnaround pSEO route
 app.get('/turnaround/:slug', async (req, res) => {
@@ -281,12 +267,25 @@ app.get('/turnaround/:slug', async (req, res) => {
   const title = `Turnaround Time Calculator for ${city}`;
   const description = `Calculate turnaround days and trip schedules for travel to ${city}. Ideal for business and leisure trip planning.`;
 
+  // Generate dynamic SEO content
+  const dynamicArticle = `
+    <article class="dynamic-seo-content" style="margin-top: 40px;">
+      <h1>Turnaround Time Planning for ${city}</h1>
+      <p>Managing a busy travel schedule in <strong>${city}</strong> requires precise timing. Our turnaround day calculator helps you determine the exact number of days between trip segments, ensuring you never miss a connection or overstay your welcome.</p>
+      
+      <h2>Optimizing Your Trip to ${city}</h2>
+      <p>Whether you're visiting for a quick meeting or an extended stay, understanding your "turnaround" time is crucial for logistics. This tool is specifically designed for travelers who need to calculate gaps between dates or plan efficient multi-city itineraries.</p>
+
+      <h3>Complete Your Planning</h3>
+      <p>Don't forget to check the <a href="/distance">driving distance to ${city}</a> from your starting point, or find the best <a href="/places/hotels-in-${slug}">hotels in ${city}</a> using our integrated finder. For those flying, we also track <a href="/places/airports-near-${slug}">airports near ${city}</a>.</p>
+    </article>
+  `;
+
   html = html.replace(/<title>.*?<\/title>/, `<title>${title} | Travel Calculator</title>`);
   html = html.replace(/<meta name="description" content=".*?">/, `<meta name="description" content="${description}">`);
 
-  // Inject internal links before footer
-  const footerLinks = generateFooterLinks();
-  html = html.replace('</footer>', `${footerLinks}</footer>`);
+  // Inject article
+  html = html.replace('</main>', `${dynamicArticle}</main>`);
 
   // Inject data to trigger search in turnaround calculator
   html = html.replace('</head>', `<script>window.TURNAROUND_PSEO = { city: "${city}", slug: "${slug}" };</script></head>`);
