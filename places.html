@@ -363,6 +363,13 @@
         const container = document.getElementById(placeholderId);
         if (!container) return;
 
+        // Scrape top 3 result names
+        const resultItems = document.querySelectorAll(`#${type === 'hotels' ? 'hotels-list' : 'airports-list'} .result-item h3`);
+        const topResults = Array.from(resultItems).slice(0, 3).map(h3 => h3.innerText);
+        const resultsSnippet = topResults.length > 0
+          ? `<p>Some of the notable ${type === 'hotels' ? 'stays' : 'airports'} found include <strong>${topResults.join(', ')}</strong>.</p>`
+          : "";
+
         const toolsGridHtml = `
           <section class="explore-tools-section">
             <h2>Explore Our Travel Tools</h2>
@@ -394,59 +401,42 @@
         const content = type === 'hotels'
           ? `
             <article class="dynamic-seo-content" style="margin-top: 20px;">
+              <h2>Hotel Finder</h2>
+              <p>Find hotels in your travel destination area. Once you've found a place to stay, you can calculate the driving distance to your next stop.</p>
+
               <h3>Top Hotels in <b>${city}</b></h3>
               <p>Looking for a place to stay in <b>${city}</b>? We've found <b>${count}</b> properties in the area to suit your needs. Whether you're visiting for business or leisure, choosing the right accommodation is key to a great trip.</p>
+
               <p>Experience the local hospitality and convenience of staying near the heart of the action. Our selection includes highly-rated hotels that offer modern amenities and easy access to local attractions.</p>
+
+              ${resultsSnippet}
+
               <p>In addition to finding the perfect stay with our <a href="/places">Places Finder</a>, don't forget to plan your transport between locations with our <a href="/distance">Distance Calculator</a>. Our suite of tools is designed to make your journey seamless.</p>
-              ${toolsGridHtml}
             </article>
           `
           : `
             <article class="dynamic-seo-content" style="margin-top: 20px;">
-              <h3>Airports Supporting <b>${city}</b></h3>
-              <p>Planning your flight to or from <b>${city}</b>? There are <b>${count}</b> airports serving this region, providing multiple options for your travel itinerary.</p>
-              <p>Selecting the most convenient airport can save you significant travel time and ground transport costs. Consider the proximity to your final destination and the available flight connections when making your choice.</p>
-              <p>Once you've sorted your flights, use our <a href="/turnaround-time-calculator">Turnaround Calculator</a> to manage the rest of your travel schedule effectively. We help you stay organized from takeoff to landing.</p>
-              ${toolsGridHtml}
+              <h2>Airport & Travel Hub Finder</h2>
+              <p>Locate the most convenient airports and transportation hubs near your destination. Efficient arrival and departure planning is the foundation of any stress-free trip.</p>
+
+              <h3>Airports Near <b>${city}</b></h3>
+              <p>We've identified <b>${count}</b> aviation and transit gateways near <b>${city}</b>. Knowing your options allows you to choose the best arrival point based on distance, airline preferences, and ground transport availability.</p>
+
+              <p>These hubs serve as the primary gateways for the region, offering various amenities and connection points to help you reach your final destination comfortably.</p>
+
+              ${resultsSnippet}
+
+              <p>Once you've selected your airport, use our <a href="/turnaround-time-calculator">Turnaround Calculator</a> to manage your arrival schedule, or get precise travel times with the <a href="/distance">Distance Calculator</a>.</p>
             </article>
           `;
 
-        container.innerHTML = content;
+        container.innerHTML = content + toolsGridHtml;
       }
     }
   </script>
   <script
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBnvEmLlcvBx_Z6NpAVB_08fOKw2C2WSIw&libraries=places&callback=initMap"
     async defer></script>
-  <section id="featuredCities"
-    style="margin-top: 60px; border-top: 1px solid #eee; padding-top: 40px; margin-bottom: 40px;">
-    <h2 style="margin-bottom: 25px;">Featured Cities for Travel Planning</h2>
-    <div id="cityDirectoryGrid"
-      style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 15px;">
-      <p>Loading featured cities...</p>
-    </div>
-  </section>
-
-  <script>
-    fetch('/api/top-cities')
-      .then(res => res.json())
-      .then(cities => {
-        const grid = document.getElementById('cityDirectoryGrid');
-        grid.innerHTML = cities.map(city => {
-          const slug = city.toLowerCase().replace(/ /g, '-');
-          return `
-              <div style="padding: 10px; background: #fff; border: 1px solid #eee; border-radius: 8px; font-size: 0.9em;">
-                <strong style="display: block; margin-bottom: 8px; color: #333;">${city}</strong>
-                <div style="display: flex; flex-direction: column; gap: 4px;">
-                  <a href="/places/hotels-in-${slug}" style="color: #28a745; text-decoration: none;">🏨 Hotels</a>
-                  <a href="/places/airports-near-${slug}" style="color: #007bff; text-decoration: none;">✈️ Airports</a>
-                </div>
-              </div>
-            `;
-        }).join('');
-      })
-      .catch(err => console.error('Error fetching cities:', err));
-  </script>
   </main>
 
   <footer>
