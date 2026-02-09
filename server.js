@@ -239,6 +239,23 @@ app.get('/udaljenost/:slug', (req, res) => {
   res.redirect(301, `/distance/${req.params.slug}`);
 });
 
+// Legacy SEO redirects for "how-far" pages
+const legacyHowFarUrls = [
+  '/how-far-london-to-edinburgh',
+  '/how-far-london-to-paris',
+  '/how-far-london-to-stonehenge',
+  '/how-far-london-to-new-york',
+  '/how-far-london-to-cambridge',
+  '/how-far-london-to-scotland'
+];
+
+legacyHowFarUrls.forEach(url => {
+  // Match both with and without trailing slash
+  app.get([url, `${url}/`], (req, res) => {
+    res.redirect(301, '/');
+  });
+});
+
 // Places pSEO route
 app.get('/places/:slug', async (req, res) => {
   const { slug } = req.params;
