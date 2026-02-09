@@ -146,14 +146,33 @@
 
     <script src="/dateMapping.js"></script>
     <script src="/script.js"></script>
+    <section id="popularHubs" style="margin-top: 40px; border-top: 1px solid #eee; padding-top: 20px;">
+      <h3 style="margin-bottom: 20px;">Popular Turnaround Planning Hubs</h3>
+      <div id="turnaroundCityGrid"
+        style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px;">
+        <p>Loading hubs...</p>
+      </div>
+    </section>
+
     <script>
+      // Discovery Grid
+      fetch('/api/top-cities')
+        .then(res => res.json())
+        .then(cities => {
+          const grid = document.getElementById('turnaroundCityGrid');
+          grid.innerHTML = cities.map(city => {
+            const slug = city.toLowerCase().replace(/ /g, '-');
+            return `<a href="/turnaround/${slug}" style="padding: 8px; background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 6px; color: #6f42c1; text-decoration: none; font-size: 0.9em; text-align: center;">${city} Planning</a>`;
+          }).join('');
+        })
+        .catch(err => console.error('Error fetching cities:', err));
+
+      // pSEO Pre-filling
       document.addEventListener('DOMContentLoaded', () => {
         if (window.TURNAROUND_PSEO) {
           const cityInput = document.getElementById('cityInput');
           if (cityInput) {
             cityInput.value = window.TURNAROUND_PSEO.city;
-            // You might also want to trigger the calculation button here if needed
-            // document.getElementById('calculateBtn').click();
           }
         }
       });

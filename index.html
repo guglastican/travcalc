@@ -125,7 +125,16 @@
       </div>
     </section>
 
+    <section id="topDestinations" style="margin-top: 40px; border-top: 1px solid #eee; padding-top: 20px;">
+      <h3 style="margin-bottom: 20px;">Top Travel Destinations</h3>
+      <div id="topCitiesGrid" class="routes-grid"
+        style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px;">
+        <p>Loading destinations...</p>
+      </div>
+    </section>
+
     <script>
+      // Popular Routes
       fetch('/api/popular-routes')
         .then(res => res.json())
         .then(routes => {
@@ -135,7 +144,7 @@
             return;
           }
           list.innerHTML = routes.map(r => `
-            <div class="route-card" style="background: #fdfdfd; border: 1px solid #eee; border-radius: 8px; padding: 15px; transition: transform 0.2s, box-shadow 0.2s; cursor: pointer;" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.05)'" onmouseout="this.style.transform='none'; this.style.boxShadow='none'" onclick="window.location.href='/distance/${r.slug}'">
+            <div class="route-card" style="background: #fdfdfd; border: 1px solid #eee; border-radius: 8px; padding: 15px; transition: transform 0.2s, box-shadow 0.2s; cursor: pointer;" onclick="window.location.href='/distance/${r.slug}'">
               <a href="/distance/${r.slug}" style="color: #333; text-decoration: none; font-weight: 600; display: block; margin-bottom: 5px; font-size: 1.05em;">
                 ${r.origin} to ${r.destination}
               </a>
@@ -147,6 +156,27 @@
           `).join('');
         })
         .catch(err => console.error('Error fetching popular routes:', err));
+
+      // Top Cities Directory
+      fetch('/api/top-cities')
+        .then(res => res.json())
+        .then(cities => {
+          const grid = document.getElementById('topCitiesGrid');
+          grid.innerHTML = cities.map(city => {
+            const slug = city.toLowerCase().replace(/ /g, '-');
+            return `
+              <div class="city-card" style="background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
+                <h4 style="margin: 0 0 10px 0; color: #2c3e50;">${city}</h4>
+                <div style="display: flex; flex-direction: column; gap: 5px; font-size: 0.85em;">
+                  <a href="/places/hotels-in-${slug}" style="color: #28a745; text-decoration: none;">🏨 Hotels in ${city}</a>
+                  <a href="/places/airports-near-${slug}" style="color: #007bff; text-decoration: none;">✈️ Airports near ${city}</a>
+                  <a href="/turnaround/${slug}" style="color: #6f42c1; text-decoration: none;">⏱️ Planning for ${city}</a>
+                </div>
+              </div>
+            `;
+          }).join('');
+        })
+        .catch(err => console.error('Error fetching top cities:', err));
     </script>
 
     <section class="explore-tools-section">

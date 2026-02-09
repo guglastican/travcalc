@@ -334,37 +334,119 @@
           list.appendChild(item);
         });
       }
+
+      // Programmatic Article Generation (as in distance calculator)
+      const hotelsList = document.getElementById('hotels-list');
+      const airportsList = document.getElementById('airports-list');
+
+      const placesObserver = new MutationObserver((mutations) => {
+        mutations.forEach(mutation => {
+          if (mutation.addedNodes.length > 0) {
+            const listId = mutation.target.id;
+            const type = listId.includes('hotel') ? 'hotels' : 'airports';
+            const cityInputId = type === 'hotels' ? 'location-input' : 'airport-location-input';
+            const city = document.getElementById(cityInputId).value;
+            const count = mutation.target.children.length;
+
+            if (city && count > 0) {
+              generatePlacesArticle(type, city, count);
+            }
+          }
+        });
+      });
+
+      placesObserver.observe(hotelsList, { childList: true });
+      placesObserver.observe(airportsList, { childList: true });
+
+      function generatePlacesArticle(type, city, count) {
+        const placeholderId = type === 'hotels' ? 'pseo-article-hotels' : 'pseo-article-airports';
+        const container = document.getElementById(placeholderId);
+        if (!container) return;
+
+        const toolsGridHtml = `
+          <section class="explore-tools-section">
+            <h2>Explore Our Travel Tools</h2>
+            <div class="tools-grid">
+              <a href="/" class="tool-card">
+                <div class="icon">🏠</div>
+                <span>Trip Planner</span>
+                <p>Plan your entire journey from start to finish with our comprehensive core tool.</p>
+              </a>
+              <a href="/distance" class="tool-card">
+                <div class="icon">🚗</div>
+                <span>Distance Calculator</span>
+                <p>Get accurate driving, walking, and transit distances between any two cities.</p>
+              </a>
+              <a href="/places" class="tool-card">
+                <div class="icon">🏨</div>
+                <span>Hotel & Airport Finder</span>
+                <p>Discover the best places to stay and most convenient gateways for your trip.</p>
+              </a>
+              <a href="/turnaround-time-calculator" class="tool-card">
+                <div class="icon">⏱️</div>
+                <span>Turnaround Calculator</span>
+                <p>Master your schedule by calculating gaps and turnaround days between trip segments.</p>
+              </a>
+            </div>
+          </section>
+        `;
+
+        const content = type === 'hotels'
+          ? `
+            <article class="dynamic-seo-content" style="margin-top: 20px;">
+              <h3>Top Hotels in <b>${city}</b></h3>
+              <p>Looking for a place to stay in <b>${city}</b>? We've found <b>${count}</b> properties in the area to suit your needs. Whether you're visiting for business or leisure, choosing the right accommodation is key to a great trip.</p>
+              <p>Experience the local hospitality and convenience of staying near the heart of the action. Our selection includes highly-rated hotels that offer modern amenities and easy access to local attractions.</p>
+              <p>In addition to finding the perfect stay with our <a href="/places">Places Finder</a>, don't forget to plan your transport between locations with our <a href="/distance">Distance Calculator</a>. Our suite of tools is designed to make your journey seamless.</p>
+              ${toolsGridHtml}
+            </article>
+          `
+          : `
+            <article class="dynamic-seo-content" style="margin-top: 20px;">
+              <h3>Airports Supporting <b>${city}</b></h3>
+              <p>Planning your flight to or from <b>${city}</b>? There are <b>${count}</b> airports serving this region, providing multiple options for your travel itinerary.</p>
+              <p>Selecting the most convenient airport can save you significant travel time and ground transport costs. Consider the proximity to your final destination and the available flight connections when making your choice.</p>
+              <p>Once you've sorted your flights, use our <a href="/turnaround-time-calculator">Turnaround Calculator</a> to manage the rest of your travel schedule effectively. We help you stay organized from takeoff to landing.</p>
+              ${toolsGridHtml}
+            </article>
+          `;
+
+        container.innerHTML = content;
+      }
     }
   </script>
   <script
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBnvEmLlcvBx_Z6NpAVB_08fOKw2C2WSIw&libraries=places&callback=initMap"
     async defer></script>
-
-  <section class="explore-tools-section">
-    <h2>Explore Our Travel Tools</h2>
-    <div class="tools-grid">
-      <a href="/" class="tool-card">
-        <div class="icon">🏠</div>
-        <span>Trip Planner</span>
-        <p>Plan your entire journey from start to finish with our comprehensive core tool.</p>
-      </a>
-      <a href="/distance" class="tool-card">
-        <div class="icon">🚗</div>
-        <span>Distance Calculator</span>
-        <p>Get accurate driving, walking, and transit distances between any two cities.</p>
-      </a>
-      <a href="/places" class="tool-card">
-        <div class="icon">🏨</div>
-        <span>Hotel & Airport Finder</span>
-        <p>Discover the best places to stay and most convenient gateways for your trip.</p>
-      </a>
-      <a href="/turnaround-time-calculator" class="tool-card">
-        <div class="icon">⏱️</div>
-        <span>Turnaround Calculator</span>
-        <p>Master your schedule by calculating gaps and turnaround days between trip segments.</p>
-      </a>
+  <section id="featuredCities"
+    style="margin-top: 60px; border-top: 1px solid #eee; padding-top: 40px; margin-bottom: 40px;">
+    <h2 style="margin-bottom: 25px;">Featured Cities for Travel Planning</h2>
+    <div id="cityDirectoryGrid"
+      style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 15px;">
+      <p>Loading featured cities...</p>
     </div>
   </section>
+
+  <script>
+    fetch('/api/top-cities')
+      .then(res => res.json())
+      .then(cities => {
+        const grid = document.getElementById('cityDirectoryGrid');
+        grid.innerHTML = cities.map(city => {
+          const slug = city.toLowerCase().replace(/ /g, '-');
+          return `
+              <div style="padding: 10px; background: #fff; border: 1px solid #eee; border-radius: 8px; font-size: 0.9em;">
+                <strong style="display: block; margin-bottom: 8px; color: #333;">${city}</strong>
+                <div style="display: flex; flex-direction: column; gap: 4px;">
+                  <a href="/places/hotels-in-${slug}" style="color: #28a745; text-decoration: none;">🏨 Hotels</a>
+                  <a href="/places/airports-near-${slug}" style="color: #007bff; text-decoration: none;">✈️ Airports</a>
+                </div>
+              </div>
+            `;
+        }).join('');
+      })
+      .catch(err => console.error('Error fetching cities:', err));
+  </script>
   </main>
 
   <footer>

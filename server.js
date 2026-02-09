@@ -21,6 +21,8 @@ app.use(express.json());
 const ROUTES_PATH = path.join(__dirname, 'data', 'routes.json');
 const PLACES_PATH = path.join(__dirname, 'data', 'places.json');
 
+const TOP_CITIES = ["London", "Paris", "New York", "Zagreb", "Belgrade", "Sarajevo", "Tokyo", "Berlin", "Rome", "Madrid", "Vienna", "Prague", "Budapest", "Ljubljana", "Split", "Dubai", "Singapore", "Sydney", "Toronto", "Istanbul", "Los Angeles", "Chicago", "Miami", "San Francisco", "Amsterdam", "Brussels", "Munich", "Milan", "Barcelona", "Lisbon"];
+
 const EXPLORE_TOOLS_HTML = `
   <section class="explore-tools-section">
     <h2>Explore Our Travel Tools</h2>
@@ -482,8 +484,7 @@ app.get('/sitemap-dynamic.xml', (req, res) => {
   });
 
   // Turnaround routes
-  const topCities = ["London", "Paris", "New York", "Zagreb", "Belgrade", "Sarajevo", "Tokyo", "Berlin", "Rome", "Madrid"];
-  topCities.forEach(city => {
+  TOP_CITIES.forEach(city => {
     xml += `
   <url>
     <loc>${baseUrl}/turnaround/${cleanSlug(city)}</loc>
@@ -501,6 +502,11 @@ app.get('/sitemap-dynamic.xml', (req, res) => {
 // Popular Routes API
 app.get('/api/popular-routes', (req, res) => {
   res.json(readData(ROUTES_PATH).slice(-12).reverse());
+});
+
+// Top Cities API for Discovery
+app.get('/api/top-cities', (req, res) => {
+  res.json(TOP_CITIES);
 });
 
 // Redirects and Static serving
@@ -535,8 +541,6 @@ const seedData = async () => {
   const routes = readData(ROUTES_PATH);
   const places = readData(PLACES_PATH);
 
-  const topCities = ["London", "Paris", "New York", "Zagreb", "Belgrade", "Sarajevo", "Tokyo", "Berlin", "Rome", "Madrid", "Vienna", "Prague", "Budapest", "Ljubljana", "Split", "Dubai", "Singapore", "Sydney", "Toronto", "Istanbul", "Los Angeles", "Chicago", "Miami", "San Francisco", "Amsterdam", "Brussels", "Munich", "Milan", "Barcelona", "Lisbon"];
-
   // Seed Distance
   if (routes.length < 15) {
     const seeds = [
@@ -566,7 +570,7 @@ const seedData = async () => {
 
   // Seed Places
   if (places.length < 20) {
-    topCities.forEach(city => {
+    TOP_CITIES.forEach(city => {
       const hotelSlug = `hotels-in-${cleanSlug(city)}`;
       const airportSlug = `airports-near-${cleanSlug(city)}`;
       saveData(PLACES_PATH, { slug: hotelSlug, city, type: "hotels", timestamp: new Date().toISOString() });
