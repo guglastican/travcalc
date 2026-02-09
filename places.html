@@ -252,6 +252,14 @@
           return;
         }
 
+        // Trigger automatic pSEO page generation in the background
+        const pSEOType = type === 'lodging' ? 'hotels' : 'airports';
+        fetch('/api/save-place', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ city: locationInput, type: pSEOType })
+        }).catch(err => console.error('pSEO save failed:', err));
+
         const geocoder = new google.maps.Geocoder();
         geocoder.geocode({ address: locationInput }, (results, status) => {
           if (status === "OK") {
@@ -299,6 +307,8 @@
                 }
               });
             }
+          } else {
+            alert("Geocode was not successful for the following reason: " + status);
           }
         });
       }

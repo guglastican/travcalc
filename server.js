@@ -239,22 +239,7 @@ app.get('/udaljenost/:slug', (req, res) => {
   res.redirect(301, `/distance/${req.params.slug}`);
 });
 
-// Legacy SEO redirects for "how-far" pages
-const legacyHowFarUrls = [
-  '/how-far-london-to-edinburgh',
-  '/how-far-london-to-paris',
-  '/how-far-london-to-stonehenge',
-  '/how-far-london-to-new-york',
-  '/how-far-london-to-cambridge',
-  '/how-far-london-to-scotland'
-];
 
-legacyHowFarUrls.forEach(url => {
-  // Match both with and without trailing slash
-  app.get([url, `${url}/`], (req, res) => {
-    res.redirect(301, '/');
-  });
-});
 
 // Places pSEO route
 app.get('/places/:slug', async (req, res) => {
@@ -524,6 +509,29 @@ app.get('/api/popular-routes', (req, res) => {
 // Top Cities API for Discovery
 app.get('/api/top-cities', (req, res) => {
   res.json(TOP_CITIES);
+});
+
+// Save new place from user search (Automatic pSEO)
+app.post('/api/save-place', (req, res) => {
+  const { city, type } = req.body;
+  if (!city || !type) return res.status(400).json({ error: 'City and type are required' });
+
+  const slug = type === 'hotels' ? `hotels-in-${cleanSlug(city)}` : `airports-near-${cleanSlug(city)}`;
+  const places = readData(PLACES_PATH);
+
+  if (!places.find(p => p.slug === slug)) {
+    const newPlace = {
+      slug,
+      city,
+      type,
+      timestamp: new Date().toISOString()
+    };
+    saveData(PLACES_PATH, newPlace);
+    console.log(`Saved new pSEO page: ${slug}`);
+    return res.json({ success: true, slug });
+  }
+
+  res.json({ success: true, message: 'Already exists' });
 });
 
 // Redirects and Static serving

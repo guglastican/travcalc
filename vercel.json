@@ -1,5 +1,37 @@
 {
   "version": 2,
+  "redirects": [
+    {
+      "source": "/how-far-london-to-edinburgh(/?)",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/how-far-london-to-paris(/?)",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/how-far-london-to-stonehenge(/?)",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/how-far-london-to-new-york(/?)",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/how-far-london-to-cambridge(/?)",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/how-far-london-to-scotland(/?)",
+      "destination": "/",
+      "permanent": true
+    }
+  ],
   "builds": [
     {
       "src": "server.js",
