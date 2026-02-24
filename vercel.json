@@ -1,37 +1,5 @@
 {
   "version": 2,
-  "redirects": [
-    {
-      "source": "/how-far-london-to-edinburgh(/?)",
-      "destination": "/",
-      "permanent": true
-    },
-    {
-      "source": "/how-far-london-to-paris(/?)",
-      "destination": "/",
-      "permanent": true
-    },
-    {
-      "source": "/how-far-london-to-stonehenge(/?)",
-      "destination": "/",
-      "permanent": true
-    },
-    {
-      "source": "/how-far-london-to-new-york(/?)",
-      "destination": "/",
-      "permanent": true
-    },
-    {
-      "source": "/how-far-london-to-cambridge(/?)",
-      "destination": "/",
-      "permanent": true
-    },
-    {
-      "source": "/how-far-london-to-scotland(/?)",
-      "destination": "/",
-      "permanent": true
-    }
-  ],
   "builds": [
     {
       "src": "server.js",
@@ -63,6 +31,48 @@
     }
   ],
   "routes": [
+    {
+      "src": "/how-far-london-to-edinburgh(/?)",
+      "headers": {
+        "Location": "/"
+      },
+      "status": 301
+    },
+    {
+      "src": "/how-far-london-to-paris(/?)",
+      "headers": {
+        "Location": "/"
+      },
+      "status": 301
+    },
+    {
+      "src": "/how-far-london-to-stonehenge(/?)",
+      "headers": {
+        "Location": "/"
+      },
+      "status": 301
+    },
+    {
+      "src": "/how-far-london-to-new-york(/?)",
+      "headers": {
+        "Location": "/"
+      },
+      "status": 301
+    },
+    {
+      "src": "/how-far-london-to-cambridge(/?)",
+      "headers": {
+        "Location": "/"
+      },
+      "status": 301
+    },
+    {
+      "src": "/how-far-london-to-scotland(/?)",
+      "headers": {
+        "Location": "/"
+      },
+      "status": 301
+    },
     {
       "src": "/sitemap-dynamic.xml",
       "dest": "server.js"
