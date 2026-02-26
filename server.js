@@ -51,14 +51,14 @@ const EXPLORE_TOOLS_HTML = `
   </section>
 `;
 
-const { neon } = require('@neondatabase/serverless');
+const { sql: _vercelSql } = require('@vercel/postgres');
 
 let sql;
-if (process.env.DATABASE_URL) {
+if (process.env.POSTGRES_URL) {
   try {
-    sql = neon(process.env.DATABASE_URL);
+    sql = _vercelSql;
   } catch (error) {
-    console.error("Neon DB Init Error. Falling back to local JSON.", error.message);
+    console.error("Vercel DB Init Error. Falling back to local JSON.", error.message);
     sql = null;
   }
 }
@@ -97,10 +97,10 @@ const readData = async (filePath) => {
   if (sql) {
     try {
       if (filePath === ROUTES_PATH) {
-        const rows = await sql`SELECT * FROM routes ORDER BY timestamp DESC`;
+        const { rows } = await sql`SELECT * FROM routes ORDER BY timestamp DESC`;
         return rows;
       } else if (filePath === PLACES_PATH) {
-        const rows = await sql`SELECT * FROM places ORDER BY timestamp DESC`;
+        const { rows } = await sql`SELECT * FROM places ORDER BY timestamp DESC`;
         return rows;
       }
     } catch (e) {
