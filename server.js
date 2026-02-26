@@ -97,10 +97,10 @@ const readData = async (filePath) => {
   if (sql) {
     try {
       if (filePath === ROUTES_PATH) {
-        const { rows } = await sql`SELECT * FROM routes ORDER BY timestamp DESC`;
+        const rows = await sql`SELECT * FROM routes ORDER BY timestamp DESC`;
         return rows;
       } else if (filePath === PLACES_PATH) {
-        const { rows } = await sql`SELECT * FROM places ORDER BY timestamp DESC`;
+        const rows = await sql`SELECT * FROM places ORDER BY timestamp DESC`;
         return rows;
       }
     } catch (e) {
