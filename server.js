@@ -177,27 +177,42 @@ app.get('/distance/:slug', async (req, res) => {
 
   // Generate dynamic SEO content
   const dynamicArticle = `
-    <article class="dynamic-seo-content" style="margin-top: 40px;">
-      <p>Planning a trip from <strong>${route.origin}</strong> to <strong>${route.destination}</strong>? Understanding the travel logistics is key to a smooth journey. Whether you are traveling for business or leisure, knowing the distance and estimated travel time helps you manage your schedule effectively.</p>
+    <article class="dynamic-seo-content narrow-article" style="margin-top: 40px; line-height: 1.8; color: #333; font-family: 'Inter', system-ui, -apple-system, sans-serif;">
+      <h2>Journey Guide: ${route.origin} to ${route.destination}</h2>
+      <p>Planning a trip from <strong>${route.origin}</strong> to <strong>${route.destination}</strong>? Understanding the travel logistics is the first step to a smooth and enjoyable journey. Whether you are traveling for a crucial business meeting, a family vacation, or a spontaneous weekend getaway, knowing the exact distance and estimated travel time helps you manage your schedule and expectations effectively. Our comprehensive guide provides you with all the essential details for navigating this route.</p>
       
-      <h2>How far is ${route.origin} from ${route.destination}?</h2>
-      <p>The total driving distance between these two locations is approximately <strong>${route.distance}</strong>. Depending on traffic conditions, the estimated travel time is about <strong>${route.duration}</strong>. This route connects two vibrant areas, each offering its own unique attractions and atmosphere.</p>
+      <h3>How far is it from ${route.origin} to ${route.destination}?</h3>
+      <p>The total driving distance between <strong>${route.origin}</strong> and <strong>${route.destination}</strong> is approximately <strong>${route.distance}</strong>. Depending on traffic conditions, the estimated travel time by car is about <strong>${route.duration}</strong>. This route connects two vibrant areas, each offering its own unique attractions, culture, and atmosphere. Knowing this baseline duration allows you to plan your departure time accurately to avoid rush hour congestion at your departure or arrival city.</p>
 
-      <h3>Travel Tips for your journey</h3>
-      <p>When driving between ${route.origin} and ${route.destination}, it's always a good idea to check for real-time traffic updates. If you are using public transit or other modes of transport, travel times may vary significantly. Make sure to plan for breaks if you are on a long road trip to ensure safety and comfort.</p>
-      
-      <p>Use our calculator above to explore alternative travel modes like walking, bicycling, or transit if available for this specific route. Safe travels!</p>
+      <h3>Alternative Transportation Options</h3>
+      <p>While driving offers flexibility and the chance to explore hidden gems along the way, it's not the only way to travel from ${route.origin} to ${route.destination}. Depending on your budget and timeline, you might consider:</p>
+      <ul>
+        <li><strong>Flying:</strong> Often the fastest option for long distances. Be sure to use our <a href="/places/airports-near-${cleanSlug(route.destination)}">Airport Finder</a> to locate the best departure and arrival hubs.</li>
+        <li><strong>Public Transit (Trains or Buses):</strong> A great way to travel sustainably and avoid the stress of driving. Transit options allow you to relax, work, or read while en route.</li>
+      </ul>
+
+      <h3>Road Trip Tips and Route Highlights</h3>
+      <p>If you choose to drive, the journey between ${route.origin} and ${route.destination} can be an adventure in itself. Pacing yourself is important—plan to stop every two to three hours to stretch your legs, grab a coffee, and safely break up the drive. Researching interesting landmarks or scenic detours along the way can transform a mundane drive into a memorable road trip.</p>
+      <p>It's always highly recommended to check for real-time traffic updates, road closures, and weather forecasts before you set off. Unexpected weather can drastically increase your travel time, particularly in winter or during heavy storm seasons.</p>
+
+      <h3>Managing Your Travel Schedule</h3>
+      <p>For complex itineraries or quick business trips, efficiency is vital. Knowing your turnaround time—the gap between your arrival and your next scheduled event or departure—can save you from unnecessary stress. You can calculate these critical time windows using our specialized <a href="/turnaround/${cleanSlug(route.destination)}">Turnaround Calculator</a>.</p>
+
+      <h3>Where to Stay When You Arrive</h3>
+      <p>Once you arrive in ${route.destination}, you'll need a comfortable place to rest. Finding the right accommodation in the right neighborhood can make all the difference in your trip. Explore highly-rated lodging options using our <a href="/places/hotels-in-${cleanSlug(route.destination)}">Hotel Finder</a> to secure the perfect base for your visit.</p>
+
+      <p>Use our interactive distance calculator above to explore alternative travel modes like walking, bicycling, or transit if available for this specific route. Safe travels from ${route.origin} to ${route.destination}!</p>
     </article>
   `;
 
   html = html.replace(/<title>.*?<\/title>/, `<title>${title} | Travel Calculator</title>`);
   html = html.replace(/<meta name="description" content=".*?">/, `<meta name="description" content="${description}">`);
 
-  // Inject article and unified navigation
-  html = html.replace('</main>', `
+  // Replace generic article and inject new one
+  html = html.replace(/<article id="distanceArticle" class="narrow-article">[\s\S]*?<\/article>/i, `
     ${dynamicArticle}
     ${EXPLORE_TOOLS_HTML}
-  </main>`);
+  `);
 
   // Inject OG Tags and JSON-LD (replacing existing canonical if present)
   const advancedSEO = `

@@ -81,7 +81,7 @@ function displayDistanceResults(data) {
         return;
     }
 
-    distanceCalculatorTitle.textContent = `Distance Calculator from ${data.origin} to ${data.destination}`;
+    distanceCalculatorTitle.textContent = `Distance from ${data.origin} to ${data.destination}`;
 
     resultsDiv.innerHTML = `
         <div class="distance-result">

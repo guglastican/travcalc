@@ -2,17 +2,6 @@
 window.addEventListener("DOMContentLoaded", () => {
   console.log("DOM loaded - initializing calculator");
 
-  // Mobile menu toggle
-  const menuToggle = document.querySelector(".menu-toggle");
-  const mainNav = document.querySelector(".main-nav");
-
-  if (menuToggle && mainNav) {
-    menuToggle.addEventListener("click", () => {
-      mainNav.classList.toggle("active");
-      menuToggle.classList.toggle("active");
-    });
-  }
-  
   const calculateBtn = document.getElementById("calculateBtn");
   if (calculateBtn) {
     calculateBtn.addEventListener("click", generateSchedule);
@@ -200,7 +189,7 @@ function fetchWeatherForecast(city, tripStartDate) {
   // Skip weather API if no key is configured
   if (!window.WEATHER_API_KEY) {
     console.log("No weather API key configured - skipping forecast");
-    document.getElementById("weatherForecast").innerHTML = 
+    document.getElementById("weatherForecast").innerHTML =
       "<p>Weather forecast not available - API key not configured</p>";
     return;
   }
@@ -223,9 +212,9 @@ function fetchWeatherForecast(city, tripStartDate) {
         // Choose the forecast closest to noon
         let targetForecast = filteredForecasts.reduce((prev, curr) => {
           return Math.abs(new Date(curr.dt_txt).getHours() - 12) <
-                 Math.abs(new Date(prev.dt_txt).getHours() - 12)
-                 ? curr
-                 : prev;
+            Math.abs(new Date(prev.dt_txt).getHours() - 12)
+            ? curr
+            : prev;
         });
         weatherHTML = `<h3>Weather Forecast for ${city} on ${tripStartDate}</h3>`;
         weatherHTML += `<p>Temperature: ${targetForecast.main.temp}°F</p>`;
