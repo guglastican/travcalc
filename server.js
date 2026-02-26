@@ -614,6 +614,7 @@ app.get('/sitemap.xml', async (req, res) => {
   xml += '\n</urlset>';
   res.set('Content-Type', 'application/xml; charset=utf-8');
   res.set('X-Content-Type-Options', 'nosniff');
+  res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0');
   res.send(xml.trim());
 });
 
