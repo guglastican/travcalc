@@ -154,11 +154,17 @@ const saveData = async (filePath, item) => {
   }
 };
 
+// Helper to extract just the city name from a full Google Maps address
+const cleanCityName = (text) => {
+  if (!text) return '';
+  // Take only the first part before the first comma (usually the city)
+  return text.split(',')[0].trim();
+};
+
 // Helper to clean slug (removes NY, USA, extra hyphens, etc.)
 const cleanSlug = (text) => {
   if (!text) return '';
-  // Take only the first part before the first comma (usually the city)
-  const city = text.split(',')[0].trim();
+  const city = cleanCityName(text);
   return city
     .toLowerCase()
     .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // Remove accents
@@ -182,8 +188,8 @@ app.post('/api/calculate-distance', async (req, res) => {
     const result = response.data?.rows?.[0]?.elements?.[0];
     if (!result || result.status !== 'OK') throw new Error('Route not found');
 
-    const originAddr = response.data.origin_addresses[0];
-    const destAddr = response.data.destination_addresses[0];
+    const originAddr = cleanCityName(response.data.origin_addresses[0]);
+    const destAddr = cleanCityName(response.data.destination_addresses[0]);
 
     const slug = `${cleanSlug(originAddr)}-to-${cleanSlug(destAddr)}`;
 
@@ -209,6 +215,12 @@ app.get('/distance/:slug', async (req, res) => {
   const routes = await readData(ROUTES_PATH);
   let route = routes.find(r => r.slug === slug);
 
+  // If a legacy route was found with "Moscow, Russia", clean it for rendering
+  if (route) {
+    route.origin = cleanCityName(route.origin);
+    route.destination = cleanCityName(route.destination);
+  }
+
   if (!route) {
     const parts = slug.split('-to-');
     if (parts.length === 2) {
@@ -221,8 +233,8 @@ app.get('/distance/:slug', async (req, res) => {
         });
         const result = response.data?.rows?.[0]?.elements?.[0];
         if (result && result.status === 'OK') {
-          const originAddr = response.data.origin_addresses[0];
-          const destAddr = response.data.destination_addresses[0];
+          const originAddr = cleanCityName(response.data.origin_addresses[0]);
+          const destAddr = cleanCityName(response.data.destination_addresses[0]);
           const clean = `${cleanSlug(originAddr)}-to-${cleanSlug(destAddr)}`;
 
           // Redirect to clean slug if current one is messy
@@ -547,8 +559,8 @@ app.get('/turnaround/:slug', async (req, res) => {
   res.send(html);
 });
 
-// Combined Dynamic Sitemap
-app.get('/sitemap-dynamic.xml', async (req, res) => {
+// Main XML Sitemap
+app.get('/sitemap.xml', async (req, res) => {
   const routes = await readData(ROUTES_PATH);
   const places = await readData(PLACES_PATH);
   const baseUrl = 'https://www.calculatortrip.com';
@@ -557,6 +569,17 @@ app.get('/sitemap-dynamic.xml', async (req, res) => {
   let xml = `<?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`;
+
+  // Main static routes
+  const staticPages = ['', 'distance', 'turnaround-time-calculator', 'places', 'about', 'privacy', 'terms', 'contact'];
+  staticPages.forEach(p => {
+    xml += `
+  <url>
+    <loc>${baseUrl}/${p}</loc>
+    <lastmod>${today}</lastmod>
+    <priority>${p === '' ? '1.0' : '0.9'}</priority>
+  </url>`;
+  });
 
   // Distance routes
   routes.forEach(r => {
@@ -636,24 +659,6 @@ app.get('/places', (req, res) => res.sendFile(path.join(__dirname, 'places.html'
 
 const pages = ['about', 'privacy', 'terms', 'contact'];
 pages.forEach(p => app.get(`/${p}`, (req, res) => res.sendFile(path.join(__dirname, `${p}.html`))));
-
-app.get('/sitemap.xml', (req, res) => {
-  const baseUrl = 'https://www.calculatortrip.com';
-  const xml = `<?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>
-<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <sitemap><loc>${baseUrl}/sitemap-main.xml</loc></sitemap>
-  <sitemap><loc>${baseUrl}/sitemap-dynamic.xml</loc></sitemap>
-</sitemapindex>`.trim();
-  res.set('Content-Type', 'application/xml; charset=utf-8');
-  res.set('X-Content-Type-Options', 'nosniff');
-  res.send(xml);
-});
-
-app.get('/sitemap-main.xml', (req, res) => {
-  res.set('Content-Type', 'application/xml; charset=utf-8');
-  res.sendFile(path.join(__dirname, 'sitemap-main.xml'));
-});
 
 // SEEDING LOGIC - Populate some top routes if empty
 const seedData = async () => {
