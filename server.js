@@ -55,7 +55,12 @@ const { neon } = require('@neondatabase/serverless');
 
 let sql;
 if (process.env.DATABASE_URL) {
-  sql = neon(process.env.DATABASE_URL);
+  try {
+    sql = neon(process.env.DATABASE_URL);
+  } catch (error) {
+    console.error("Neon DB Init Error. Falling back to local JSON.", error.message);
+    sql = null;
+  }
 }
 
 // Initialize tables if they don't exist
