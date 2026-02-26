@@ -51,8 +51,59 @@ const EXPLORE_TOOLS_HTML = `
   </section>
 `;
 
+const { neon } = require('@neondatabase/serverless');
+
+let sql;
+if (process.env.DATABASE_URL) {
+  sql = neon(process.env.DATABASE_URL);
+}
+
+// Initialize tables if they don't exist
+const initDB = async () => {
+  if (sql) {
+    try {
+      await sql`
+        CREATE TABLE IF NOT EXISTS routes (
+          slug VARCHAR(255) PRIMARY KEY,
+          origin VARCHAR(255),
+          destination VARCHAR(255),
+          distance VARCHAR(50),
+          duration VARCHAR(50),
+          timestamp TIMESTAMP
+        );
+      `;
+      await sql`
+        CREATE TABLE IF NOT EXISTS places (
+          slug VARCHAR(255) PRIMARY KEY,
+          city VARCHAR(255),
+          type VARCHAR(50),
+          timestamp TIMESTAMP
+        );
+      `;
+    } catch (e) {
+      console.error("Error initializing DB tables:", e);
+    }
+  }
+};
+initDB();
+
 // Helper to read data
-const readData = (filePath) => {
+const readData = async (filePath) => {
+  if (sql) {
+    try {
+      if (filePath === ROUTES_PATH) {
+        const { rows } = await sql`SELECT * FROM routes ORDER BY timestamp DESC`;
+        return rows;
+      } else if (filePath === PLACES_PATH) {
+        const { rows } = await sql`SELECT * FROM places ORDER BY timestamp DESC`;
+        return rows;
+      }
+    } catch (e) {
+      console.error("DB Read Error:", e);
+    }
+  }
+
+  // Fallback to local FS
   try {
     if (!fs.existsSync(filePath)) return [];
     const data = fs.readFileSync(filePath, 'utf8');
@@ -64,9 +115,31 @@ const readData = (filePath) => {
 };
 
 // Helper to save data
-const saveData = (filePath, item) => {
+const saveData = async (filePath, item) => {
+  if (sql) {
+    try {
+      if (filePath === ROUTES_PATH) {
+        await sql`
+          INSERT INTO routes (slug, origin, destination, distance, duration, timestamp)
+          VALUES (${item.slug}, ${item.origin}, ${item.destination}, ${item.distance}, ${item.duration}, ${item.timestamp})
+          ON CONFLICT (slug) DO NOTHING;
+        `;
+      } else if (filePath === PLACES_PATH) {
+        await sql`
+          INSERT INTO places (slug, city, type, timestamp)
+          VALUES (${item.slug}, ${item.city}, ${item.type}, ${item.timestamp})
+          ON CONFLICT (slug) DO NOTHING;
+        `;
+      }
+      return;
+    } catch (e) {
+      console.error("DB Save Error:", e);
+    }
+  }
+
+  // Fallback to local FS
   try {
-    const data = readData(filePath);
+    const data = await readData(filePath);
     if (!data.find(r => r.slug === item.slug)) {
       data.push(item);
       fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
@@ -118,7 +191,7 @@ app.post('/api/calculate-distance', async (req, res) => {
       timestamp: new Date().toISOString()
     };
 
-    saveData(ROUTES_PATH, routeData);
+    await saveData(ROUTES_PATH, routeData);
     res.json(routeData);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -128,7 +201,7 @@ app.post('/api/calculate-distance', async (req, res) => {
 // Distance pSEO route
 app.get('/distance/:slug', async (req, res) => {
   const { slug } = req.params;
-  const routes = readData(ROUTES_PATH);
+  const routes = await readData(ROUTES_PATH);
   let route = routes.find(r => r.slug === slug);
 
   if (!route) {
@@ -160,7 +233,7 @@ app.get('/distance/:slug', async (req, res) => {
             slug: clean,
             timestamp: new Date().toISOString()
           };
-          saveData(ROUTES_PATH, route);
+          await saveData(ROUTES_PATH, route);
         }
       } catch (e) { }
     }
@@ -414,7 +487,7 @@ app.get('/places/:slug', async (req, res) => {
   const placeholderId = type === 'hotels' ? 'id="pseo-article-hotels"' : 'id="pseo-article-airports"';
   html = html.replace(`<div ${placeholderId}></div>`, `<div ${placeholderId}>${dynamicArticle}${EXPLORE_TOOLS_HTML}</div>`);
 
-  saveData(PLACES_PATH, { slug, city, type, timestamp: new Date().toISOString() });
+  await saveData(PLACES_PATH, { slug, city, type, timestamp: new Date().toISOString() });
   res.send(html);
 });
 
@@ -470,9 +543,9 @@ app.get('/turnaround/:slug', async (req, res) => {
 });
 
 // Combined Dynamic Sitemap
-app.get('/sitemap-dynamic.xml', (req, res) => {
-  const routes = readData(ROUTES_PATH);
-  const places = readData(PLACES_PATH);
+app.get('/sitemap-dynamic.xml', async (req, res) => {
+  const routes = await readData(ROUTES_PATH);
+  const places = await readData(PLACES_PATH);
   const baseUrl = 'https://www.calculatortrip.com';
   const today = new Date().toISOString().split('T')[0];
 
@@ -517,8 +590,9 @@ app.get('/sitemap-dynamic.xml', (req, res) => {
 });
 
 // Popular Routes API
-app.get('/api/popular-routes', (req, res) => {
-  res.json(readData(ROUTES_PATH).slice(-12).reverse());
+app.get('/api/popular-routes', async (req, res) => {
+  const routes = await readData(ROUTES_PATH);
+  res.json(routes.slice(-12).reverse());
 });
 
 // Top Cities API for Discovery
@@ -527,12 +601,12 @@ app.get('/api/top-cities', (req, res) => {
 });
 
 // Save new place from user search (Automatic pSEO)
-app.post('/api/save-place', (req, res) => {
+app.post('/api/save-place', async (req, res) => {
   const { city, type } = req.body;
   if (!city || !type) return res.status(400).json({ error: 'City and type are required' });
 
   const slug = type === 'hotels' ? `hotels-in-${cleanSlug(city)}` : `airports-near-${cleanSlug(city)}`;
-  const places = readData(PLACES_PATH);
+  const places = await readData(PLACES_PATH);
 
   if (!places.find(p => p.slug === slug)) {
     const newPlace = {
@@ -541,7 +615,7 @@ app.post('/api/save-place', (req, res) => {
       type,
       timestamp: new Date().toISOString()
     };
-    saveData(PLACES_PATH, newPlace);
+    await saveData(PLACES_PATH, newPlace);
     console.log(`Saved new pSEO page: ${slug}`);
     return res.json({ success: true, slug });
   }
@@ -578,8 +652,8 @@ app.get('/sitemap-main.xml', (req, res) => {
 
 // SEEDING LOGIC - Populate some top routes if empty
 const seedData = async () => {
-  const routes = readData(ROUTES_PATH);
-  const places = readData(PLACES_PATH);
+  const routes = await readData(ROUTES_PATH);
+  const places = await readData(PLACES_PATH);
 
   // Seed Distance
   if (routes.length < 15) {
@@ -595,9 +669,9 @@ const seedData = async () => {
       { origin: "Paris", destination: "Amsterdam" },
       { origin: "New York", destination: "Miami" }
     ];
-    seeds.forEach(s => {
+    for (const s of seeds) {
       const slug = `${cleanSlug(s.origin)}-to-${cleanSlug(s.destination)}`;
-      saveData(ROUTES_PATH, {
+      await saveData(ROUTES_PATH, {
         origin: s.origin,
         destination: s.destination,
         distance: "Calculating...",
@@ -605,17 +679,17 @@ const seedData = async () => {
         slug: slug,
         timestamp: new Date().toISOString()
       });
-    });
+    }
   }
 
   // Seed Places
   if (places.length < 20) {
-    TOP_CITIES.forEach(city => {
+    for (const city of TOP_CITIES) {
       const hotelSlug = `hotels-in-${cleanSlug(city)}`;
       const airportSlug = `airports-near-${cleanSlug(city)}`;
-      saveData(PLACES_PATH, { slug: hotelSlug, city, type: "hotels", timestamp: new Date().toISOString() });
-      saveData(PLACES_PATH, { slug: airportSlug, city, type: "airports", timestamp: new Date().toISOString() });
-    });
+      await saveData(PLACES_PATH, { slug: hotelSlug, city, type: "hotels", timestamp: new Date().toISOString() });
+      await saveData(PLACES_PATH, { slug: airportSlug, city, type: "airports", timestamp: new Date().toISOString() });
+    }
   }
 };
 seedData();
