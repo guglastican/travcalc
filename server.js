@@ -47,6 +47,16 @@ const EXPLORE_TOOLS_HTML = `
         <span>Turnaround Calculator</span>
         <p>Master your schedule by calculating gaps and turnaround days between trip segments.</p>
       </a>
+      <a href="/gas-calculator-trip" class="tool-card">
+        <div class="icon">⛽</div>
+        <span>Gas Calculator Trip</span>
+        <p>Estimate the total fuel cost and gas needed for your road trip.</p>
+      </a>
+      <a href="/restaurant-tip-calculator" class="tool-card">
+        <div class="icon">💰</div>
+        <span>Restaurant Tip Calculator</span>
+        <p>Easily calculate tips and split bills instantly for any service.</p>
+      </a>
     </div>
   </section>
 `;
@@ -571,7 +581,7 @@ app.get('/sitemap.xml', async (req, res) => {
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`;
 
   // Main static routes
-  const staticPages = ['', 'distance', 'turnaround-time-calculator', 'places', 'about', 'privacy', 'terms', 'contact'];
+  const staticPages = ['', 'distance', 'turnaround-time-calculator', 'places', 'restaurant-tip-calculator', 'gas-calculator-trip', 'about', 'privacy', 'terms', 'contact'];
   staticPages.forEach(p => {
     xml += `
   <url>
@@ -629,6 +639,11 @@ app.get('/api/top-cities', (req, res) => {
   res.json(TOP_CITIES);
 });
 
+// Explore Tools HTML Fragment API
+app.get('/api/explore-tools', (req, res) => {
+  res.send(EXPLORE_TOOLS_HTML);
+});
+
 // Save new place from user search (Automatic pSEO)
 app.post('/api/save-place', async (req, res) => {
   const { city, type } = req.body;
@@ -657,6 +672,8 @@ app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
 app.get('/distance', (req, res) => res.sendFile(path.join(__dirname, 'distance.html')));
 app.get('/turnaround-time-calculator', (req, res) => res.sendFile(path.join(__dirname, 'turnaround-time-calculator.html')));
 app.get('/places', (req, res) => res.sendFile(path.join(__dirname, 'places.html')));
+app.get('/restaurant-tip-calculator', (req, res) => res.sendFile(path.join(__dirname, 'restaurant-tip-calculator.html')));
+app.get('/gas-calculator-trip', (req, res) => res.sendFile(path.join(__dirname, 'gas-calculator-trip.html')));
 
 const pages = ['about', 'privacy', 'terms', 'contact'];
 pages.forEach(p => app.get(`/${p}`, (req, res) => res.sendFile(path.join(__dirname, `${p}.html`))));

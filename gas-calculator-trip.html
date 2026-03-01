@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-video-preview:-1, max-image-preview:large">
+    <meta name="description"
+        content="Our Gas Calculator Trip helps you estimate total fuel costs for your journey. Enter your distance, MPG/fuel efficiency, and gas price to get accurate results.">
+    <link rel="canonical" href="https://www.calculatortrip.com/gas-calculator-trip" />
+    <title>Gas Calculator Trip | Travel Calculator</title>
+    <link rel="icon" href="https://www.google.com/s2/favicons?domain=www.calculatortrip.com" type="image/x-icon">
+    <link rel="stylesheet" href="/Styles.css">
+    <style>
+        /* Gas Calculator specific styles for premium look */
+        .gas-calculator-container {
+            background: linear-gradient(145deg, #ffffff, #f0f0f0);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .gas-form-group {
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        .gas-form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .gas-input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .gas-input-icon {
+            position: absolute;
+            left: 15px;
+            color: #666;
+            font-weight: bold;
+            z-index: 10;
+        }
+
+        .gas-input-suffix {
+            position: absolute;
+            right: 15px;
+            color: #666;
+            font-weight: bold;
+            font-size: 0.9em;
+            pointer-events: none;
+        }
+
+        .gas-input {
+            width: 100%;
+            padding: 12px 45px 12px 35px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+
+        .gas-input:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+
+        .gas-unit-toggle {
+            display: flex;
+            margin-bottom: 25px;
+            background: #e0e0e0;
+            border-radius: 8px;
+            padding: 4px;
+        }
+
+        .gas-unit-btn {
+            flex: 1;
+            padding: 10px;
+            background: transparent;
+            border: none;
+            color: #555;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+
+        .gas-unit-btn.active {
+            background: #fff;
+            color: #007bff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .gas-results {
+            background: #fdfdfd;
+            border: 1px solid #1a1a1a;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 30px;
+        }
+
+        .gas-result-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed #ccc;
+        }
+
+        .gas-result-row:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .gas-result-label {
+            font-weight: 600;
+            color: #555;
+        }
+
+        .gas-result-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        .gas-result-value.large {
+            font-size: 2rem;
+            color: #28a745;
+        }
+
+        .dynamic-seo-content a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .dynamic-seo-content a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <site-header></site-header>
+    <script src="/menu.js"></script>
+
+    <main class="container" style="margin-top: 20px; width: 800px; max-width: 100%;">
+        <h1>Gas Calculator Trip</h1>
+
+        <div class="gas-calculator-container">
+            <div class="gas-unit-toggle" id="unitToggle">
+                <button class="gas-unit-btn active" data-unit="imperial">US (Miles/Gallons)</button>
+                <button class="gas-unit-btn" data-unit="metric">Metric (Km/Liters)</button>
+            </div>
+
+            <div class="gas-form-group">
+                <label for="tripDistance">Total Trip Distance</label>
+                <div class="gas-input-wrapper">
+                    <span class="gas-input-icon">📍</span>
+                    <input type="number" id="tripDistance" class="gas-input" placeholder="0" min="0" step="1">
+                    <span class="gas-input-suffix" id="distanceSuffix">miles</span>
+                </div>
+            </div>
+
+            <div class="gas-form-group">
+                <label for="fuelEfficiency">Fuel Efficiency</label>
+                <div class="gas-input-wrapper">
+                    <span class="gas-input-icon">🚗</span>
+                    <input type="number" id="fuelEfficiency" class="gas-input" placeholder="0" min="0" step="0.1">
+                    <span class="gas-input-suffix" id="efficiencySuffix">mpg</span>
+                </div>
+            </div>
+
+            <div class="gas-form-group">
+                <label for="gasPrice">Gas Price</label>
+                <div class="gas-input-wrapper">
+                    <span class="gas-input-icon" id="currencyPrefix">$</span>
+                    <input type="number" id="gasPrice" class="gas-input" placeholder="0.00" min="0" step="0.01">
+                    <span class="gas-input-suffix" id="priceSuffix">/ gal</span>
+                </div>
+            </div>
+
+            <div class="gas-results">
+                <div class="gas-result-row">
+                    <div class="gas-result-label">Fuel Needed</div>
+                    <div class="gas-result-value" id="totalFuelAmount">0.00 <small style="font-size:0.5em;color:#888;"
+                            id="resultFuelUnit">gal</small></div>
+                </div>
+                <div class="gas-result-row">
+                    <div class="gas-result-label">Total Fuel Cost</div>
+                    <div class="gas-result-value large" id="totalFuelCost">$0.00</div>
+                </div>
+            </div>
+        </div>
+
+        <article class="narrow-article dynamic-seo-content" style="margin-top: 40px;">
+            <h2>How to Use the Gas Calculator for Your Trip</h2>
+            <p>Planning a road trip involves more than just picking a destination and packing your bags. One of the most
+                critical aspects of travel budgeting is estimating your fuel costs. Whether you are driving across the
+                country or just taking a weekend getaway, our <strong>Gas Calculator Trip</strong> tool takes the
+                guesswork out of your travel budget. By entering your total driving distance, your vehicle’s fuel
+                efficiency (MPG or L/100km), and the current price of gas, you can instantly see exactly how much you
+                can expect to spend at the pump.</p>
+
+            <h3>Step 1: Determine Your Trip Distance</h3>
+            <p>If you aren't sure exactly how far your journey is, we recommend using our <a href="/distance">Distance
+                    Calculator</a> first. It provides highly accurate driving mileage between any two cities. Once you
+                have your total mileage (don't forget to double it if you are making a round trip!), simply enter that
+                number into the "Total Trip Distance" field.</p>
+
+            <h3>Step 2: Know Your Vehicle's Fuel Efficiency</h3>
+            <p>Your vehicle's fuel efficiency plays the biggest role in your overall gas cost. This is typically
+                measured in Miles Per Gallon (MPG) in the US, or Liters per 100 Kilometers (L/100km) in most metric
+                regions. You can usually find your car's estimated MPG in the owner's manual or by looking up your
+                specific make and model online. Keep in mind that highway driving is generally more fuel-efficient than
+                city stop-and-go traffic.</p>
+
+            <h3>Step 3: Check Current Gas Prices</h3>
+            <p>Gas prices fluctuate frequently based on location and global markets. For the most accurate estimate,
+                check average gas prices along your route rather than just in your home city. If you are traveling
+                through multiple states or countries, it's wise to enter an average of the highest expected prices to
+                ensure your budget has a safe buffer.</p>
+
+            <h2>Why Estimating Fuel Costs Matters</h2>
+            <p>When you combine your estimated fuel costs with other expenses, you get a clear picture of your total
+                travel budget. This allows you to make informed decisions about whether to drive or fly. If you find the
+                drive is too costly or time-consuming, you can always use our <a href="/places">Airport Finder</a> to
+                look into flight options instead. Additionally, if your road trip involves multiple stops or layovers,
+                mapping out your timeline with our <a href="/turnaround-time-calculator">Turnaround Calculator</a>
+                ensures you arrive at each destination with plenty of time to spare.</p>
+
+            <p>By preparing ahead with our Gas Calculator Trip tool, you can hit the open road with confidence, knowing
+                exactly what to expect from your travel budget.</p>
+        </article>
+
+        <div id="explore-tools-container"></div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2025 Travel Calculator</p>
+            <nav class="footer-links">
+                <a href="/about">About</a>
+                <a href="/privacy">Privacy Policy</a>
+                <a href="/terms">Terms of Service</a>
+                <a href="/contact">Contact</a>
+            </nav>
+        </div>
+    </footer>
+
+    <script src="/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Fetch dynamic tools section
+            fetch('/api/explore-tools').then(r => r.text()).then(html => {
+                const c = document.getElementById('explore-tools-container');
+                if (c) c.innerHTML = html;
+            }).catch(e => console.log('Error loading tools', e));
+
+            const distanceInput = document.getElementById('tripDistance');
+            const efficiencyInput = document.getElementById('fuelEfficiency');
+            const priceInput = document.getElementById('gasPrice');
+            const unitBtns = document.querySelectorAll('.gas-unit-btn');
+
+            const totalFuelAmountDisplay = document.getElementById('totalFuelAmount');
+            const totalFuelCostDisplay = document.getElementById('totalFuelCost');
+
+            const distanceSuffix = document.getElementById('distanceSuffix');
+            const efficiencySuffix = document.getElementById('efficiencySuffix');
+            const priceSuffix = document.getElementById('priceSuffix');
+            const currencyPrefix = document.getElementById('currencyPrefix');
+            const resultFuelUnit = document.getElementById('resultFuelUnit');
+
+            let currentUnit = 'imperial'; // 'imperial' or 'metric'
+
+            function updateLabels() {
+                if (currentUnit === 'imperial') {
+                    distanceSuffix.textContent = 'miles';
+                    efficiencySuffix.textContent = 'mpg';
+                    priceSuffix.textContent = '/ gal';
+                    currencyPrefix.textContent = '$';
+                    resultFuelUnit.textContent = 'gal';
+                } else {
+                    distanceSuffix.textContent = 'km';
+                    efficiencySuffix.textContent = 'L/100km';
+                    priceSuffix.textContent = '/ L';
+                    currencyPrefix.textContent = '€'; // Default to Euro for metric, but could be customizable
+                    resultFuelUnit.textContent = 'L';
+                }
+            }
+
+            function calculateGas() {
+                const distance = parseFloat(distanceInput.value) || 0;
+                const efficiency = parseFloat(efficiencyInput.value) || 0;
+                const price = parseFloat(priceInput.value) || 0;
+
+                let fuelNeeded = 0;
+                let cost = 0;
+
+                if (efficiency > 0) {
+                    if (currentUnit === 'imperial') {
+                        // Formula: Distance / MPG = Gallons
+                        fuelNeeded = distance / efficiency;
+                    } else {
+                        // Formula: (Distance / 100) * (L/100km) = Liters
+                        fuelNeeded = (distance / 100) * efficiency;
+                    }
+                    cost = fuelNeeded * price;
+                }
+
+                // Format currency symbol
+                const sym = currentUnit === 'imperial' ? '$' : '€';
+
+                totalFuelAmountDisplay.innerHTML = `${fuelNeeded.toFixed(2)} <small style="font-size:0.5em;color:#888;">${resultFuelUnit.textContent}</small>`;
+                totalFuelCostDisplay.textContent = `${sym}${cost.toFixed(2)}`;
+            }
+
+            distanceInput.addEventListener('input', calculateGas);
+            efficiencyInput.addEventListener('input', calculateGas);
+            priceInput.addEventListener('input', calculateGas);
+
+            unitBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    unitBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentUnit = btn.getAttribute('data-unit');
+
+                    // Clear inputs on unit change to avoid confusing conversions
+                    distanceInput.value = '';
+                    efficiencyInput.value = '';
+                    priceInput.value = '';
+
+                    updateLabels();
+                    calculateGas();
+                });
+            });
+
+            // Initialize labels
+            updateLabels();
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-video-preview:-1, max-image-preview:large">
+    <meta name="description"
+        content="Easily calculate tips and split dining bills. Our free Restaurant Tip Calculator finds exact tip amounts and per-person costs instantly.">
+    <link rel="canonical" href="https://www.calculatortrip.com/restaurant-tip-calculator" />
+    <title>Restaurant Tip Calculator | Travel Calculator</title>
+    <link rel="icon" href="https://www.google.com/s2/favicons?domain=www.calculatortrip.com" type="image/x-icon">
+    <link rel="stylesheet" href="/Styles.css">
+    <style>
+        /* Tip Calculator specific styles for premium look */
+        .tip-calculator-container {
+            background: linear-gradient(145deg, #ffffff, #f0f0f0);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .tip-form-group {
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        .tip-form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .tip-input-wrapper {
+            position: relative;
+        }
+
+        .tip-input-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+            font-weight: bold;
+            z-index: 10;
+        }
+
+        .tip-input {
+            width: 100%;
+            padding: 12px 15px 12px 35px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+
+        .tip-input:focus {
+            outline: none;
+            border-color: #5cb85c;
+        }
+
+        .tip-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .tip-btn {
+            flex: 1;
+            padding: 10px;
+            background: #fff;
+            border: 2px solid #5cb85c;
+            color: #5cb85c;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+
+        .tip-btn.active,
+        .tip-btn:hover {
+            background: #5cb85c;
+            color: white;
+        }
+
+        .tip-custom {
+            flex: 1 1 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 1rem;
+        }
+
+        .tip-results {
+            background: #fdfdfd;
+            border: 1px solid #1a1a1a;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 30px;
+        }
+
+        .tip-result-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed #ccc;
+        }
+
+        .tip-result-row:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .tip-result-label {
+            font-weight: 600;
+            color: #555;
+        }
+
+        .tip-result-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #28a745;
+        }
+
+        .tip-result-value.large {
+            font-size: 2rem;
+        }
+    </style>
+</head>
+
+<body>
+    <site-header></site-header>
+    <script src="/menu.js"></script>
+
+    <main class="container" style="margin-top: 20px; width: 800px; max-width: 100%;">
+        <h1>Restaurant Tip Calculator</h1>
+
+        <div class="tip-calculator-container">
+            <div class="tip-form-group">
+                <label for="billAmount">Bill Amount</label>
+                <div class="tip-input-wrapper">
+                    <span class="tip-input-icon">$</span>
+                    <input type="number" id="billAmount" class="tip-input" placeholder="0.00" min="0" step="0.01">
+                </div>
+            </div>
+
+            <div class="tip-form-group">
+                <label>Select Tip %</label>
+                <div class="tip-buttons" id="tipPercentageContainer">
+                    <button class="tip-btn" data-val="10">10%</button>
+                    <button class="tip-btn" data-val="15">15%</button>
+                    <button class="tip-btn active" data-val="20">20%</button>
+                    <button class="tip-btn" data-val="25">25%</button>
+                    <input type="number" id="customTip" class="tip-custom" placeholder="Custom %" min="0">
+                </div>
+            </div>
+
+            <div class="tip-form-group">
+                <label for="numberOfPeople">Number of People</label>
+                <div class="tip-input-wrapper">
+                    <span class="tip-input-icon" style="font-size: 14px;">👤</span>
+                    <input type="number" id="numberOfPeople" class="tip-input" placeholder="1" min="1" value="1"
+                        style="padding-left: 35px;">
+                </div>
+            </div>
+
+            <div class="tip-results">
+                <div class="tip-result-row">
+                    <div class="tip-result-label">Tip Amount<br><small style="font-size:0.75em;color:#888;">/
+                            person</small></div>
+                    <div class="tip-result-value" id="tipAmountPerPerson">$0.00</div>
+                </div>
+                <div class="tip-result-row">
+                    <div class="tip-result-label">Total Tip<br><small
+                            style="font-size:0.75em;color:#888;">overall</small></div>
+                    <div class="tip-result-value" id="tipAmountTotal">$0.00</div>
+                </div>
+                <div class="tip-result-row">
+                    <div class="tip-result-label">Total Bill<br><small style="font-size:0.75em;color:#888;">/
+                            person</small></div>
+                    <div class="tip-result-value large" id="totalPerPerson">$0.00</div>
+                </div>
+            </div>
+        </div>
+
+        <article class="narrow-article" style="margin-top: 40px;">
+            <h2>How the Restaurant Tip Calculator Works</h2>
+            <p>Whether you're dining out with friends at a new restaurant you found via our <a href="/places">hotel
+                    map</a>, enjoying a coffee, or paying for room service, knowing how much to
+                tip should be quick and stress-free. Our Restaurant Tip Calculator is designed to do the math for you,
+                calculating
+                precise tip amounts and helping you split the bill effortlessly.</p>
+
+            <h3>Why Use Our Restaurant Tip Calculator?</h3>
+            <ul>
+                <li><strong>Accuracy:</strong> No more guessing or mental math. Get the exact tip and total bill amounts
+                    instantly.</li>
+                <li><strong>Customization:</strong> Choose from standard percentages (10%, 15%, 20%, 25%) or enter a
+                    custom tip amount to suit the level of service you received.</li>
+                <li><strong>Split the Bill:</strong> Dining with a group? Simply enter the number of people, and the
+                    calculator will break down both the tip and the total cost per person.</li>
+            </ul>
+
+            <h3>Tipping Etiquette Tips for Travelers</h3>
+            <p>Tipping customs vary by country and service type. In the United States, a 15% to 20% tip is standard for
+                good service at sit-down restaurants. For exceptional service, 20% or more is a great way to show your
+                appreciation.</p>
+            <p>When travelling internationally—perhaps taking a road trip using our <a href="/distance">Distance
+                    Calculator</a>—be sure to research local tipping norms, as many
+                countries include a service charge in the bill, requiring little to no additional tip. This is
+                especially important when planning gap days with our <a href="/turnaround-time-calculator">Turnaround
+                    Calculator</a> so you can budget accurately for your entire journey.</p>
+
+            <h3>How to Budget for Dining Out While Traveling</h3>
+            <p>Dining out is often one of the largest expenses on any trip. By using a tip calculator, you can
+                accurately forecast the total cost of a meal before you even sit down. We recommend researching the
+                average cost of meals in your destination city ahead of time and factoring in a standard 20% tip for
+                budgeting purposes. This ensures you won't encounter any unpleasant surprises when the check arrives.
+            </p>
+
+        </article>
+
+        <div id="explore-tools-container"></div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2025 Travel Calculator</p>
+            <nav class="footer-links">
+                <a href="/about">About</a>
+                <a href="/privacy">Privacy Policy</a>
+                <a href="/terms">Terms of Service</a>
+                <a href="/contact">Contact</a>
+            </nav>
+        </div>
+    </footer>
+
+    <script src="/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Fetch dynamic tools section
+            fetch('/api/explore-tools').then(r => r.text()).then(html => {
+                const c = document.getElementById('explore-tools-container');
+                if (c) c.innerHTML = html;
+            }).catch(e => console.log('Error loading tools', e));
+
+            const billInput = document.getElementById('billAmount');
+            const customTipInput = document.getElementById('customTip');
+            const peopleInput = document.getElementById('numberOfPeople');
+            const tipBtns = document.querySelectorAll('.tip-btn');
+
+            const tipPerPersonDisplay = document.getElementById('tipAmountPerPerson');
+            const tipTotalDisplay = document.getElementById('tipAmountTotal');
+            const totalPerPersonDisplay = document.getElementById('totalPerPerson');
+
+            let currentTipPercentage = 20;
+
+            function calculateTip() {
+                const bill = parseFloat(billInput.value) || 0;
+                const people = parseInt(peopleInput.value) || 1;
+
+                let tipPercent = currentTipPercentage;
+                if (customTipInput.value !== '') {
+                    tipPercent = parseFloat(customTipInput.value) || 0;
+                }
+
+                const tipTotal = bill * (tipPercent / 100);
+                const totalAmount = bill + tipTotal;
+
+                const tipPerPerson = tipTotal / people;
+                const totalPerPerson = totalAmount / people;
+
+                tipTotalDisplay.textContent = '$' + tipTotal.toFixed(2);
+                tipPerPersonDisplay.textContent = '$' + tipPerPerson.toFixed(2);
+                totalPerPersonDisplay.textContent = '$' + totalPerPerson.toFixed(2);
+            }
+
+            billInput.addEventListener('input', calculateTip);
+            peopleInput.addEventListener('input', calculateTip);
+            customTipInput.addEventListener('input', () => {
+                tipBtns.forEach(b => b.classList.remove('active'));
+                calculateTip();
+            });
+
+            tipBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    tipBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    customTipInput.value = '';
+                    currentTipPercentage = parseFloat(btn.getAttribute('data-val'));
+                    calculateTip();
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
