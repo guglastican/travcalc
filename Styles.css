@@ -806,5 +806,9 @@ body.embed-mode main.container {
 
 body.embed-mode .form-section,
 body.embed-mode .gas-calculator-container {
-  margin: 20px auto !important;
+  margin: 0 auto !important;
+  padding: 10px !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  border: none !important;
 }
