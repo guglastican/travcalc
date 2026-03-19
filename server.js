@@ -574,7 +574,6 @@ app.get('/sitemap.xml', async (req, res) => {
   const routes = await readData(ROUTES_PATH);
   const places = await readData(PLACES_PATH);
   const baseUrl = 'https://www.calculatortrip.com';
-  const today = new Date().toISOString().split('T')[0];
 
   let xml = `<?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>
@@ -583,40 +582,56 @@ app.get('/sitemap.xml', async (req, res) => {
   // Main static routes
   const staticPages = ['', 'distance', 'turnaround-time-calculator', 'places', 'restaurant-tip-calculator', 'gas-calculator-trip', 'about', 'privacy', 'terms', 'contact'];
   staticPages.forEach(p => {
+    let lastMod;
+    try {
+      const fileName = p === '' ? 'index.html' : `${p}.html`;
+      const stat = fs.statSync(path.join(__dirname, fileName));
+      lastMod = stat.mtime.toISOString().split('T')[0];
+    } catch (e) {
+      lastMod = new Date().toISOString().split('T')[0];
+    }
     xml += `
   <url>
     <loc>${baseUrl}/${p}</loc>
-    <lastmod>${today}</lastmod>
+    <lastmod>${lastMod}</lastmod>
     <priority>${p === '' ? '1.0' : '0.9'}</priority>
   </url>`;
   });
 
   // Distance routes
   routes.forEach(r => {
+    const lastMod = r.timestamp ? new Date(r.timestamp).toISOString().split('T')[0] : new Date().toISOString().split('T')[0];
     xml += `
   <url>
     <loc>${baseUrl}/distance/${r.slug}</loc>
-    <lastmod>${today}</lastmod>
+    <lastmod>${lastMod}</lastmod>
     <priority>0.8</priority>
   </url>`;
   });
 
   // Places routes
   places.forEach(p => {
+    const lastMod = p.timestamp ? new Date(p.timestamp).toISOString().split('T')[0] : new Date().toISOString().split('T')[0];
     xml += `
   <url>
     <loc>${baseUrl}/places/${p.slug}</loc>
-    <lastmod>${today}</lastmod>
+    <lastmod>${lastMod}</lastmod>
     <priority>0.7</priority>
   </url>`;
   });
 
   // Turnaround routes
+  let turnaroundLastMod;
+  try {
+    turnaroundLastMod = fs.statSync(path.join(__dirname, 'turnaround-time-calculator.html')).mtime.toISOString().split('T')[0];
+  } catch (e) {
+    turnaroundLastMod = new Date().toISOString().split('T')[0];
+  }
   TOP_CITIES.forEach(city => {
     xml += `
   <url>
     <loc>${baseUrl}/turnaround/${cleanSlug(city)}</loc>
-    <lastmod>${today}</lastmod>
+    <lastmod>${turnaroundLastMod}</lastmod>
     <priority>0.6</priority>
   </url>`;
   });

@@ -780,3 +780,31 @@ footer {
     grid-template-columns: 1fr;
   }
 }
+/* Embed Mode Styles */
+body.embed-mode {
+  background: transparent !important;
+}
+
+body.embed-mode site-header,
+body.embed-mode header,
+body.embed-mode footer,
+body.embed-mode article,
+body.embed-mode .explore-tools-section,
+body.embed-mode .embed-section,
+body.embed-mode h1,
+body.embed-mode h2,
+body.embed-mode h3 {
+  display: none !important;
+}
+
+body.embed-mode main.container {
+  padding: 0 !important;
+  margin: 0 !important;
+  max-width: 100% !important;
+  width: 100% !important;
+}
+
+body.embed-mode .form-section,
+body.embed-mode .gas-calculator-container {
+  margin: 20px auto !important;
+}

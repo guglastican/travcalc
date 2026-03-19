@@ -1,5 +1,10 @@
 // Wait for DOM to load
 window.addEventListener("DOMContentLoaded", () => {
+  // Handle embed mode
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get("embed") === "true") {
+    document.body.classList.add("embed-mode");
+  }
   console.log("DOM loaded - initializing calculator");
 
   const calculateBtn = document.getElementById("calculateBtn");
